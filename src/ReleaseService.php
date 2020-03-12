@@ -29,10 +29,8 @@ class ReleaseService
         $command = 'ls '.$this->server['root'].'/releases && ls -l '.$this->server['root'];
 
         (new Ssh($this->server))->run($command, function ($output) {
-
             $this->releases = $this->getReleasesFromOutput($output);
             $this->active = $this->getActiveFromOutput($output);
-
         });
 
         return $this;
@@ -83,7 +81,7 @@ class ReleaseService
     public function activate(string $id): void
     {
         if ($id === 'latest') {
-            $id = $this->releases[count($this->releases) -1];
+            $id = $this->releases[count($this->releases) - 1];
         }
 
         $command = 'ln -nfs '.$this->server['root'].'/releases/'.$id.' '.
@@ -92,7 +90,6 @@ class ReleaseService
         (new Ssh($this->server))->run($command, function ($outputs) {
 
             //
-
         });
     }
 
@@ -108,7 +105,6 @@ class ReleaseService
         (new Ssh($this->server))->run($command, function ($outputs) use ($ids) {
 
             //
-
         });
     }
 }

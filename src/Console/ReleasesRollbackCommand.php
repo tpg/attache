@@ -42,15 +42,13 @@ class ReleasesRollbackCommand extends SymfonyCommand
         }
 
         if ($activeIndex > 0) {
-            $rollbackId = $releaseService->list()[$activeIndex -1];
+            $rollbackId = $releaseService->list()[$activeIndex - 1];
 
             $command = 'ln -nfs '.$server['root'].'/releases/'.$rollbackId.' '.
                 $server['root'].'/live';
 
             (new Ssh($server))->run($command, function ($outputs) use ($rollbackId) {
-
                 $this->output->writeln('Rolled back to <info>'.$rollbackId.'</info>');
-
             });
         }
 
