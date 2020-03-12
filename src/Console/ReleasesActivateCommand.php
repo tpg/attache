@@ -4,6 +4,7 @@ namespace TPG\Attache\Console;
 
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputArgument;
+use TPG\Attache\ReleaseService;
 
 /**
  * Class ReleasesActivateCommand.
@@ -30,6 +31,19 @@ class ReleasesActivateCommand extends SymfonyCommand
      */
     protected function fire(): int
     {
+        $server = $this->config->server($this->argument('server'));
+        $id = $this->argument('release');
+
+        $releaseService = (new ReleaseService($server))->fetch();
+
+        if ($id !== 'latest' && ! $releaseService->exists($id)) {
+            throw new \RuntimeException('A release with ID '.$id.' does not exist');
+        }
+
+        $this->output->writeln('Setting active release to <info>'.$id.'</info>...');
+
+        $releaseService->activate($id);
+
         return 0;
     }
 }

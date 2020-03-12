@@ -6,6 +6,7 @@ use Illuminate\Support\Arr;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TPG\Attache\Exceptions\ConfigurationException;
+use TPG\Attache\ReleaseService;
 use TPG\Attache\Ssh;
 
 /**
@@ -35,15 +36,9 @@ class ReleasesListCommand extends SymfonyCommand
     {
         $server = $this->getServer();
 
-        $command = $this->getCommand($server);
+        $releaseService = (new ReleaseService($server))->fetch();
 
-        (new Ssh($server))->run($command, function ($output) use ($server) {
-            $releases = $this->getReleasesFromOutput($output);
-
-            $active = $this->getActiveFromOutput($output);
-
-            $this->showOutput($releases, $active);
-        });
+        $this->showOutput($releaseService->list(), $releaseService->active());
 
         return 0;
     }
@@ -57,44 +52,6 @@ class ReleasesListCommand extends SymfonyCommand
     protected function getServer(): array
     {
         return $this->config->server($this->argument('server'));
-    }
-
-    /**
-     * The command we'll execute on the server.
-     *
-     * @param array $server
-     * @return string
-     */
-    protected function getCommand(array $server): string
-    {
-        return 'ls '.$server['root'].'/releases && ls -l '.$server['root'];
-    }
-
-    /**
-     * Get an array of release IDs from the output returned after execution.
-     *
-     * @param array $output
-     * @return array
-     */
-    protected function getReleasesFromOutput(array $output): array
-    {
-        return array_filter(
-            preg_split('/\n/m', $output[0]['data']),
-            fn ($release) => $release !== ''
-        );
-    }
-
-    /**
-     * Get a string ID of the currently active release.
-     *
-     * @param array $output
-     * @return string
-     */
-    protected function getActiveFromOutput(array $output): string
-    {
-        preg_match('/live.*\/(?<id>.+)/', $output[1]['data'], $matches);
-
-        return Arr::get($matches, 'id');
     }
 
     /**

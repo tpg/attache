@@ -31,7 +31,7 @@ class Ssh
                 self::DELIMITER
             );
 
-            $process->run(function ($type, $output) use (&$outputs) {
+            $process->run(function ($type, $output = null) use (&$outputs) {
                 if ($type === Process::OUT) {
                     $outputs[] = [
                         'type' => $type,
