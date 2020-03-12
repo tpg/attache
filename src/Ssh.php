@@ -29,7 +29,7 @@ class Ssh extends Processor
     protected function getProcess(): Process
     {
         return Process::fromShellCommandline(
-            'ssh '. $this->getServerConnectionString()
+            'ssh '.$this->getServerConnectionString()
             ." 'bash -se' << \\".self::DELIMITER.PHP_EOL
             .$this->task->script().PHP_EOL
             .self::DELIMITER
@@ -39,6 +39,7 @@ class Ssh extends Processor
     protected function getServerConnectionString(): string
     {
         $server = $this->task->server();
+
         return $server->user().'@'.$server->host().' -p'.$server->port();
     }
 }

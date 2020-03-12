@@ -2,8 +2,6 @@
 
 namespace TPG\Attache\Console;
 
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
@@ -119,6 +117,6 @@ class DeployCommand extends SymfonyCommand
 
         $command = 'ln -nfs '.$releasePath.' '.$server->path('serve');
 
-        return (new Task($command, $server));
+        return new Task($command, $server);
     }
 }

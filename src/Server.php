@@ -22,6 +22,7 @@ class Server
     public function setServer(array $config): self
     {
         $this->config = $config;
+
         return $this;
     }
 
@@ -49,7 +50,7 @@ class Server
     {
         $root = Arr::get($this->config, 'root');
 
-        if ($trailingSlash && !Str::endsWith($root, '/')) {
+        if ($trailingSlash && ! Str::endsWith($root, '/')) {
             return $root.'/';
         }
 
@@ -67,7 +68,7 @@ class Server
     {
         $path = Arr::get($this->config, 'paths.'.$key);
 
-        if (!$path) {
+        if (! $path) {
             $path = $key;
         }
 
@@ -75,6 +76,4 @@ class Server
             ? $this->root(true).$path
             : $path;
     }
-
-
 }
