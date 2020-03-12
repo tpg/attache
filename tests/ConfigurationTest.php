@@ -3,7 +3,6 @@
 namespace TPG\Attache\Tests;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use phpDocumentor\Reflection\Types\Self_;
 use TPG\Attache\ConfigurationProvider;
 use TPG\Attache\Exceptions\ConfigurationException;
 
