@@ -1,0 +1,21 @@
+{
+    "repository": "git@vcs.test:vendor/application.git",
+    "servers": [
+        {
+            "name": "production",
+            "host": "production.test",
+            "port": 22,
+            "user": "user",
+            "root": "/path/to/application",
+            "branch": "master"
+        },
+        {
+            "name": "staging",
+            "host": "staging.test",
+            "port": 22,
+            "user": "user",
+            "root": "/path/to/application",
+            "branch": "staging"
+        }
+    ]
+}
