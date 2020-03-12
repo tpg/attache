@@ -9,8 +9,7 @@ use TPG\Attache\Exceptions\ConfigurationException;
 use TPG\Attache\Ssh;
 
 /**
- * Class ReleasesListCommand
- * @package TPG\Attache\Console
+ * Class ReleasesListCommand.
  */
 class ReleasesListCommand extends SymfonyCommand
 {
@@ -39,7 +38,6 @@ class ReleasesListCommand extends SymfonyCommand
         $command = $this->getCommand($server);
 
         (new Ssh($server))->run($command, function ($output) use ($server) {
-
             $releases = $this->getReleasesFromOutput($output);
 
             $active = $this->getActiveFromOutput($output);
@@ -69,7 +67,7 @@ class ReleasesListCommand extends SymfonyCommand
      */
     protected function getCommand(array $server): string
     {
-        return 'ls ' . $server['root'] . '/releases && ls -l ' . $server['root'];
+        return 'ls '.$server['root'].'/releases && ls -l '.$server['root'];
     }
 
     /**
@@ -82,7 +80,7 @@ class ReleasesListCommand extends SymfonyCommand
     {
         return array_filter(
             preg_split('/\n/m', $output[0]['data']),
-            fn($release) => $release !== ''
+            fn ($release) => $release !== ''
         );
     }
 
@@ -95,6 +93,7 @@ class ReleasesListCommand extends SymfonyCommand
     protected function getActiveFromOutput(array $output): string
     {
         preg_match('/live.*\/(?<id>.+)/', $output[1]['data'], $matches);
+
         return Arr::get($matches, 'id');
     }
 
@@ -111,7 +110,7 @@ class ReleasesListCommand extends SymfonyCommand
         $io = new SymfonyStyle($this->input, $this->output);
         $io->table(['ID', 'Release Date', ''], $rows);
 
-        if (!$active || !in_array($active, $releases, true)) {
+        if (! $active || ! in_array($active, $releases, true)) {
             $this->showInactiveWarning();
         }
     }
@@ -128,7 +127,7 @@ class ReleasesListCommand extends SymfonyCommand
         $rows = [];
         foreach ($releases as $release) {
             $row = [
-                '<info>' . $release . '</info>',
+                '<info>'.$release.'</info>',
                 $this->releaseDate($release),
             ];
 
@@ -139,7 +138,6 @@ class ReleasesListCommand extends SymfonyCommand
             }
 
             $rows[] = $row;
-
         }
 
         return $rows;

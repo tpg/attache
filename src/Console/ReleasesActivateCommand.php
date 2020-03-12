@@ -6,8 +6,7 @@ use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputArgument;
 
 /**
- * Class ReleasesActivateCommand
- * @package TPG\Attache\Console
+ * Class ReleasesActivateCommand.
  */
 class ReleasesActivateCommand extends SymfonyCommand
 {

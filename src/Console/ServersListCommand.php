@@ -3,12 +3,10 @@
 namespace TPG\Attache\Console;
 
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
- * Class ServersListCommand
- * @package TPG\Attache\Console
+ * Class ServersListCommand.
  */
 class ServersListCommand extends SymfonyCommand
 {

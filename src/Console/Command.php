@@ -4,7 +4,6 @@ namespace TPG\Attache\Console;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\Output;
 use Symfony\Component\Console\Output\OutputInterface;
 use TPG\Attache\ConfigurationProvider;
 
@@ -32,7 +31,7 @@ trait Command
         $this->output = $output;
 
         if ($this->input->hasOption('config')) {
-            $this->loadConfig();;
+            $this->loadConfig();
         }
 
         return (int) $this->fire();

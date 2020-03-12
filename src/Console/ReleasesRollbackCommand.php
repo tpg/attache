@@ -6,8 +6,7 @@ use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputArgument;
 
 /**
- * Class ReleasesRollbackCommand
- * @package TPG\Attache\Console
+ * Class ReleasesRollbackCommand.
  */
 class ReleasesRollbackCommand extends SymfonyCommand
 {
