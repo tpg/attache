@@ -1,5 +1,7 @@
 # Highly opinionated deployment tool for Laravel
 
+[![Build Status](https://travis-ci.org/tpg/attache.svg?branch=master)](https://travis-ci.org/tpg/attache)
+
 We use Laravel Envoy a lot. At the root of almost every major project is an `Envoy.blade.php` file. It fits really well into our workflow and does everything we need. Envoy runs deployments for everything from simple brochureware sites to complete enterprise solutions. It's flexible and easy to configure.
 
 These days we have a fairly standard solution to deployments that works really well. I even wrote an article about it that you cna find [here](https://medium.com/@warrickbayman/zero-downtime-laravel-deployments-with-envoy-version-2-227c8259e31c).
