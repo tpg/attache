@@ -2,12 +2,10 @@
 
 namespace TPG\Attache\Console;
 
-use Illuminate\Support\Arr;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TPG\Attache\Exceptions\ConfigurationException;
 use TPG\Attache\ReleaseService;
-use TPG\Attache\Ssh;
 
 /**
  * Class ReleasesListCommand.
