@@ -74,11 +74,18 @@ class DeployCommand extends SymfonyCommand
     protected function getTasks(Server $server, string $releaseId): array
     {
         return [
-            new Task('yarn prod'),
+            $this->getBuildTask(),
             $this->getInstallTask($server, $releaseId),
             $this->getAssetsTask($server, $releaseId),
             $this->getLiveTask($server, $releaseId),
         ];
+    }
+
+    protected function getBuildTask()
+    {
+        $command = 'yarn prod';
+
+        return new Task($command);
     }
 
     protected function getInstallTask(Server $server, string $releaseId): Task
