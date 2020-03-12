@@ -5,12 +5,10 @@ namespace TPG\Attache\Console;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
-use TPG\Attache\ConfigurationProvider;
 use TPG\Attache\Exceptions\ConfigurationException;
 
 /**
- * Class DeployCommand
- * @package TPG\Attache\Console
+ * Class DeployCommand.
  */
 class DeployCommand extends SymfonyCommand
 {

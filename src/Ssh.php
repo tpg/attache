@@ -17,7 +17,7 @@ class Ssh
 
     public function run($commands, \Closure $callback = null)
     {
-        if (!is_array($commands)) {
+        if (! is_array($commands)) {
             $commands = [$commands];
         }
 
@@ -31,21 +31,15 @@ class Ssh
                 self::DELIMITER
             );
 
-            $process->run(function($type, $output) use (&$outputs) {
-
+            $process->run(function ($type, $output) use (&$outputs) {
                 if ($type === Process::OUT) {
-
                     $outputs[] = [
                         'type' => $type,
                         'data' => $output,
                     ];
-
                 } else {
-
                     throw new \RuntimeException('A task did not complete');
-
                 }
-
             });
         }
 

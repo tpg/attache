@@ -4,11 +4,9 @@ namespace TPG\Attache\Console;
 
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Process\Process;
 
 /**
- * Class SshCommand
- * @package TPG\Attache\Console
+ * Class SshCommand.
  */
 class SshCommand extends SymfonyCommand
 {

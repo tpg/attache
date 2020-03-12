@@ -8,8 +8,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use TPG\Attache\Exceptions\ConfigurationException;
 
 /**
- * Class ServersShowCommand
- * @package TPG\Attache\Console
+ * Class ServersShowCommand.
  */
 class ServersShowCommand extends SymfonyCommand
 {

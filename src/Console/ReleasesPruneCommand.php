@@ -6,8 +6,7 @@ use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputArgument;
 
 /**
- * Class ReleasesPruneCommand
- * @package TPG\Attache\Console
+ * Class ReleasesPruneCommand.
  */
 class ReleasesPruneCommand extends SymfonyCommand
 {

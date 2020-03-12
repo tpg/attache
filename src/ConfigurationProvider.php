@@ -23,7 +23,7 @@ class ConfigurationProvider
 
     protected function loadConfigFile(string $filename): void
     {
-        if (!file_exists($filename)) {
+        if (! file_exists($filename)) {
             throw new FileNotFoundException('Cannot find config file '.$filename);
         }
 
@@ -31,7 +31,6 @@ class ConfigurationProvider
             $config = json_decode(file_get_contents($filename), true, 512, JSON_THROW_ON_ERROR);
 
             $this->loadServers(Arr::get($config, 'servers'));
-
         } catch (\Exception $e) {
             throw new \JsonException('Unable to read config file.'."\n".$e->getMessage());
             exit(1);
@@ -48,7 +47,7 @@ class ConfigurationProvider
     protected function validateServers(array $servers): void
     {
         foreach ($servers as $server) {
-            if (!Arr::has($server, ['name', 'host', 'port', 'user', 'root', 'branch'])) {
+            if (! Arr::has($server, ['name', 'host', 'port', 'user', 'root', 'branch'])) {
                 throw new ConfigurationException('Missing server configuration key');
             }
         }
@@ -62,7 +61,7 @@ class ConfigurationProvider
     public function server($key): array
     {
         $server = Arr::get($this->servers, $key);
-        if (!$server) {
+        if (! $server) {
             throw new ConfigurationException('Unknown server with key '.$key);
         }
 
