@@ -5,7 +5,6 @@ namespace TPG\Attache;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
 use TPG\Attache\Exceptions\ConfigurationException;
 
 class ConfigurationProvider
@@ -74,7 +73,7 @@ class ConfigurationProvider
 
     public function server($key): Server
     {
-        if (!$this->servers->has($key)) {
+        if (! $this->servers->has($key)) {
             throw new ConfigurationException('Unknown server with key '.$key);
         }
 

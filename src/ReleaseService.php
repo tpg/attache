@@ -35,9 +35,7 @@ class ReleaseService
 
         $outputs = [];
         (new Ssh($task))->run(static function (Task $task, $type, $output) use (&$outputs) {
-
             $outputs[] = $output;
-
         });
 
         $this->releases = $this->getReleasesFromOutput($outputs[0]);
@@ -91,7 +89,7 @@ class ReleaseService
     public function activate(string $id): void
     {
         if ($id === 'latest') {
-            $id = $this->releases[count($this->releases) -1];
+            $id = $this->releases[count($this->releases) - 1];
         }
 
         $command = 'ln -nfs '.$this->server->path('releases').'/'.$id.' '.

@@ -24,7 +24,7 @@ class ReleasesPruneCommand extends SymfonyCommand
         $this->setName('releases:prune')
             ->setDescription('Prune releases from the specified server. Retains the most recent two')
             ->addArgument('server', InputArgument::REQUIRED, 'The name of the configured server')
-            ->addOption('count','o', InputOption::VALUE_REQUIRED, 'The number of releases to prune.')
+            ->addOption('count', 'o', InputOption::VALUE_REQUIRED, 'The number of releases to prune.')
             ->addOption('force', 'f', InputOption::VALUE_NONE, 'Do not confirm.');
 
         $this->requiresConfig();
@@ -46,12 +46,12 @@ class ReleasesPruneCommand extends SymfonyCommand
             exit(1);
         }
 
-        if (!$pruneIds) {
+        if (! $pruneIds) {
             $this->output->writeln('<error>There are no releases to prune.</error>');
             exit(1);
         }
 
-        if (!$this->option('force') && !$this->confirmDeletion($server, $pruneIds)) {
+        if (! $this->option('force') && ! $this->confirmDeletion($server, $pruneIds)) {
             $this->output->writeln('Cancelled.');
             exit(1);
         }
@@ -65,7 +65,7 @@ class ReleasesPruneCommand extends SymfonyCommand
 
     protected function getIdsToDelete(array $releases, ?int $count = null): array
     {
-        if (!$count || $count > count($releases) - 2) {
+        if (! $count || $count > count($releases) - 2) {
             $count = count($releases) - 2;
         }
 

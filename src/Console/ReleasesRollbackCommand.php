@@ -5,8 +5,6 @@ namespace TPG\Attache\Console;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use TPG\Attache\ReleaseService;
-use TPG\Attache\Ssh;
-use TPG\Attache\Task;
 
 /**
  * Class ReleasesRollbackCommand.
@@ -38,7 +36,7 @@ class ReleasesRollbackCommand extends SymfonyCommand
 
         $rollbackId = $this->getRollbackId($releaseService);
 
-        if (!$rollbackId) {
+        if (! $rollbackId) {
             throw new \RuntimeException('Could not determine the currently active release');
         }
 
