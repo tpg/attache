@@ -4,50 +4,41 @@ namespace TPG\Attache;
 
 use Symfony\Component\Process\Process;
 
-class Ssh
+class Ssh extends Processor
 {
-    protected array $server;
+    protected Task $task;
 
-    protected const DELIMITER = 'ATTACHE';
+    protected const DELIMITER = 'ATTACHE-SCRIPT';
 
-    public function __construct(array $server)
+    public function __construct(Task $task)
     {
-        $this->server = $server;
+        $this->task = $task;
     }
 
-    public function run($commands, \Closure $callback = null)
+    public function run(\Closure $callback = null): int
     {
-        if (! is_array($commands)) {
-            $commands = [$commands];
-        }
+        $process = $this->getProcess();
 
-        $outputs = [];
+        $process->run(function ($type, $output) use ($callback) {
+            $callback($this->task, $type, $output);
+        });
 
-        foreach ($commands as $command) {
-            $process = Process::fromShellCommandline(
-                'ssh '.$this->connectionString().
-                ' \'bash -s\' <<'.self::DELIMITER."\n".
-                $command."\n".
-                self::DELIMITER
-            );
-
-            $process->run(function ($type, $output = null) use (&$outputs) {
-                if ($type === Process::OUT) {
-                    $outputs[] = [
-                        'type' => $type,
-                        'data' => $output,
-                    ];
-                } else {
-                    throw new \RuntimeException('A task did not complete');
-                }
-            });
-        }
-
-        $callback($outputs);
+        return $process->getExitCode();
     }
 
-    protected function connectionString(): string
+    protected function getProcess(): Process
     {
-        return $this->server['user'].'@'.$this->server['host'].' -p'.$this->server['port'];
+        return Process::fromShellCommandline(
+            'ssh '. $this->getServerConnectionString()
+            ." 'bash -se' << \\".self::DELIMITER.PHP_EOL
+            .$this->task->script().PHP_EOL
+            .self::DELIMITER
+        )->setTimeout(null);
+    }
+
+    protected function getServerConnectionString(): string
+    {
+        $server = $this->task->server();
+        return $server->user().'@'.$server->host().' -p'.$server->port();
     }
 }

@@ -2,6 +2,7 @@
 
 namespace TPG\Attache\Console;
 
+use Illuminate\Support\Collection;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -32,7 +33,7 @@ class ServersListCommand extends SymfonyCommand
 
         $io = new SymfonyStyle($this->input, $this->output);
 
-        $io->table([], $this->buildTableRows($servers));
+        $io->table([], $this->getTableRows($servers));
 
         return 0;
     }
@@ -43,14 +44,14 @@ class ServersListCommand extends SymfonyCommand
      * @param array $servers
      * @return array
      */
-    protected function buildTableRows(array $servers): array
+    protected function getTableRows(Collection $servers): array
     {
         $rows = [];
 
         foreach ($servers as $server) {
             $rows[] = [
-                '<info>'.$server['name'].'</info>',
-                $server['host'],
+                '<info>'.$server->name().'</info>',
+                $server->host(),
             ];
         }
 

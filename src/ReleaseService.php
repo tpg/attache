@@ -9,31 +9,39 @@ class ReleaseService
     /**
      * @var array
      */
-    protected array $server;
+    protected Server $server;
 
-    protected array $releases;
+    protected array $releases = [];
 
-    protected string $active;
+    protected ?string $active = null;
 
     /**
-     * Release constructor.
-     * @param array $server
+     * @param Server $server
      */
-    public function __construct(array $server)
+    public function __construct(Server $server)
     {
         $this->server = $server;
     }
 
+    /**
+     * Fetch release data from the server.
+     *
+     * @return $this
+     */
     public function fetch(): self
     {
-        $command = 'ls '.$this->server['root'].'/releases && ls -l '.$this->server['root'];
+        $command = 'ls '.$this->server->path('releases').' && ls -l '.$this->server->root();
+        $task = new Task($command, $this->server);
 
-        (new Ssh($this->server))->run($command, function ($output) {
+        $outputs = [];
+        (new Ssh($task))->run(static function (Task $task, $type, $output) use (&$outputs) {
 
-            $this->releases = $this->getReleasesFromOutput($output);
-            $this->active = $this->getActiveFromOutput($output);
+            $outputs[] = $output;
 
         });
+
+        $this->releases = $this->getReleasesFromOutput($outputs[0]);
+        $this->active = $this->getActiveFromOutput($outputs[1]);
 
         return $this;
     }
@@ -41,13 +49,13 @@ class ReleaseService
     /**
      * Get an array of release IDs from the output returned after execution.
      *
-     * @param array $output
+     * @param string $output
      * @return array
      */
-    protected function getReleasesFromOutput(array $output): array
+    protected function getReleasesFromOutput(string $output): array
     {
         return array_filter(
-            preg_split('/\n/m', $output[0]['data']),
+            explode(PHP_EOL, $output),
             fn ($release) => $release !== ''
         );
     }
@@ -55,12 +63,12 @@ class ReleaseService
     /**
      * Get a string ID of the currently active release.
      *
-     * @param array $output
+     * @param string $output
      * @return string
      */
-    protected function getActiveFromOutput(array $output): string
+    protected function getActiveFromOutput(string $output): ?string
     {
-        preg_match('/live.*\/(?<id>.+)/', $output[1]['data'], $matches);
+        preg_match('/'.$this->server->path('serve', false).'.*\/(?<id>.+)/', $output, $matches);
 
         return Arr::get($matches, 'id');
     }
@@ -70,7 +78,7 @@ class ReleaseService
         return $this->releases;
     }
 
-    public function active(): string
+    public function active(): ?string
     {
         return $this->active;
     }
@@ -86,29 +94,25 @@ class ReleaseService
             $id = $this->releases[count($this->releases) -1];
         }
 
-        $command = 'ln -nfs '.$this->server['root'].'/releases/'.$id.' '.
-            $this->server['root'].'/live';
+        $command = 'ln -nfs '.$this->server->path('releases').'/'.$id.' '.
+            $this->server->root().'/live';
 
-        (new Ssh($this->server))->run($command, function ($outputs) {
+        $task = new Task($command, $this->server);
 
-            //
-
-        });
+        (new Ssh($task))->run();
     }
 
     public function delete(array $ids): void
     {
         $commands = [];
         foreach ($ids as $id) {
-            $commands[] = 'rm -rf '.$this->server['root'].'/releases/'.$id;
+            $commands[] = 'rm -rf '.$this->server->path('releases').'/'.$id;
         }
 
         $command = implode(' && ', $commands);
 
-        (new Ssh($this->server))->run($command, function ($outputs) use ($ids) {
+        $task = new Task($command, $this->server);
 
-            //
-
-        });
+        (new Ssh($task))->run();
     }
 }

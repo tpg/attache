@@ -34,7 +34,7 @@ class ReleasesListCommand extends SymfonyCommand
      */
     protected function fire(): int
     {
-        $server = $this->getServer();
+        $server = $this->config->server($this->argument('server'));
 
         $releaseService = (new ReleaseService($server))->fetch();
 
@@ -44,23 +44,12 @@ class ReleasesListCommand extends SymfonyCommand
     }
 
     /**
-     * Get the selected config server.
-     *
-     * @return array
-     * @throws ConfigurationException
-     */
-    protected function getServer(): array
-    {
-        return $this->config->server($this->argument('server'));
-    }
-
-    /**
      * Show the output on the console.
      *
      * @param array $releases
      * @param string $active
      */
-    protected function showOutput(array $releases, string $active): void
+    protected function showOutput(array $releases, ?string $active): void
     {
         $rows = $this->buildTable($releases, $active);
 
@@ -79,7 +68,7 @@ class ReleasesListCommand extends SymfonyCommand
      * @param string $active
      * @return array
      */
-    protected function buildTable(array $releases, string $active): array
+    protected function buildTable(array $releases, ?string $active): array
     {
         $rows = [];
         foreach ($releases as $release) {

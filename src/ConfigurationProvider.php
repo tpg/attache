@@ -5,11 +5,14 @@ namespace TPG\Attache;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use TPG\Attache\Exceptions\ConfigurationException;
 
 class ConfigurationProvider
 {
-    protected array $servers = [];
+    protected Collection $servers;
+
+    protected string $repository;
 
     /**
      * ConfigurationProvider constructor.
@@ -30,6 +33,8 @@ class ConfigurationProvider
         try {
             $config = json_decode(file_get_contents($filename), true, 512, JSON_THROW_ON_ERROR);
 
+            $this->repository = Arr::get($config, 'repository');
+
             $this->loadServers(Arr::get($config, 'servers'));
         } catch (\Exception $e) {
             throw new \JsonException('Unable to read config file.'."\n".$e->getMessage());
@@ -41,7 +46,11 @@ class ConfigurationProvider
     {
         $this->validateServers($servers);
 
-        $this->servers = (new Collection($servers))->keyBy('name')->toArray();
+        $this->servers = collect(array_map(function ($server) {
+            return new Server($server);
+        }, $servers))->keyBy(function ($item) {
+            return $item->name();
+        });
     }
 
     protected function validateServers(array $servers): void
@@ -53,25 +62,22 @@ class ConfigurationProvider
         }
     }
 
-    public function servers(): array
+    public function repository(): string
+    {
+        return $this->repository;
+    }
+
+    public function servers(): Collection
     {
         return $this->servers;
     }
 
-    public function server($key): array
+    public function server($key): Server
     {
-        $server = Arr::get($this->servers, $key);
-        if (! $server) {
+        if (!$this->servers->has($key)) {
             throw new ConfigurationException('Unknown server with key '.$key);
         }
 
-        return $server;
-    }
-
-    public function serverConnectionString($key): string
-    {
-        $server = $this->server($key);
-
-        return $server['user'].'@'.$server['host'].' -p'.$server['port'];
+        return $this->servers[$key];
     }
 }

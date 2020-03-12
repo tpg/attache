@@ -6,6 +6,7 @@ use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TPG\Attache\Exceptions\ConfigurationException;
+use TPG\Attache\Server;
 
 /**
  * Class ServersShowCommand.
@@ -42,20 +43,20 @@ class ServersShowCommand extends SymfonyCommand
     /**
      * Show a table on the console with the server details.
      *
-     * @param array $server
+     * @param Server $server
      */
-    protected function showTable(array $server): void
+    protected function showTable(Server $server): void
     {
         $io = new SymfonyStyle($this->input, $this->output);
         $io->table([
             'Server',
-            $server['name'],
+            $server->name(),
         ], [
-            ['<info>Host</info>', $server['host']],
-            ['<info>Port</info>', $server['port']],
-            ['<info>User</info>', $server['user']],
-            ['<info>Root</info>', $server['root']],
-            ['<info>Branch</info>', $server['branch']],
+            ['<info>Host</info>', $server->host()],
+            ['<info>Port</info>', $server->port()],
+            ['<info>User</info>', $server->user()],
+            ['<info>Root</info>', $server->root()],
+            ['<info>Branch</info>', $server->branch()],
         ]);
     }
 }

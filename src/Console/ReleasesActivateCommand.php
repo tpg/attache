@@ -41,7 +41,6 @@ class ReleasesActivateCommand extends SymfonyCommand
         }
 
         $this->output->writeln('Setting active release to <info>'.$id.'</info>...');
-
         $releaseService->activate($id);
 
         return 0;

@@ -6,6 +6,7 @@ use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use TPG\Attache\ReleaseService;
 use TPG\Attache\Ssh;
+use TPG\Attache\Task;
 
 /**
  * Class ReleasesRollbackCommand.
@@ -35,25 +36,28 @@ class ReleasesRollbackCommand extends SymfonyCommand
 
         $releaseService = (new ReleaseService($server))->fetch();
 
-        $activeIndex = array_search($releaseService->active(), $releaseService->list(), true);
+        $rollbackId = $this->getRollbackId($releaseService);
 
-        if ($activeIndex === false) {
+        if (!$rollbackId) {
             throw new \RuntimeException('Could not determine the currently active release');
         }
 
-        if ($activeIndex > 0) {
-            $rollbackId = $releaseService->list()[$activeIndex -1];
+        $releaseService->activate($rollbackId);
 
-            $command = 'ln -nfs '.$server['root'].'/releases/'.$rollbackId.' '.
-                $server['root'].'/live';
-
-            (new Ssh($server))->run($command, function ($outputs) use ($rollbackId) {
-
-                $this->output->writeln('Rolled back to <info>'.$rollbackId.'</info>');
-
-            });
-        }
+        $this->output->writeln('Rolled back to <info>'.$rollbackId.'</info>');
 
         return 0;
+    }
+
+    protected function getRollbackId(ReleaseService $releaseService)
+    {
+        $activeIndex = array_search($releaseService->active(), $releaseService->list(), true);
+
+        $rollbackId = null;
+        if ($activeIndex > 0) {
+            $rollbackId = $releaseService->list()[$activeIndex - 1];
+        }
+
+        return $rollbackId;
     }
 }

@@ -32,7 +32,7 @@ class ConfigurationTest extends TestCase
     {
         $server = json_decode(file_get_contents(self::CONFIG_PATH), true)['servers'][0];
 
-        $this->assertSame($server, $this->config->server('production'));
+        $this->assertSame($server['name'], $this->config->server('production')->name());
     }
 
     /**
@@ -47,20 +47,19 @@ class ConfigurationTest extends TestCase
     /**
      * @test
      */
-    public function it_can_return_an_ssh_server_connection_string()
+    public function it_will_throw_an_exception_if_it_cannot_read_the_config_file()
     {
-        $connection = $this->config->serverConnectionString('production');
-        $server = $this->config->server('production');
-
-        $this->assertSame($server['user'].'@'.$server['host'].' -p'.$server['port'], $connection);
+        $this->expectException(FileNotFoundException::class);
+        $config = (new ConfigurationProvider('no-such-config.json'));
     }
 
     /**
      * @test
      */
-    public function it_will_throw_an_exception_if_it_cannot_read_the_config_file()
+    public function it_can_get_a_path_on_a_server()
     {
-        $this->expectException(FileNotFoundException::class);
-        $config = (new ConfigurationProvider('no-such-config.json'));
+        $path = $this->config->server('production')->path('releases');
+
+        $this->assertSame('/path/to/application/releases', $path);
     }
 }
