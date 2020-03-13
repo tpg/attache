@@ -58,7 +58,7 @@ class ReleaseService
     {
         return array_filter(
             explode(PHP_EOL, $output),
-            fn ($release) => $release !== '' && !Str::contains(strtolower($release), 'no such file or directory')
+            fn ($release) => $release !== '' && ! Str::contains(strtolower($release), 'no such file or directory')
         );
     }
 
@@ -106,7 +106,6 @@ class ReleaseService
 
     public function installed(): bool
     {
-
     }
 
     public function delete(array $ids): void

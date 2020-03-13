@@ -6,12 +6,9 @@ use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Process\Process;
 use TPG\Attache\Deployer;
 use TPG\Attache\Exceptions\ConfigurationException;
 use TPG\Attache\Server;
-use TPG\Attache\Ssh;
-use TPG\Attache\Task;
 
 /**
  * Class DeployCommand.

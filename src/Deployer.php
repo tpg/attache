@@ -7,8 +7,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
 
 /**
- * Class Deployer
- * @package TPG\Attache
+ * Class Deployer.
  */
 class Deployer
 {
@@ -119,7 +118,7 @@ class Deployer
     }
 
     /**
-     * The build task
+     * The build task.
      *
      * @return Task
      */
@@ -131,7 +130,7 @@ class Deployer
     }
 
     /**
-     * The deployment task
+     * The deployment task.
      *
      * @param Server $server
      * @param string $releaseId
@@ -167,7 +166,7 @@ class Deployer
     protected function cloneSteps(Server $server, string $releasePath): array
     {
         return [
-            'git clone -b '.$server->branch().' --depth=1 '.$this->config->repository().' '.$releasePath
+            'git clone -b '.$server->branch().' --depth=1 '.$this->config->repository().' '.$releasePath,
         ];
     }
 
@@ -182,7 +181,7 @@ class Deployer
     {
         return [
             'cd '.$releasePath.PHP_EOL
-            .'composer install --no-dev'
+            .'composer install --no-dev',
         ];
     }
 
@@ -196,13 +195,12 @@ class Deployer
      */
     protected function installationSteps(bool $install, Server $server, string $releasePath): array
     {
-
         return $install
             ? [
                 'mv '.$releasePath.'/storage '.$server->path('storage'),
             ]
             : [
-                'rm -rf '.$releasePath.'/storage'
+                'rm -rf '.$releasePath.'/storage',
             ];
     }
 
@@ -220,7 +218,7 @@ class Deployer
     }
 
     /**
-     * The symbolic link steps
+     * The symbolic link steps.
      *
      * @param Server $server
      * @param string $releasePath
@@ -246,7 +244,7 @@ class Deployer
     protected function migrationSteps(bool $migrate, Server $server, string $releasePath): array
     {
         return [
-            $migrate ? 'php artisan migrate --force' : null
+            $migrate ? 'php artisan migrate --force' : null,
         ];
     }
 
