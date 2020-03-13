@@ -31,7 +31,10 @@ class Ssh extends Processor
         return Process::fromShellCommandline(
             'ssh '.$this->getServerConnectionString()
             ." 'bash -se' << \\".self::DELIMITER.PHP_EOL
+            .'('.PHP_EOL
+            .'set -e'.PHP_EOL
             .$this->task->script().PHP_EOL
+            .')'.PHP_EOL
             .self::DELIMITER
         )->setTimeout(null);
     }

@@ -3,6 +3,7 @@
 namespace TPG\Attache;
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 class ReleaseService
 {
@@ -30,7 +31,8 @@ class ReleaseService
      */
     public function fetch(): self
     {
-        $command = 'ls '.$this->server->path('releases').' && ls -l '.$this->server->root();
+        $command = 'ls '.$this->server->path('releases').PHP_EOL
+            .'ls -l '.$this->server->root();
         $task = new Task($command, $this->server);
 
         $outputs = [];
@@ -39,7 +41,9 @@ class ReleaseService
         });
 
         $this->releases = $this->getReleasesFromOutput($outputs[0]);
-        $this->active = $this->getActiveFromOutput($outputs[1]);
+        if (count($this->releases)) {
+            $this->active = $this->getActiveFromOutput($outputs[1]);
+        }
 
         return $this;
     }
@@ -54,7 +58,7 @@ class ReleaseService
     {
         return array_filter(
             explode(PHP_EOL, $output),
-            fn ($release) => $release !== ''
+            fn ($release) => $release !== '' && !Str::contains(strtolower($release), 'no such file or directory')
         );
     }
 
@@ -98,6 +102,11 @@ class ReleaseService
         $task = new Task($command, $this->server);
 
         (new Ssh($task))->run();
+    }
+
+    public function installed(): bool
+    {
+
     }
 
     public function delete(array $ids): void

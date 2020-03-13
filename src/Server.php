@@ -76,4 +76,9 @@ class Server
             ? $this->root(true).$path
             : $path;
     }
+
+    public function migrate(): bool
+    {
+        return Arr::get($this->config, 'migrate') ?: false;
+    }
 }

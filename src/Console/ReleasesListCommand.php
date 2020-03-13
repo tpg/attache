@@ -36,6 +36,11 @@ class ReleasesListCommand extends SymfonyCommand
 
         $releaseService = (new ReleaseService($server))->fetch();
 
+        if (! count($releaseService->list())) {
+            $this->output->writeln('<error>There are no releases on '.$server->name().'</error>');
+            exit(1);
+        }
+
         $this->showOutput($releaseService->list(), $releaseService->active());
 
         return 0;
