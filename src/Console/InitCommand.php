@@ -39,12 +39,13 @@ class InitCommand extends SymfonyCommand
         );
 
         $this->output->writeln('Attaché initialized. Config file at <info>'.$filename.'</info>');
+
         return 0;
     }
 
     protected function getGitRemote(): string
     {
-        if (!file_exists('.git/config')) {
+        if (! file_exists('.git/config')) {
             $this->output->writeln('<error>Not a Git repository</error>');
             exit(1);
         }
@@ -87,8 +88,8 @@ class InitCommand extends SymfonyCommand
                     'user' => 'user',
                     'root' => '/path/to/application',
                     'branch' => 'master',
-                ]
-            ]
+                ],
+            ],
         ];
     }
 }

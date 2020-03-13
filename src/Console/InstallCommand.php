@@ -3,10 +3,8 @@
 namespace TPG\Attache\Console;
 
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
-use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Question\Question;
 use TPG\Attache\Deployer;
 use TPG\Attache\ReleaseService;
 
@@ -43,7 +41,7 @@ class InstallCommand extends SymfonyCommand
 
         $envFile = $this->option('env');
 
-        if ($envFile && !file_exists($envFile)) {
+        if ($envFile && ! file_exists($envFile)) {
             $this->output->writeln('<error>'.$envFile.' does not exist.');
             exit(1);
         }
