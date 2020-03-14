@@ -91,7 +91,7 @@ class InitCommand extends SymfonyCommand
                         'releases' => 'releases',
                         'serve' => 'live',
                         'storage' => 'storage',
-                        'env' => '.env'
+                        'env' => '.env',
                     ],
                     'branch' => 'master',
                     'migrate' => false,
