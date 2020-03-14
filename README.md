@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/tpg/attache.svg?branch=master)](https://travis-ci.org/tpg/attache)
 
-Attaché is a deployment tool for Laravel originally based on the Laravel Envoy task runner and built around the ideas I wrote [here](https://medium.com/@warrickbayman/zero-downtime-laravel-deployments-with-envoy-version-2-227c8259e31c). The original version of Attaché was aactually just a wrapper around Envoy with a predefind script (hence the name).
+Attaché is a deployment tool for Laravel originally based on the Laravel Envoy task runner and built around the ideas I wrote [here](https://medium.com/@warrickbayman/zero-downtime-laravel-deployments-with-envoy-version-2-227c8259e31c). The original version of Attaché was actually just a wrapper around Envoy with a predefind script (hence the name).
 
 Attaché as evolved somewhat and is now a standalone deployment tool. It's still highly opinionated and still follows the same ideas, but is more flexible and no longer dependent on Envoy.
 
@@ -22,15 +22,15 @@ Attaché assumes a few things about your projects and servers and you'll want to
 
 Firstly, your project MUST be stored in a Git repository. It doesn't really matter which one, as long as you can clone the project onto your server using a private key.
 
-You will also need to make some changes to the webserver you're using. Again, it doesn't matter which server you're running as long as you can set it up to serve a symbolic link.
+You will also need to make some changes to the web server you're using. Again, it doesn't matter which one you're running as long as you can set it up to serve a symbolic link.
 
-At the root of your project, install a new Attaché config file by using typing the following:
+At the root of your project, install a new Attaché config file by using the `attache init` command.
 
 ```
 attache init
 ```
 
-This will create a new `.attache.json` file in your project. Attaché can usually figure out the URL of your Git remote and will automatically insert it into the config file for you. The file should look something like this:
+This will create a new `.attache.json` file in your project. Attaché can usually figure out the URL of your Git remote and will automatically insert it into the config file for you. The default config looks like this:
 
 ```json
 {
@@ -42,6 +42,12 @@ This will create a new `.attache.json` file in your project. Attaché can usuall
             "port": 22,
             "user": "user",
             "root": "/path/to/the/application",
+            "paths": {
+                "releases": "releases",
+                "serve": "live",
+                "storage": "storage",
+                "env": ".env"
+            },
             "branch": "master",
             "migrate": false,
         }
@@ -51,11 +57,9 @@ This will create a new `.attache.json` file in your project. Attaché can usuall
 
 There are a number of other configuration options, but this is the bare minimum. Firstly, the `repository` setting should point to the remote URL of your repository. By default the `init` command will look for a configured remote regardless of it's name. However, if you have more than one remote configured, Attaché will ask you to pick one.
 
-```
-attache init
-```
+You can specify as many servers as you like. Make sure you update the config for each one.
 
-You'll need to update the server config:
+### Default configuration options
 
 | Settings | Description                                            |
 |----------|--------------------------------------------------------|
@@ -64,12 +68,26 @@ You'll need to update the server config:
 | port     | The SSH port number (must be specified)                |
 | user     | The username to log into the server with               |
 | root     | The basepath where the application will be deployed to |
+| paths    | The paths that Attaché will create in root             |
 | branch   | The repository branch to clone from                    |
 | migrate  | Perform a `migrate --force` as part of the deployment  |
 
+### Paths
+
+Attaché will create a number of items inside the project root. You can change the names of these items by specifying them in the `paths` config option. You don't need to specify them all. Only the ones you want to change.
+
+| Path       | Description                                                      |
+|------------|------------------------------------------------------------------|
+| `releases` | Where the individual releases are placed                         |
+| `serve`    | The name of the symbolic link that the web server needs to serve |
+| `storage`  | The Laravel storage directory that is symlinked into the release |
+| `.env`     | The Laravel .env file that is symlinked into the release         |
+
+The defaults for the paths are the same of the key names. So if you don't specify a `serve` item, then Attaché will create a `serve` symbolic link.
+
 ## First deployment
 
-The first deployment of an application to a server is called an `install`. Installing is similar to a standard deployment, but runs a few extra tasks. Installation can only be run once per server and Attaché will stop you from running it again as it can be a destructive process.
+The first deployment of an application to a server is called an `install`. Installing is similar to a standard deployment, but runs a few extra tasks. Installation can only be run once per server and Attaché will stop you from running it again if you attempt to do so. Installing a application again can be a destructive process. If you want to re-install a project, rather create a new config file with a new root path and run the install again. This will install the application to a new location. You'll need to update your web server to point to the location.
 
 To run an install, you can use the `attache install` command:
 
@@ -77,18 +95,18 @@ To run an install, you can use the `attache install` command:
 attache install production
 ```
 
-This command will run the following tasks:
+This will run the following tasks:
 
 1. Run `yarn prod` locally to compile assets
 2. Run `git clone` remotely to install the project on the server
 3. Run `composer install` to install Composer dependencies
 4. Move the `storage` directory to the configurated location
-4. Copy a local `.env` file to the remote `.env`
-5. Create a symlink for the `storage` directory
-6. Create a symlink for the `.env` file
-7. Run `article migrate` remotely if specified in the config file
-8. Run `scp` locally to copy the compiled assets to the server
-9. Create a symlink to the new release for the web server.
+5. Copy a local `.env` file to the remote `.env`
+6. Create a symlink for the `storage` directory
+7. Create a symlink for the `.env` file
+8. Run `article migrate` remotely if specified in the config file
+9. Run `scp` locally to copy the compiled assets to the server
+10. Create a symlink to the new release for the web server.
 
 Many of the steps here are similar to a standard deployment except that the `storage` and `.env` items are placed in their proper locations.
 
@@ -104,9 +122,18 @@ attache install production --env=.env.install
 If you are planning to run migrations, then you will need to update the database connection details in this file, and it should never be committed to your repository.
 
 ## Deploying
-Once your first install is complete, any subsequent deployment can be done using the `attache deploy` command. The `deploy` command is similar to the `install` command, but does not overwrite the `storage` and `.env` items.
+Once your first install is complete, any subsequent deployment can be done using the `attache deploy` command. The `deploy` command is similar to the `install` command, but does not overwrite the `storage` and `.env` items. The following tasks are run for each deployment:
 
-By default the `deploy` command will leave any previous release intact. However, if you would like to remove old release during deployment, you can pass the `--prune` option. This will delete all old releases leaving only the new release and the one it replaces.
+1. Run `yarn prod` locally to compile assets
+2. Run `git clone` remotely to install the project on the server
+3. Run `composer install` to install Composer dependencies
+4. Create a symlink for the `storage` directory
+5. Create a symlink for the `.env` file
+6. Run `article migrate` remotely if specified in the config file
+7. Run `scp` locally to copy the compiled assets to the server
+8. Create a symlink to the new release for the web server.
+
+By default the `deploy` command will leave any previous release intact. However, if you would like to remove old release during deployment, you can pass the `--prune` option. This will delete all old releases leaving only the new release and the previous one. This means you can still rollback to the previous release if needed.
 
 ```
 attache deploy production --prune
@@ -175,4 +202,26 @@ If you have a long list of releases that need to be prunned, you can use the `re
 
 ```
 attache releases:prune production --count=4
+```
+
+## Taking servers offline
+Attaché is intended to be a zero-downtime deployment tool. But sometimes you may need to take the deployment offline. You can do with easily with:
+
+```
+attache releases:down production
+```
+
+This will run the `artsan down` command on the currently active release.
+
+When you're done, you can bring the release back online using the `releases:up` command:
+
+```
+attache releases:up production
+```
+
+## Opening an SSH connection
+As a convenience, Attaché also includes an `ssh` command that you can use to easy open an SSH connectio to the specified server:
+
+```
+attache ssh production
 ```

@@ -20,7 +20,9 @@ class Ssh extends Processor
         $process = $this->getProcess();
 
         $process->run(function ($type, $output) use ($callback) {
-            $callback($this->task, $type, $output);
+            if ($callback) {
+                $callback($this->task, $type, $output);
+            }
         });
 
         return $process->getExitCode();

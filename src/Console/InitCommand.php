@@ -87,7 +87,14 @@ class InitCommand extends SymfonyCommand
                     'port' => 22,
                     'user' => 'user',
                     'root' => '/path/to/application',
+                    'paths' => [
+                        'releases' => 'releases',
+                        'serve' => 'live',
+                        'storage' => 'storage',
+                        'env' => '.env'
+                    ],
                     'branch' => 'master',
+                    'migrate' => false,
                 ],
             ],
         ];

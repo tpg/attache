@@ -121,4 +121,24 @@ class ReleaseService
 
         (new Ssh($task))->run();
     }
+
+    public function down(): void
+    {
+        $command = 'cd '.$this->server->path('serve').PHP_EOL
+            .'php artisan down';
+
+        $task = new Task($command, $this->server);
+
+        (new Ssh($task))->run();
+    }
+
+    public function up(): void
+    {
+        $command = 'cd '.$this->server->path('serve').PHP_EOL
+            .'php artisan up';
+
+        $task = new Task($command, $this->server);
+
+        (new Ssh($task))->run();
+    }
 }
