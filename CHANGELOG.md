@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.0.2] 14-03-2020
+## [0.1.1] 14-03-2020
 ### Added
 * Added a `releases:down` and a `releases:up` command to quickly take deployments offline and back online.
 
@@ -11,7 +11,7 @@
 ### Fixed
 * Fixed a bug in `Ssh::run()` method that will only attempt to run the callback if it's actually supplied.
 
-## [0.0.1] 14-03-2020
+## [0.1.0] 14-03-2020
 ### Added
 * Changed how `Ssh::getProcess` runs commands to make them safer.
 * The runner will now exit if a non-zero exit code is returned.
