@@ -60,6 +60,6 @@ class ConfigurationTest extends TestCase
     {
         $path = $this->config->server('production')->path('releases');
 
-        $this->assertSame('/path/to/application/releases', $path);
+        $this->assertSame('/path/to/application/common-releases', $path);
     }
 }
