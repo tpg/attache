@@ -26,7 +26,7 @@ class Server
         'composer' => [
             'bin' => 'composer',
             'local' => false,
-        ]
+        ],
     ];
 
     /**
@@ -43,6 +43,7 @@ class Server
     public function setServer(array $config): self
     {
         $this->config = array_replace_recursive($this->config, $config);
+
         return $this;
     }
 
@@ -114,7 +115,7 @@ class Server
 
     public function composer($key = null)
     {
-        $key = 'composer' . ($key ? '.'.$key : null);
+        $key = 'composer'.($key ? '.'.$key : null);
 
         return Arr::get($this->config, $key);
     }

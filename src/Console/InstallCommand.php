@@ -57,7 +57,6 @@ class InstallCommand extends SymfonyCommand
             '</info> is now live on <info>'.$server->name().'</info>');
 
         return 0;
-
     }
 
     protected function getEnv(string $filename)
