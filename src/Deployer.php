@@ -82,14 +82,16 @@ class Deployer
     {
         foreach ($tasks as $task) {
             if ($task->server()) {
-                (new Ssh($task))->run(function ($task, $type, $output) {
+                (new Ssh($task))->tty()->run(function ($task, $type, $output) {
                     $this->output->writeln($output);
                 });
             } else {
                 $process = Process::fromShellCommandline($task->script());
-                $process->run(function ($type, $output) {
-                    $this->output->writeln($output);
-                });
+                $process
+                    ->setTty(Process::isTtySupported())
+                    ->run(function ($type, $output) {
+                        $this->output->writeln($output);
+                    });
             }
         }
     }
@@ -143,6 +145,7 @@ class Deployer
         $releasePath = $this->releasePath($server, $releaseId);
 
         $commands = array_filter([
+            'printf "\033c"',
             ...$this->cloneSteps($server, $releasePath),
             ...$this->getComposer($server, $releasePath),
             ...$this->composerSteps($server, $releasePath),
@@ -208,7 +211,7 @@ class Deployer
 
         return [
             'cd '.$releasePath.PHP_EOL
-            .$composerExec.' install --no-dev',
+            .$composerExec.' install --no-dev --ansi',
         ];
     }
 
@@ -299,6 +302,8 @@ class Deployer
         $releasePath = $server->path('releases').'/'.$releaseId;
 
         $commands = [
+            'printf "\033c"',
+            'echo "Copying assets..."',
             'scp -P '.$server->port().' -r public/js '.$server->user().'@'.$server->host().':'.$releasePath.'/public',
             'scp -P '.$server->port().' -r public/css '.$server->user().'@'.$server->host().':'.$releasePath.'/public',
             'scp -P '.$server->port().' -r public/mix-manifest.json '.$server->user().'@'.$server->host().':'.$releasePath.'/public',
@@ -318,8 +323,11 @@ class Deployer
     {
         $releasePath = $server->path('releases').'/'.$releaseId;
 
-        $command = 'ln -nfs '.$releasePath.' '.$server->path('serve');
+        $commands = [
+            'ln -nfs '.$releasePath.' '.$server->path('serve'),
+            'printf "\033c"',
+        ];
 
-        return new Task($command, $server);
+        return new Task(implode(PHP_EOL, $commands), $server);
     }
 }

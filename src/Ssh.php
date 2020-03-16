@@ -8,6 +8,8 @@ class Ssh extends Processor
 {
     protected Task $task;
 
+    protected bool $tty = false;
+
     protected const DELIMITER = 'ATTACHE-SCRIPT';
 
     public function __construct(Task $task)
@@ -19,6 +21,10 @@ class Ssh extends Processor
     {
         $process = $this->getProcess();
 
+        if ($this->tty) {
+            $process->setTty(Process::isTtySupported());
+        }
+
         $process->run(function ($type, $output) use ($callback) {
             if ($callback) {
                 $callback($this->task, $type, $output);
@@ -26,6 +32,12 @@ class Ssh extends Processor
         });
 
         return $process->getExitCode();
+    }
+
+    public function tty(): self
+    {
+        $this->tty = true;
+        return $this;
     }
 
     protected function getProcess(): Process

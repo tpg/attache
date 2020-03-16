@@ -104,10 +104,6 @@ class ReleaseService
         (new Ssh($task))->run();
     }
 
-    public function installed(): bool
-    {
-    }
-
     public function delete(array $ids): void
     {
         $commands = [];

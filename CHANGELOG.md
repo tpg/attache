@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.2.2] 16-03-2020
+### Added
+* Added a new `tty()` method to the `Ssh` class to force TTY use if it's supported.
+
+### Changed
+* The output will now clear the screen between each step.
+* Force ANSI output when running Composer install.
+* Removed an old unused `installed` method from the `ReleaseService` class. 
+
 ## [0.2.1] 16-03-2020
 ### Added
 * Added a `common` server configuration option.
