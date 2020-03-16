@@ -187,7 +187,7 @@ class Deployer
                 'mv composer.phar '.$server->root().'/composer.phar',
                 'else',
                 $server->composerBin().' self-update',
-                'fi'
+                'fi',
             ];
         }
 
