@@ -22,7 +22,16 @@
     "servers": [
         {
             "name": "production",
-            "root": "/path/to/application"
+            "root": "/path/to/application",
+	    "migrate": true,
+            "scripts": {
+                "before-migrate": [
+                    "sudo mysqldump --databases db_name /backup/dump.sql"
+                ],
+                "before-build": [
+                    "php ./artisan ziggy:generate /resources/js/routes.js --url=https://url.test"
+                ]
+            }
         },
         {
             "name": "staging",

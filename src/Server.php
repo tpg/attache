@@ -27,6 +27,18 @@ class Server
             'bin' => 'composer',
             'local' => false,
         ],
+        'scripts' => [
+            'before-build' => [],
+            'after-build' => [],
+            'before-deploy' => [],
+            'after-deploy' => [],
+            'before-assets' => [],
+            'after-assets' => [],
+            'before-live' => [],
+            'after-live' => [],
+            'before-migrate' => [],
+            'after-migrate' => [],
+        ],
     ];
 
     /**

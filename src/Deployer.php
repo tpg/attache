@@ -107,7 +107,7 @@ class Deployer
     protected function getTasks(Server $server, string $releaseId, bool $install = false): array
     {
         return [
-            $this->buildTask(),
+            $this->buildTask($server),
             $this->DeploymentTask(
                 $server,
                 $releaseId,
@@ -122,13 +122,20 @@ class Deployer
     /**
      * The build task.
      *
+     * @param Server $server
      * @return Task
      */
-    protected function buildTask(): Task
+    protected function buildTask(Server $server): Task
     {
         $command = 'yarn prod';
 
-        return new Task($command);
+        $commands = [
+            ...$server->config('scripts.before-build'),
+            $command,
+            ...$server->config('scripts.after-build'),
+        ];
+
+        return new Task(implode(PHP_EOL, $commands));
     }
 
     /**
@@ -145,6 +152,7 @@ class Deployer
         $releasePath = $this->releasePath($server, $releaseId);
 
         $commands = array_filter([
+            ...$server->config('scripts.before-deploy'),
             'printf "\033c"',
             ...$this->cloneSteps($server, $releasePath),
             ...$this->getComposer($server, $releasePath),
@@ -153,6 +161,7 @@ class Deployer
             ...$this->envSteps($server, $releasePath),
             ...$this->symlinkSteps($server, $releasePath),
             ...$this->migrationSteps($migrate, $server, $releasePath),
+            ...$server->config('scripts.after-deploy'),
         ], static function ($command) {
             return $command !== null;
         });
@@ -273,9 +282,11 @@ class Deployer
      */
     protected function migrationSteps(bool $migrate, Server $server, string $releasePath): array
     {
-        return [
-            $migrate ? 'php artisan migrate --force' : null,
-        ];
+        return $migrate ? [
+            ...$server->config('scripts.before-migrate'),
+             'php artisan migrate --force',
+            ...$server->config('scripts.after-migrate'),
+        ] : [];
     }
 
     /**
@@ -302,11 +313,13 @@ class Deployer
         $releasePath = $server->path('releases').'/'.$releaseId;
 
         $commands = [
+            ...$server->config('scripts.before-assets'),
             'printf "\033c"',
             'echo "Copying assets..."',
             'scp -P '.$server->port().' -r public/js '.$server->user().'@'.$server->host().':'.$releasePath.'/public',
             'scp -P '.$server->port().' -r public/css '.$server->user().'@'.$server->host().':'.$releasePath.'/public',
             'scp -P '.$server->port().' -r public/mix-manifest.json '.$server->user().'@'.$server->host().':'.$releasePath.'/public',
+            ...$server->config('scripts.after-assets'),
         ];
 
         return new Task(implode(PHP_EOL, $commands));
@@ -324,8 +337,10 @@ class Deployer
         $releasePath = $server->path('releases').'/'.$releaseId;
 
         $commands = [
+            ...$server->config('scripts.before-live'),
             'ln -nfs '.$releasePath.' '.$server->path('serve'),
             'printf "\033c"',
+            ...$server->config('scripts.after-live'),
         ];
 
         return new Task(implode(PHP_EOL, $commands), $server);
