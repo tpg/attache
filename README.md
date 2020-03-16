@@ -48,6 +48,13 @@ This will create a new `.attache.json` file in your project. Attaché can usuall
                 "storage": "storage",
                 "env": ".env"
             },
+            "php": {
+                "bin": "php"
+            },
+            "composer": {
+                "bin": "composer",
+                "local": false
+            },
             "branch": "master",
             "migrate": false,
         }
@@ -71,6 +78,27 @@ You can specify as many servers as you like. Make sure you update the config for
 | paths    | The paths that Attaché will create in root             |
 | branch   | The repository branch to clone from                    |
 | migrate  | Perform a `migrate --force` as part of the deployment  |
+
+### PHP options
+In same cases, you may need to specify what the PHP binary name. Since PHP is usually in the users path, Attaché expects this to simply be "php". However, you may need it to be something like "php74" or similar if your host is running more than one version of PHP. You may even need to specify the absolute path to the binary. You can do so using the `php` options. Pass the path of the PHP binary to the `bin` option:
+
+```json
+"php": {
+    "bin": "php74"
+}
+```
+
+### Composer options
+Similarly, you may need to specify the name of the Composer binary, or even have composer downloaded for you. Attaché allows this through the use of the `composer` settings. There are two supported Composer settings: `bin` and `local`. The `bin` setting specifies the name of the composer binary, and Attaché assumes this to simply be `composer`. Attaché also assumes that you have Composer installed on the path so an install can be done with a simple `composer install`. However, if you don't have permission to install Composer in such a way, you can set `local` to `true` and Attaché will download a copy of Composer for you into the project root.
+
+```json
+"composer": {
+    "bin": "composer.phar",
+    "local": true
+}
+```
+
+If you have `local` set to `true`, Attaché will automatically run a `composer self-update` for you. However, this is not done if you have it installed globally.
 
 ### Paths
 
