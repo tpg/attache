@@ -184,7 +184,7 @@ class Deployer
             return [
                 'if test ! -f "'.$server->composerBin().'"; then',
                 'curl -sS https://getcomposer.org/installer | '.$server->phpBin(),
-                'mv composer.phar '.$server->root().'/composer.phar',
+                'mv composer.phar '.$server->composerBin(),
                 'else',
                 $server->composerBin().' self-update',
                 'fi'
