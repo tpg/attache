@@ -125,7 +125,7 @@ class ReleaseService
     public function down(): void
     {
         $command = 'cd '.$this->server->path('serve').PHP_EOL
-            .'php artisan down';
+            .$this->server->phpBin().' artisan down';
 
         $task = new Task($command, $this->server);
 
@@ -135,7 +135,7 @@ class ReleaseService
     public function up(): void
     {
         $command = 'cd '.$this->server->path('serve').PHP_EOL
-            .'php artisan up';
+            .$this->server->phpBin().' artisan up';
 
         $task = new Task($command, $this->server);
 

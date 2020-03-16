@@ -48,15 +48,7 @@ class ServersShowCommand extends SymfonyCommand
     protected function showTable(Server $server): void
     {
         $io = new SymfonyStyle($this->input, $this->output);
-        $io->table([
-            'Server',
-            $server->name(),
-        ], [
-            ['<info>Host</info>', $server->host()],
-            ['<info>Port</info>', $server->port()],
-            ['<info>User</info>', $server->user()],
-            ['<info>Root</info>', $server->root()],
-            ['<info>Branch</info>', $server->branch()],
-        ]);
+
+        $this->output->writeln(json_encode($server->config(), JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES, 512));
     }
 }

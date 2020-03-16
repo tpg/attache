@@ -144,6 +144,7 @@ class Deployer
 
         $commands = array_filter([
             ...$this->cloneSteps($server, $releasePath),
+            ...$this->getComposer($server, $releasePath),
             ...$this->composerSteps($server, $releasePath),
             ...$this->installationSteps($install, $server, $releasePath),
             ...$this->envSteps($server, $releasePath),
@@ -171,6 +172,24 @@ class Deployer
     }
 
     /**
+     * Get a copy of composer.
+     *
+     * @param Server $server
+     * @param string $releasePath
+     * @return array
+     */
+    protected function getComposer(Server $server, string $releasePath): array
+    {
+        if ($server->composer('local')) {
+            return [
+                'curl -sS https://getcomposer.org/installer | '.$this->server->phpBin(),
+                'mv composer.phar '.$server->root().'/composer.phar'
+            ];
+        }
+        return [];
+    }
+
+    /**
      * The composer install steps.
      *
      * @param Server $server
@@ -179,9 +198,11 @@ class Deployer
      */
     protected function composerSteps(Server $server, string $releasePath): array
     {
+        $composerExec = $server->composerBin();
+
         return [
             'cd '.$releasePath.PHP_EOL
-            .'composer install --no-dev',
+            .$composerExec.' install --no-dev',
         ];
     }
 
@@ -229,7 +250,7 @@ class Deployer
         return [
             'ln -nfs '.$server->path('storage').' '.$releasePath.'/storage',
             'ln -nfs '.$server->path('env').' '.$releasePath.'/.env',
-            'php artisan storage:link',
+            $server->phpBin().' artisan storage:link',
         ];
     }
 

@@ -13,6 +13,13 @@
                 "storage": "storage",
                 "env": ".env"
             },
+            "php": {
+                "bin": "php"
+            },
+            "composer": {
+                "bin": "composer.phar",
+                "local": true
+            },
             "branch": "master"
         },
         {
