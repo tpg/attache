@@ -183,9 +183,10 @@ class Deployer
         if ($server->composer('local')) {
             return [
                 'curl -sS https://getcomposer.org/installer | '.$this->server->phpBin(),
-                'mv composer.phar '.$server->root().'/composer.phar'
+                'mv composer.phar '.$server->root().'/composer.phar',
             ];
         }
+
         return [];
     }
 
