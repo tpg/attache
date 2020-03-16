@@ -1,26 +1,28 @@
 {
     "repository": "git@vcs.test:vendor/application.git",
+    "common": {
+        "branch": "common-branch",
+        "host": "common-host.test",
+        "port": 22,
+        "user": "common-user",
+        "paths": {
+            "releases": "common-releases",
+            "serve": "common-serve",
+            "storage": "common-storage",
+            "env": "common-env"
+        },
+        "php": {
+            "bin": "common-php"
+        },
+        "composer": {
+            "bin": "common-composer",
+            "local": true
+        }
+    },
     "servers": [
         {
             "name": "production",
-            "host": "production.test",
-            "port": 22,
-            "user": "user",
-            "root": "/path/to/application",
-            "paths": {
-                "releases": "releases",
-                "serve": "live",
-                "storage": "storage",
-                "env": ".env"
-            },
-            "php": {
-                "bin": "php"
-            },
-            "composer": {
-                "bin": "composer.phar",
-                "local": true
-            },
-            "branch": "master"
+            "root": "/path/to/application"
         },
         {
             "name": "staging",

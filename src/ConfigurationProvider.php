@@ -34,30 +34,30 @@ class ConfigurationProvider
 
             $this->repository = Arr::get($config, 'repository');
 
-            $this->loadServers(Arr::get($config, 'servers'));
+            $this->loadServers(Arr::get($config, 'servers'), Arr::get($config, 'common', []));
         } catch (\Exception $e) {
             throw new \JsonException('Unable to read config file.'."\n".$e->getMessage());
             exit(1);
         }
     }
 
-    protected function loadServers(array $servers): void
+    protected function loadServers(array $servers, array $common): void
     {
-        $this->validateServers($servers);
+        $this->servers = collect(array_map(function ($server) use ($common) {
+            $config = array_replace_recursive($common, $server);
 
-        $this->servers = collect(array_map(function ($server) {
-            return new Server($server);
+            $this->validateServer($config);
+
+            return new Server($config);
         }, $servers))->keyBy(function ($item) {
             return $item->name();
         });
     }
 
-    protected function validateServers(array $servers): void
+    protected function validateServer(array $config): void
     {
-        foreach ($servers as $server) {
-            if (! Arr::has($server, ['name', 'host', 'port', 'user', 'root', 'branch'])) {
-                throw new ConfigurationException('Missing server configuration key');
-            }
+        if (! Arr::has($config, ['name', 'host', 'port', 'user', 'root', 'branch'])) {
+            throw new ConfigurationException('Missing server configuration key');
         }
     }
 

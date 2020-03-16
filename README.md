@@ -113,6 +113,42 @@ Attaché will create a number of items inside the project root. You can change t
 
 The defaults for the paths are the same of the key names. So if you don't specify a `serve` item, then Attaché will create a `serve` symbolic link.
 
+## Common configuration
+You can specify as many servers as you need in the config file, but there are times when all your deployments will actually be on the same physical server, or you might use the same git branch, or the same root path across multiple servers. You don't need to specify the same settings over and over again. Instead you can specify a `common` configuration block which can contain any of the valid server config options, except `name`. If you have a `common` block that will be applied to all the servers you have configured first and then the per-server config will be merged.
+
+```json
+{
+    "common": {
+        "host": "common-host.test",
+        "port": 22,
+        "user": "common-user",
+        "branch": "master"
+    },
+    "servers": [
+        {
+            "name": "production",
+            "root": "/path/to/production"
+        },
+        {
+            "name": "staging",
+            "root": "/path/to/staging",
+        },
+        {
+            "name": "testing",
+            "root": "/path/to/testing",
+            "branch": "testing"
+        }
+    ]
+}
+```
+
+You can override any of the common settings by simply specifying them per server. This can also be very useful if your deployment is made up of different components. Perhaps a set of microservices.
+
+## Safety first
+In many cases the `.attache.json` file will contain some sensitive information. Usernames. hostnames and even port numbers could be considered fairly sensitive information. Attaché does not support password authentication for SSH connections so do not attempt to put your password in this file.
+
+It's a good idea to place `.attache.json` in your `.gitignore` file and simply keep a copy of it somewhere on your own computer. If you ever loose you config file, it should be simple enough to rewrite. Attaché does all the hard work for you anyway.
+
 ## First deployment
 
 The first deployment of an application to a server is called an `install`. Installing is similar to a standard deployment, but runs a few extra tasks. Installation can only be run once per server and Attaché will stop you from running it again if you attempt to do so. Installing a application again can be a destructive process. If you want to re-install a project, rather create a new config file with a new root path and run the install again. This will install the application to a new location. You'll need to update your web server to point to the location.

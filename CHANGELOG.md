@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.2.1] 16-03-2020
+### Added
+* Added a `common` server configuration option.
+
 ## [0.2.0] 16-03-2020
 ### Added
 * Added new config options to specify the binary names for `composer` and `php`.
