@@ -93,6 +93,13 @@ class InitCommand extends SymfonyCommand
                         'storage' => 'storage',
                         'env' => '.env',
                     ],
+                    'php' => [
+                        'bin' => 'php',
+                    ],
+                    'composer' => [
+                        'bin' => 'composer',
+                        'local' => 'false',
+                    ],
                     'branch' => 'master',
                     'migrate' => false,
                 ],
