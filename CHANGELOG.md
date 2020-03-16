@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.2.0] 16-03-2020
+### Added
+* Added new config options to specify the binary names for `composer` and `php`.
+* Added a config option to force composer to be installed locally.
+
+### Changed
+* The server configuration is now merged using `array_replace_recursive`.
+* The init command will now include the `php` and `composer` settings by default.
+
 ## [0.1.1] 14-03-2020
 ### Added
 * Added a `releases:down` and a `releases:up` command to quickly take deployments offline and back online.
