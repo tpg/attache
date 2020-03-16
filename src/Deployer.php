@@ -284,7 +284,7 @@ class Deployer
     {
         return $migrate ? [
             ...$server->config('scripts.before-migrate'),
-             'php artisan migrate --force',
+            'php artisan migrate --force',
             ...$server->config('scripts.after-migrate'),
         ] : [];
     }
