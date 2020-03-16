@@ -37,6 +37,7 @@ class Ssh extends Processor
     public function tty(): self
     {
         $this->tty = true;
+
         return $this;
     }
 
