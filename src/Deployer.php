@@ -183,8 +183,9 @@ class Deployer
         if ($server->composer('local')) {
             return [
                 'if test ! -f "'.$server->composerBin().'"; then',
-                'curl -sS https://getcomposer.org/installer | '.$server->phpBin(),
-                'mv composer.phar '.$server->composerBin(),
+                'curl -sS https://getcomposer.org/installer -o composer-installer.php',
+                $server->phpBin().' composer-installer.php --install-dir='.$server->root().' --filename='.$server->composer('bin'),
+                'rm composer-installer.php',
                 'else',
                 $server->composerBin().' self-update',
                 'fi',
@@ -203,7 +204,7 @@ class Deployer
      */
     protected function composerSteps(Server $server, string $releasePath): array
     {
-        $composerExec = $server->composerBin();
+        $composerExec = $server->phpBin().' '.$server->composerBin();
 
         return [
             'cd '.$releasePath.PHP_EOL
