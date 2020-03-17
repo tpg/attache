@@ -133,6 +133,6 @@ class Server
 
     public function script(string $key): array
     {
-        return Arr::get($this->config, 'scripts.'. $key, []);
+        return Arr::get($this->config, 'scripts.'.$key, []);
     }
 }

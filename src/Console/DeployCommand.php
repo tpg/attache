@@ -73,7 +73,7 @@ class DeployCommand extends SymfonyCommand
     protected function getDeployer(Server $server): Deployer
     {
         if (! $this->deployer) {
-            return (new Deployer($this->config, $server, $this->input, $this->output));
+            return new Deployer($this->config, $server, $this->input, $this->output);
         }
 
         return $this->deployer;

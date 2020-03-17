@@ -35,7 +35,6 @@ class ConfigurationProvider
             $config = json_decode(file_get_contents($filename), true, 512, JSON_THROW_ON_ERROR);
 
             $this->setConfig($config);
-
         } catch (\Exception $e) {
             throw new \JsonException('Unable to read config file.'."\n".$e->getMessage());
             exit(1);
