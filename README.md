@@ -174,7 +174,7 @@ This will run the following tasks:
 
 Many of the steps here are similar to a standard deployment except that the `storage` and `.env` items are placed in their proper locations.
 
-### Custom environment
+### Custom .env
 One of the important steps taken during install is to place a `.env` file in the right location. By default Attaché will use the content of the `.env.example` file at the root of your project. However, this file is usually commited to your repo so it should never contain any actual data.
 
 Instead, it's recommended that you create a new `.env.install` file with the correct values for the application to run on the server and then use the `--env` option to pass that file to the install command:
@@ -186,22 +186,80 @@ attache install production --env=.env.install
 If you are planning to run migrations, then you will need to update the database connection details in this file, and it should never be committed to your repository.
 
 ## Deploying
-Once your first install is complete, any subsequent deployment can be done using the `attache deploy` command. The `deploy` command is similar to the `install` command, but does not overwrite the `storage` and `.env` items. The following tasks are run for each deployment:
+Once your first install is complete, any subsequent deployment can be done using the `attache deploy` command. The `deploy` command is similar to the `install` command, but does not overwrite the `storage` and `.env` items. The following tasks are run for each deployment. Each task is made up of 1 or more steps:
 
+#### Build Task
 1. Run `yarn prod` locally to compile assets
+
+#### Deploy Task
 2. Run `git clone` remotely to install the project on the server
 3. Run `composer install` to install Composer dependencies
 4. Create a symlink for the `storage` directory
 5. Create a symlink for the `.env` file
 6. Run `article migrate` remotely if specified in the config file
+
+#### Assets Task
 7. Run `scp` locally to copy the compiled assets to the server
+
+#### Live Task
 8. Create a symlink to the new release for the web server.
+
+### Pruning releases after deployment
 
 By default the `deploy` command will leave any previous release intact. However, if you would like to remove old release during deployment, you can pass the `--prune` option. This will delete all old releases leaving only the new release and the previous one. This means you can still rollback to the previous release if needed.
 
 ```
 attache deploy production --prune
 ```
+
+## Server scripts
+Attaché provides a simple solution to extending the deployment tasks called "scripts". A script can be anything you run on the command line. So for example, Attaché simply runs `yarn prod` as a build script. But if you need to run some additional tasks before or after, you can add a script that will simply be added to the deployment script and run at the correct time.
+
+There are quite a few script hooks you can use, and each one has a `before` and `after` variant. Scripts are also per server which means you can add them to your `common` config, or have different scripts for different servers. Each script MUST return an array of commands.
+
+```json
+{
+    "servers": [
+        [
+            "name": "production",
+            "root": "/path/to/application",
+            "scripts": {
+                "before-build": [
+                    "some-script-to-run-before-building-1",
+                    "some-script-to-run-before-building-2"
+                ],
+                "after-composer": [
+                    "some-script-to-run-after-composer-install"
+                ]
+            }
+        ]
+    ]
+}
+```
+
+The following task script hooks can be used (remember that there are `before` and `after` variants of all the script hooks):
+
+| script | description                                    |
+|--------|------------------------------------------------|
+| build  | Run before or after the **build** task         |
+| deploy | Run before or after the entire **deploy** task |
+| assets | Run before or after the **assets** task        |
+| live   | Run before or after the **live** task          |
+
+The `deploy` task has quite a number of steps and each of those steps has their own script hooks as well.
+
+| script        | description                                                       |
+|---------------|-------------------------------------------------------------------|
+| clone         | Run before or after the project is cloned to the server           |
+| prep-composer | Run before or after the composer installation or self-update      |
+| composer      | Run before or after the `composer install` command                |
+| install       | Run before or after the installation steps                        |
+| symlinks      | Run before or after the `storage` and `.env` symlinks are created |
+| migrate       | Run before or after the database is migrated                      |
+
+It's important to note that some scripts won't run unless they're included in the deployment script. For exmaple, the `install` scripts are ONLY run when using the `install` command. Similarly, the `migrate` scripts will only run if the `migrate` setting is set to `true` in the config.
+
+> An example of how we use the `after-migrate` script is to run a `mysqldump` command before migrating the database. Or you could use the `after-deploy` script to run a `artisan config:cache`. Attaché server scripts give you quite a lot of power.
 
 ## Managing releases
 Attache keeps releases on the server until they are prunned. Over time, these releases can add up and end up using a fair amount of space. If you are not prunning releases during deployment, then you'll need to manually manage the releases yourself. Attache provides a few useful tools to help do that.
