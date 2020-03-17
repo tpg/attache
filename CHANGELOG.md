@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [0.3.0]
 ### Added
 * Added a new more tests.
 * Support for the new server scripts feature.
