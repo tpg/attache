@@ -144,6 +144,25 @@ You can specify as many servers as you need in the config file, but there are ti
 
 You can override any of the common settings by simply specifying them per server. This can also be very useful if your deployment is made up of different components. Perhaps a set of microservices.
 
+## Default server
+In many cases you may only have one server, or perhaps you deploy to one of the configured servers a lot more than any others. In that case you may want to specify a default server. You can do so by providing a server name to the `default` config option.
+
+```json
+{
+    "servers": [
+        {
+            "name": "production",
+        },
+        {
+            "name": "staging",
+        }
+    ],
+    "default": "staging"
+}
+```
+
+If you have a default server specified, you do not need to provide the server name to any of the commands on the command line. So instead of `attache deploy staging` you can just use `attache deploy`. If you want to specify a server name, you still can, so `attache deploy production` will then run the deployment against a different server.
+
 ## Safety first
 In many cases the `.attache.json` file will contain some sensitive information. Usernames. hostnames and even port numbers could be considered fairly sensitive information. Attaché does not support password authentication for SSH connections so do not attempt to put your password in this file.
 
@@ -159,9 +178,12 @@ To run an install, you can use the `attache install` command:
 attache install production
 ```
 
-This will run the following tasks:
+This will run the following four tasks:
 
+#### Build Task
 1. Run `yarn prod` locally to compile assets
+
+#### Deploy Task
 2. Run `git clone` remotely to install the project on the server
 3. Run `composer install` to install Composer dependencies
 4. Move the `storage` directory to the configurated location
@@ -169,7 +191,11 @@ This will run the following tasks:
 6. Create a symlink for the `storage` directory
 7. Create a symlink for the `.env` file
 8. Run `article migrate` remotely if specified in the config file
+
+#### Assets Task
 9. Run `scp` locally to copy the compiled assets to the server
+
+#### Live Task
 10. Create a symlink to the new release for the web server.
 
 Many of the steps here are similar to a standard deployment except that the `storage` and `.env` items are placed in their proper locations.
