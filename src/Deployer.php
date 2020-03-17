@@ -245,7 +245,7 @@ class Deployer
 
     protected function envSteps(Server $server, string $releasePath): array
     {
-        $env = 'cp '.$releasePath.'/.env.example '.$server->path('env');
+        $env = null;
 
         if ($this->installEnv) {
             $env = 'cat > '.$server->path('env').' << \'ENV-EOF\''.PHP_EOL
