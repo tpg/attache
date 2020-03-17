@@ -56,7 +56,7 @@ class ReleaseService
      */
     protected function getReleasesFromOutput(string $output): array
     {
-        if (!$output) {
+        if (! $output) {
             throw new \RuntimeException('There was no response from '.$this->server->name()
                 .'. Try again or double check your connection to the server.');
         }
