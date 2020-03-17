@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.3.3] 17-03-2020
+## [0.4.0] 17-03-2020
 ## Added
 * Added a new `default` server feature.
 * Added a `Command::requiresServer()` method for commands that expect a specified server.
