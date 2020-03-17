@@ -1,12 +1,13 @@
 # Changelog
 
-## [0.3.0]
+## [0.3.1] 17-03-2020
 ### Added
 * Added a new more tests.
 * Support for the new server scripts feature.
 
 ### Changed
 * Updated `ReleaseService::fetch()` to throw an exception if there is no response from the server.
+* Refactored the `Deployer` class to allow for better testing.
 
 ## [0.2.3] 17-03-2020
 ### Fixed
