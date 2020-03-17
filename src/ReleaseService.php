@@ -40,9 +40,9 @@ class ReleaseService
             $outputs[] = $output;
         });
 
-        $this->releases = $this->getReleasesFromOutput($outputs[0]);
+        $this->releases = $this->getReleasesFromOutput(Arr::get($outputs, 0, ''));
         if (count($this->releases)) {
-            $this->active = $this->getActiveFromOutput($outputs[1]);
+            $this->active = $this->getActiveFromOutput(Arr::get($outputs, 1, ''));
         }
 
         return $this;
@@ -56,6 +56,11 @@ class ReleaseService
      */
     protected function getReleasesFromOutput(string $output): array
     {
+        if (!$output) {
+            throw new \RuntimeException('There was no response from '.$this->server->name()
+                .'. Try again or double check your connection to the server.');
+        }
+
         return array_filter(
             explode(PHP_EOL, $output),
             fn ($release) => $release !== '' && ! Str::contains(strtolower($release), 'no such file or directory')

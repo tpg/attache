@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.2.4] 17-03-2020
+### Changed
+* Updated `ReleaseService::fetch()` to throw an exception if there is no response from the server.
+
 ## [0.2.3] 17-03-2020
 ### Fixed
 * Fixed a major bug which was overwriting the `.env` file during deployment.
