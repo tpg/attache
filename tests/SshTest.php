@@ -2,9 +2,6 @@
 
 namespace TPG\Attache\Tests;
 
-use Symfony\Component\Console\Tester\CommandTester;
-use TPG\Attache\ConfigurationProvider;
-use TPG\Attache\Console\SshCommand;
 use TPG\Attache\Ssh;
 use TPG\Attache\Task;
 

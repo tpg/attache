@@ -45,7 +45,7 @@ class ServersListCommand extends Command
         $io = new SymfonyStyle($this->input, $this->output);
 
         $io->table([
-            'Server Name', 'Host'
+            'Server Name', 'Host',
         ], $servers->map(function (Server $server) {
             return [
                 $this->info($server->name()),

@@ -2,9 +2,6 @@
 
 namespace TPG\Attache;
 
-/**
- * @package TPG\Attache
- */
 class Task
 {
     /**

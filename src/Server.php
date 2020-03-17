@@ -5,9 +5,6 @@ namespace TPG\Attache;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
-/**
- * @package TPG\Attache
- */
 class Server
 {
     /**
@@ -60,7 +57,7 @@ class Server
     }
 
     /**
-     * Get the server config value by key or the config array
+     * Get the server config value by key or the config array.
      *
      * @param null $key
      * @return mixed

@@ -8,8 +8,7 @@ use Illuminate\Support\Collection;
 use TPG\Attache\Exceptions\ConfigurationException;
 
 /**
- * Class ConfigurationProvider
- * @package TPG\Attache
+ * Class ConfigurationProvider.
  */
 class ConfigurationProvider
 {

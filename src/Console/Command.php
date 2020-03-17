@@ -13,8 +13,7 @@ use TPG\Attache\Exceptions\ConfigurationException;
 use TPG\Attache\Server;
 
 /**
- * Class Command
- * @package TPG\Attache\Console
+ * Class Command.
  */
 abstract class Command extends SymfonyCommand
 {

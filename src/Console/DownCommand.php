@@ -2,12 +2,10 @@
 
 namespace TPG\Attache\Console;
 
-use Symfony\Component\Console\Input\InputArgument;
 use TPG\Attache\ReleaseService;
 
 /**
- * Class DownCommand
- * @package TPG\Attache\Console
+ * Class DownCommand.
  */
 class DownCommand extends Command
 {

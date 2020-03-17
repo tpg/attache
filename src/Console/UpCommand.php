@@ -2,12 +2,10 @@
 
 namespace TPG\Attache\Console;
 
-use Symfony\Component\Console\Input\InputArgument;
 use TPG\Attache\ReleaseService;
 
 /**
- * Class UpCommand
- * @package TPG\Attache\Console
+ * Class UpCommand.
  */
 class UpCommand extends Command
 {
