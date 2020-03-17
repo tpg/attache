@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.2.3] 17-03-2020
+### Fixed
+* Fixed a major bug which was overwriting the `.env` file during deployment.
+
 ## [0.2.2] 16-03-2020
 ### Added
 * Added a new `tty()` method to the `Ssh` class to force TTY use if it's supported.
