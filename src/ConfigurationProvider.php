@@ -32,17 +32,19 @@ class ConfigurationProvider
         }
 
         try {
-            $config = json_decode(file_get_contents($filename), true, 512, JSON_THROW_ON_ERROR);
-
-            $this->setConfig($config);
+            $this->setConfig(file_get_contents($filename));
         } catch (\Exception $e) {
-            throw new \JsonException('Unable to read config file.'."\n".$e->getMessage());
+            throw new \JsonException('Unable to read config.'."\n".$e->getMessage());
             exit(1);
         }
     }
 
-    public function setConfig(array $config): void
+    public function setConfig($config): void
     {
+        if (is_string($config)) {
+            $config = json_decode($config, true, 512, JSON_THROW_ON_ERROR);
+        }
+
         $this->repository = Arr::get($config, 'repository');
 
         $this->loadServers(Arr::get($config, 'servers'), Arr::get($config, 'common', []));

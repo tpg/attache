@@ -50,7 +50,17 @@ class ConfigurationTest extends TestCase
     public function it_will_throw_an_exception_if_it_cannot_read_the_config_file()
     {
         $this->expectException(FileNotFoundException::class);
-        $config = (new ConfigurationProvider('no-such-config.json'));
+        (new ConfigurationProvider('no-such-config.json'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_will_throw_an_exception_if_the_config_is_invalid()
+    {
+        $this->expectException(\JsonException::class);
+        $config = new ConfigurationProvider();
+        $config->setConfig('{"repository": "repo", "servers": ["server1": "bad-server]}');
     }
 
     /**

@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.3.2] 17-03-2020
+### Changed
+* Changed how the `ConfigurationProvider::setConfig` method loads config.
+* Added some new tests around the loading of config files.
+
 ## [0.3.1] 17-03-2020
 ### Added
 * Added a new more tests.
