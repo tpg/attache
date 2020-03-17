@@ -7,9 +7,6 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 use TPG\Attache\ReleaseService;
 use TPG\Attache\Server;
 
-/**
- * Class ReleasesPruneCommand.
- */
 class ReleasesPruneCommand extends Command
 {
     /**

@@ -5,9 +5,6 @@ namespace TPG\Attache\Console;
 use Symfony\Component\Console\Input\InputArgument;
 use TPG\Attache\ReleaseService;
 
-/**
- * Class ReleasesActivateCommand.
- */
 class ReleasesActivateCommand extends Command
 {
     /**

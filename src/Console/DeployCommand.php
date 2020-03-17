@@ -10,9 +10,6 @@ use TPG\Attache\Deployer;
 use TPG\Attache\Exceptions\ConfigurationException;
 use TPG\Attache\Server;
 
-/**
- * Class DeployCommand.
- */
 class DeployCommand extends Command
 {
     /**

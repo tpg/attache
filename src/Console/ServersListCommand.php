@@ -6,9 +6,6 @@ use Illuminate\Support\Collection;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TPG\Attache\Server;
 
-/**
- * Class ServersListCommand.
- */
 class ServersListCommand extends Command
 {
     /**

@@ -6,11 +6,11 @@ use Symfony\Component\Console\Input\InputOption;
 use TPG\Attache\Deployer;
 use TPG\Attache\ReleaseService;
 
-/**
- * Class InstallCommand.
- */
 class InstallCommand extends Command
 {
+    /**
+     * Configure the command.
+     */
     protected function configure()
     {
         $this->setName('install')

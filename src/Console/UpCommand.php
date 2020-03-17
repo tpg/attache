@@ -4,9 +4,6 @@ namespace TPG\Attache\Console;
 
 use TPG\Attache\ReleaseService;
 
-/**
- * Class UpCommand.
- */
 class UpCommand extends Command
 {
     /**

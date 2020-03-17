@@ -4,9 +4,6 @@ namespace TPG\Attache\Console;
 
 use TPG\Attache\ReleaseService;
 
-/**
- * Class ReleasesRollbackCommand.
- */
 class ReleasesRollbackCommand extends Command
 {
     /**

@@ -4,9 +4,6 @@ namespace TPG\Attache\Console;
 
 use TPG\Attache\ReleaseService;
 
-/**
- * Class DownCommand.
- */
 class DownCommand extends Command
 {
     /**

@@ -7,9 +7,6 @@ use TPG\Attache\ConfigurationProvider;
 use TPG\Attache\ReleaseService;
 use TPG\Attache\Server;
 
-/**
- * Class ReleasesListCommand.
- */
 class ReleasesListCommand extends Command
 {
     /**

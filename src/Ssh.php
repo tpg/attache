@@ -4,9 +4,6 @@ namespace TPG\Attache;
 
 use Symfony\Component\Process\Process;
 
-/**
- * Class Ssh.
- */
 class Ssh
 {
     /**

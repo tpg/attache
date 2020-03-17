@@ -12,9 +12,6 @@ use TPG\Attache\ConfigurationProvider;
 use TPG\Attache\Exceptions\ConfigurationException;
 use TPG\Attache\Server;
 
-/**
- * Class Command.
- */
 abstract class Command extends SymfonyCommand
 {
     /**

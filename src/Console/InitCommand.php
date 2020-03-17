@@ -8,9 +8,6 @@ use Symfony\Component\Console\Question\ChoiceQuestion;
 use TPG\Attache\Exceptions\ConfigurationException;
 use TPG\Attache\Initializer;
 
-/**
- * Class InitCommand.
- */
 class InitCommand extends Command
 {
     /**

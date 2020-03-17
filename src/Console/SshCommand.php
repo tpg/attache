@@ -2,9 +2,6 @@
 
 namespace TPG\Attache\Console;
 
-/**
- * Class SshCommand.
- */
 class SshCommand extends Command
 {
     /**
