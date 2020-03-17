@@ -30,7 +30,7 @@ trait Command
         $this->input = $input;
         $this->output = $output;
 
-        if (!$this->config && $this->input->hasOption('config')) {
+        if (! $this->config && $this->input->hasOption('config')) {
             $this->loadConfig();
         }
 
