@@ -23,7 +23,7 @@
         {
             "name": "production",
             "root": "/path/to/application",
-	    "migrate": true,
+            "migrate": true,
             "scripts": {
                 "before-migrate": [
                     "before-migrate-script"

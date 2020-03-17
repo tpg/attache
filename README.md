@@ -220,7 +220,7 @@ There are quite a few script hooks you can use, and each one has a `before` and 
 ```json
 {
     "servers": [
-        [
+        {
             "name": "production",
             "root": "/path/to/application",
             "scripts": {
@@ -232,7 +232,7 @@ There are quite a few script hooks you can use, and each one has a `before` and 
                     "some-script-to-run-after-composer-install"
                 ]
             }
-        ]
+        }
     ]
 }
 ```
