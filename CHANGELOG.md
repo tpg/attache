@@ -1,8 +1,9 @@
 # Changelog
 
-## [0.2.4] 17-03-2020
+## [Unreleased]
 ### Added
-* 
+* Added a new more tests.
+* Support for the new server scripts feature.
 
 ### Changed
 * Updated `ReleaseService::fetch()` to throw an exception if there is no response from the server.
