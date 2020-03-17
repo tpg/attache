@@ -27,18 +27,7 @@ class Server
             'bin' => 'composer',
             'local' => false,
         ],
-        'scripts' => [
-            'before-build' => [],
-            'after-build' => [],
-            'before-deploy' => [],
-            'after-deploy' => [],
-            'before-assets' => [],
-            'after-assets' => [],
-            'before-live' => [],
-            'after-live' => [],
-            'before-migrate' => [],
-            'after-migrate' => [],
-        ],
+        'scripts' => [],
     ];
 
     /**
@@ -140,5 +129,10 @@ class Server
         }
 
         return $bin;
+    }
+
+    public function script(string $key): array
+    {
+        return Arr::get($this->config, 'scripts.'. $key, []);
     }
 }

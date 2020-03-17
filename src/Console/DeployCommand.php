@@ -6,6 +6,7 @@ use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
+use TPG\Attache\ConfigurationProvider;
 use TPG\Attache\Deployer;
 use TPG\Attache\Exceptions\ConfigurationException;
 use TPG\Attache\Server;
@@ -16,6 +17,18 @@ use TPG\Attache\Server;
 class DeployCommand extends SymfonyCommand
 {
     use Command;
+
+    /**
+     * @var Deployer
+     */
+    protected ?Deployer $deployer;
+
+    public function __construct(string $name = null, ?ConfigurationProvider $configurationProvider = null, ?Deployer $deployer = null)
+    {
+        parent::__construct($name);
+        $this->config = $configurationProvider;
+        $this->deployer = $deployer;
+    }
 
     /**
      * Deploy a new release to the specified server.
@@ -40,7 +53,8 @@ class DeployCommand extends SymfonyCommand
 
         $releaseId = date('YmdHis');
 
-        (new Deployer($this->config, $server, $this->input, $this->output))->deploy($releaseId);
+        $deployer = $this->getDeployer($server);
+        $deployer->deploy($releaseId);
 
         $this->output->writeln('Release <info>'.$releaseId.'</info> is now live on <info>'.$server->name().'</info>');
 
@@ -54,5 +68,14 @@ class DeployCommand extends SymfonyCommand
         }
 
         return 0;
+    }
+
+    protected function getDeployer(Server $server): Deployer
+    {
+        if (! $this->deployer) {
+            return (new Deployer($this->config, $server, $this->input, $this->output));
+        }
+
+        return $this->deployer;
     }
 }

@@ -104,7 +104,7 @@ class Deployer
      * @param bool $install
      * @return array
      */
-    protected function getTasks(Server $server, string $releaseId, bool $install = false): array
+    public function getTasks(Server $server, string $releaseId, bool $install = false): array
     {
         return [
             $this->buildTask($server),
@@ -130,9 +130,9 @@ class Deployer
         $command = 'yarn prod';
 
         $commands = [
-            ...$server->config('scripts.before-build'),
+            ...$server->script('before-build'),
             $command,
-            ...$server->config('scripts.after-build'),
+            ...$server->script('after-build'),
         ];
 
         return new Task(implode(PHP_EOL, $commands));
@@ -152,7 +152,7 @@ class Deployer
         $releasePath = $this->releasePath($server, $releaseId);
 
         $commands = array_filter([
-            ...$server->config('scripts.before-deploy'),
+            ...$server->script('before-deploy'),
             'printf "\033c"',
             ...$this->cloneSteps($server, $releasePath),
             ...$this->getComposer($server, $releasePath),
@@ -161,7 +161,7 @@ class Deployer
             ...$this->envSteps($server, $releasePath),
             ...$this->symlinkSteps($server, $releasePath),
             ...$this->migrationSteps($migrate, $server, $releasePath),
-            ...$server->config('scripts.after-deploy'),
+            ...$server->script('after-deploy'),
         ], static function ($command) {
             return $command !== null;
         });
@@ -179,7 +179,9 @@ class Deployer
     protected function cloneSteps(Server $server, string $releasePath): array
     {
         return [
+            ...$server->script('before-clone'),
             'git clone -b '.$server->branch().' --depth=1 '.$this->config->repository().' '.$releasePath,
+            ...$server->script('after-clone'),
         ];
     }
 
@@ -194,6 +196,7 @@ class Deployer
     {
         if ($server->composer('local')) {
             return [
+                ...$server->script('before-prep-composer'),
                 'if test ! -f "'.$server->composerBin().'"; then',
                 'curl -sS https://getcomposer.org/installer -o composer-installer.php',
                 $server->phpBin().' composer-installer.php --install-dir='.$server->root().' --filename='.$server->composer('bin'),
@@ -201,6 +204,7 @@ class Deployer
                 'else',
                 $server->composerBin().' self-update',
                 'fi',
+                ...$server->script('after-prep-composer'),
             ];
         }
 
@@ -219,8 +223,10 @@ class Deployer
         $composerExec = $server->phpBin().' '.$server->composerBin();
 
         return [
+            ...$server->script('before-composer'),
             'cd '.$releasePath.PHP_EOL
             .$composerExec.' install --no-dev --ansi',
+            ...$server->script('after-composer'),
         ];
     }
 
@@ -234,13 +240,13 @@ class Deployer
      */
     protected function installationSteps(bool $install, Server $server, string $releasePath): array
     {
-        return $install
-            ? [
-                'mv '.$releasePath.'/storage '.$server->path('storage'),
-            ]
-            : [
-                'rm -rf '.$releasePath.'/storage',
-            ];
+        return [
+            ...$server->script('before-install'),
+            $install
+                ? 'mv '.$releasePath.'/storage '.$server->path('storage')
+                : 'rm -rf '.$releasePath.'/storage',
+            ...$server->script('after-install'),
+        ];
     }
 
     protected function envSteps(Server $server, string $releasePath): array
@@ -266,9 +272,11 @@ class Deployer
     protected function symlinkSteps(Server $server, string $releasePath): array
     {
         return [
+            ...$server->script('before-symlinks'),
             'ln -nfs '.$server->path('storage').' '.$releasePath.'/storage',
             'ln -nfs '.$server->path('env').' '.$releasePath.'/.env',
             $server->phpBin().' artisan storage:link',
+            ...$server->script('after-symlinks'),
         ];
     }
 
@@ -283,9 +291,9 @@ class Deployer
     protected function migrationSteps(bool $migrate, Server $server, string $releasePath): array
     {
         return $migrate ? [
-            ...$server->config('scripts.before-migrate'),
+            ...$server->script('before-migrate'),
             'php artisan migrate --force',
-            ...$server->config('scripts.after-migrate'),
+            ...$server->script('after-migrate'),
         ] : [];
     }
 
@@ -313,13 +321,13 @@ class Deployer
         $releasePath = $server->path('releases').'/'.$releaseId;
 
         $commands = [
-            ...$server->config('scripts.before-assets'),
+            ...$server->script('before-assets'),
             'printf "\033c"',
             'echo "Copying assets..."',
             'scp -P '.$server->port().' -r public/js '.$server->user().'@'.$server->host().':'.$releasePath.'/public',
             'scp -P '.$server->port().' -r public/css '.$server->user().'@'.$server->host().':'.$releasePath.'/public',
             'scp -P '.$server->port().' -r public/mix-manifest.json '.$server->user().'@'.$server->host().':'.$releasePath.'/public',
-            ...$server->config('scripts.after-assets'),
+            ...$server->script('after-assets'),
         ];
 
         return new Task(implode(PHP_EOL, $commands));
@@ -337,10 +345,10 @@ class Deployer
         $releasePath = $server->path('releases').'/'.$releaseId;
 
         $commands = [
-            ...$server->config('scripts.before-live'),
+            ...$server->script('before-live'),
             'ln -nfs '.$releasePath.' '.$server->path('serve'),
             'printf "\033c"',
-            ...$server->config('scripts.after-live'),
+            ...$server->script('after-live'),
         ];
 
         return new Task(implode(PHP_EOL, $commands), $server);

@@ -18,12 +18,14 @@ class ConfigurationProvider
      * @param string $filename
      * @throws FileNotFoundException
      */
-    public function __construct(string $filename)
+    public function __construct(string $filename = null)
     {
-        $this->loadConfigFile($filename);
+        if ($filename) {
+            $this->loadConfigFile($filename);
+        }
     }
 
-    protected function loadConfigFile(string $filename): void
+    public function loadConfigFile(string $filename): void
     {
         if (! file_exists($filename)) {
             throw new FileNotFoundException('Cannot find config file '.$filename);
@@ -32,13 +34,19 @@ class ConfigurationProvider
         try {
             $config = json_decode(file_get_contents($filename), true, 512, JSON_THROW_ON_ERROR);
 
-            $this->repository = Arr::get($config, 'repository');
+            $this->setConfig($config);
 
-            $this->loadServers(Arr::get($config, 'servers'), Arr::get($config, 'common', []));
         } catch (\Exception $e) {
             throw new \JsonException('Unable to read config file.'."\n".$e->getMessage());
             exit(1);
         }
+    }
+
+    public function setConfig(array $config): void
+    {
+        $this->repository = Arr::get($config, 'repository');
+
+        $this->loadServers(Arr::get($config, 'servers'), Arr::get($config, 'common', []));
     }
 
     protected function loadServers(array $servers, array $common): void

@@ -4,8 +4,10 @@ namespace TPG\Attache\Console;
 
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use TPG\Attache\ConfigurationProvider;
 use TPG\Attache\Exceptions\ConfigurationException;
 use TPG\Attache\ReleaseService;
+use TPG\Attache\Server;
 
 /**
  * Class ReleasesListCommand.
@@ -13,6 +15,19 @@ use TPG\Attache\ReleaseService;
 class ReleasesListCommand extends SymfonyCommand
 {
     use Command;
+
+    /**
+     * @var ReleaseService
+     */
+    protected ?ReleaseService $releaseService;
+
+    public function __construct(string $name = null, ?ConfigurationProvider $configurationProvider = null, ?ReleaseService $releaseService = null)
+    {
+        parent::__construct($name);
+
+        $this->config = $configurationProvider;
+        $this->releaseService = $releaseService;
+    }
 
     /**
      * List the releases available on the server.
@@ -33,8 +48,7 @@ class ReleasesListCommand extends SymfonyCommand
     protected function fire(): int
     {
         $server = $this->config->server($this->argument('server'));
-
-        $releaseService = (new ReleaseService($server))->fetch();
+        $releaseService = $this->getReleaseService($server);
 
         if (! count($releaseService->list())) {
             $this->output->writeln('<error>There appears to be no releases on '.$server->name().'</error>');
@@ -44,6 +58,15 @@ class ReleasesListCommand extends SymfonyCommand
         $this->showOutput($releaseService->list(), $releaseService->active());
 
         return 0;
+    }
+
+    protected function getReleaseService(Server $server): ReleaseService
+    {
+        if (! $this->releaseService) {
+            return (new ReleaseService($server))->fetch();
+        }
+
+        return $this->releaseService;
     }
 
     /**

@@ -13,7 +13,7 @@ trait Command
 
     protected OutputInterface $output;
 
-    protected ConfigurationProvider $config;
+    protected ?ConfigurationProvider $config = null;
 
     protected function requiresConfig(): void
     {
@@ -30,7 +30,7 @@ trait Command
         $this->input = $input;
         $this->output = $output;
 
-        if ($this->input->hasOption('config')) {
+        if (!$this->config && $this->input->hasOption('config')) {
             $this->loadConfig();
         }
 

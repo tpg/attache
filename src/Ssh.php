@@ -44,14 +44,19 @@ class Ssh extends Processor
     protected function getProcess(): Process
     {
         return Process::fromShellCommandline(
-            'ssh '.$this->getServerConnectionString()
-            ." 'bash -se' << \\".self::DELIMITER.PHP_EOL
+            'ssh '.$this->getServerConnectionString().' '
+            .$this->script()
+        )->setTimeout(null);
+    }
+
+    public function script(): string
+    {
+        return "'bash -se' << \\".self::DELIMITER.PHP_EOL
             .'('.PHP_EOL
             .'set -e'.PHP_EOL
             .$this->task->script().PHP_EOL
             .')'.PHP_EOL
-            .self::DELIMITER
-        )->setTimeout(null);
+            .self::DELIMITER;
     }
 
     protected function getServerConnectionString(): string

@@ -1,6 +1,9 @@
 # Changelog
 
 ## [0.2.4] 17-03-2020
+### Added
+* 
+
 ### Changed
 * Updated `ReleaseService::fetch()` to throw an exception if there is no response from the server.
 

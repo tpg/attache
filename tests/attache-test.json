@@ -26,10 +26,10 @@
 	    "migrate": true,
             "scripts": {
                 "before-migrate": [
-                    "sudo mysqldump --databases db_name /backup/dump.sql"
+                    "before-migrate-script"
                 ],
                 "before-build": [
-                    "php ./artisan ziggy:generate /resources/js/routes.js --url=https://url.test"
+                    "before-build-script"
                 ]
             }
         },
