@@ -2,8 +2,6 @@
 
 namespace TPG\Attache\Console;
 
-use Symfony\Component\Console\Input\InputArgument;
-
 /**
  * Class SshCommand.
  */

@@ -4,12 +4,8 @@ namespace TPG\Attache;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use Symfony\Component\Console\Question\ChoiceQuestion;
 use TPG\Attache\Exceptions\ConfigurationException;
 
-/**
- * @package TPG\Attache
- */
 class Initializer
 {
     /**
@@ -33,7 +29,6 @@ class Initializer
      */
     public function createConfig(string $filename, string $gitUrl): void
     {
-
         $config = $this->getConfig($gitUrl);
 
         file_put_contents(

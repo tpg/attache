@@ -3,9 +3,7 @@
 namespace TPG\Attache\Tests;
 
 use Symfony\Component\Console\Tester\CommandTester;
-use TPG\Attache\ConfigurationProvider;
 use TPG\Attache\Console\ServersListCommand;
-use TPG\Attache\Console\ServersShowCommand;
 
 class ServerTest extends TestCase
 {

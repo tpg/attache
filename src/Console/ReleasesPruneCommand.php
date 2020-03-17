@@ -2,7 +2,6 @@
 
 namespace TPG\Attache\Console;
 
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use TPG\Attache\ReleaseService;

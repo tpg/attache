@@ -4,9 +4,6 @@ namespace TPG\Attache\Exceptions;
 
 use Throwable;
 
-/**
- * @package TPG\Attache\Exceptions
- */
 class ConfigurationException extends \Exception
 {
     /**

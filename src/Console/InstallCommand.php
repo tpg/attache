@@ -2,20 +2,15 @@
 
 namespace TPG\Attache\Console;
 
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use TPG\Attache\Deployer;
 use TPG\Attache\ReleaseService;
 
 /**
- * Class InstallCommand
- * @package TPG\Attache\Console
+ * Class InstallCommand.
  */
 class InstallCommand extends Command
 {
-    /**
-     *
-     */
     protected function configure()
     {
         $this->setName('install')
@@ -68,7 +63,7 @@ class InstallCommand extends Command
             exit(1);
         }
 
-        if (!$filename) {
+        if (! $filename) {
             $filename = '.env.example';
         }
 

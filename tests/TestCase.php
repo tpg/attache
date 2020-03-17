@@ -26,8 +26,8 @@ class TestCase extends \PHPUnit\Framework\TestCase
                 'branch' => 'master',
             ], [
                 'name' => 'server-2',
-            ]
-        ]
+            ],
+        ],
     ];
 
     protected function setUp(): void

@@ -5,9 +5,6 @@ namespace TPG\Attache;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
-/**
- * @package TPG\Attache
- */
 class ReleaseService
 {
     /**
@@ -100,7 +97,7 @@ class ReleaseService
     }
 
     /**
-     * Return the active release ID
+     * Return the active release ID.
      *
      * @return string|null
      */

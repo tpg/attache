@@ -2,7 +2,6 @@
 
 namespace TPG\Attache\Console;
 
-use Symfony\Component\Console\Input\InputArgument;
 use TPG\Attache\ReleaseService;
 
 /**
@@ -10,7 +9,6 @@ use TPG\Attache\ReleaseService;
  */
 class ReleasesRollbackCommand extends Command
 {
-
     /**
      * Configure the command.
      */

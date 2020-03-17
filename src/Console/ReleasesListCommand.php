@@ -2,10 +2,8 @@
 
 namespace TPG\Attache\Console;
 
-use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TPG\Attache\ConfigurationProvider;
-use TPG\Attache\Exceptions\ConfigurationException;
 use TPG\Attache\ReleaseService;
 use TPG\Attache\Server;
 
@@ -33,7 +31,7 @@ class ReleasesListCommand extends Command
     }
 
     /**
-     * Configure the command
+     * Configure the command.
      */
     protected function configure(): void
     {
