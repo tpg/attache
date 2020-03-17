@@ -3,18 +3,16 @@
 namespace TPG\Attache\Console;
 
 use Illuminate\Support\Collection;
-use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use TPG\Attache\Server;
 
 /**
  * Class ServersListCommand.
  */
-class ServersListCommand extends SymfonyCommand
+class ServersListCommand extends Command
 {
-    use Command;
-
     /**
-     * List the currently configured servers.
+     * Configure the command.
      */
     protected function configure(): void
     {
@@ -25,36 +23,36 @@ class ServersListCommand extends SymfonyCommand
     }
 
     /**
+     * Get a list of configured servers.
+     *
      * @return int
      */
     protected function fire(): int
     {
         $servers = $this->config->servers();
 
-        $io = new SymfonyStyle($this->input, $this->output);
-
-        $io->table([], $this->getTableRows($servers));
-
-        return 0;
+        return $this->display($servers);
     }
 
     /**
-     * Get the rows of server names and hosts.
+     * Display the list on the console.
      *
-     * @param array $servers
-     * @return array
+     * @param Collection $servers
+     * @return int
      */
-    protected function getTableRows(Collection $servers): array
+    protected function display(Collection $servers): int
     {
-        $rows = [];
+        $io = new SymfonyStyle($this->input, $this->output);
 
-        foreach ($servers as $server) {
-            $rows[] = [
-                '<info>'.$server->name().'</info>',
+        $io->table([
+            'Server Name', 'Host'
+        ], $servers->map(function (Server $server) {
+            return [
+                $this->info($server->name()),
                 $server->host(),
             ];
-        }
+        })->toArray());
 
-        return $rows;
+        return 0;
     }
 }

@@ -51,7 +51,7 @@ class DeployerTest extends TestCase
         $id = date('YmdHis');
 
         $deployer = new Deployer($config, $server, $input, $output);
-        $tasks = $deployer->getTasks($server, $id);
+        $tasks = $deployer->getTasks($id);
 
         $this->assertSame($script, $tasks[0]->script());
     }

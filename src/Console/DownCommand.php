@@ -2,30 +2,36 @@
 
 namespace TPG\Attache\Console;
 
-use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use TPG\Attache\ReleaseService;
 
-class DownCommand extends SymfonyCommand
+/**
+ * Class DownCommand
+ * @package TPG\Attache\Console
+ */
+class DownCommand extends Command
 {
-    use Command;
-
+    /**
+     * Configure the command.
+     */
     protected function configure()
     {
         $this->setName('releases:down')
             ->setDescription('Take the specific release offline')
-            ->addArgument('server', InputArgument::REQUIRED, 'The name of the configured server');
-
-        $this->requiresConfig();
+            ->requiresConfig()
+            ->requiresServer();
     }
 
+    /**
+     * Bring the deployment offline.
+     *
+     * @return int
+     */
     protected function fire(): int
     {
-        $server = $this->config->server($this->argument('server'));
+        (new ReleaseService($this->server))->down();
 
-        (new ReleaseService($server))->down();
-
-        $this->output->writeln('<info>'.$server->name().'</info> is offline');
+        $this->output->writeln('<info>'.$this->server->name().'</info> is offline');
 
         return 0;
     }

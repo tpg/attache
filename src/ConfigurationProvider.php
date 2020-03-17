@@ -7,16 +7,31 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use TPG\Attache\Exceptions\ConfigurationException;
 
+/**
+ * Class ConfigurationProvider
+ * @package TPG\Attache
+ */
 class ConfigurationProvider
 {
+    /**
+     * @var Collection
+     */
     protected Collection $servers;
 
+    /**
+     * @var string
+     */
     protected string $repository;
 
     /**
-     * ConfigurationProvider constructor.
+     * @var string|null
+     */
+    protected ?string $default = null;
+
+    /**
      * @param string $filename
      * @throws FileNotFoundException
+     * @throws \JsonException
      */
     public function __construct(string $filename = null)
     {
@@ -25,6 +40,13 @@ class ConfigurationProvider
         }
     }
 
+    /**
+     * Load the configuration file.
+     *
+     * @param string $filename
+     * @throws FileNotFoundException
+     * @throws \JsonException
+     */
     public function loadConfigFile(string $filename): void
     {
         if (! file_exists($filename)) {
@@ -39,6 +61,11 @@ class ConfigurationProvider
         }
     }
 
+    /**
+     * Set the configuration.
+     *
+     * @param string|array $config
+     */
     public function setConfig($config): void
     {
         if (is_string($config)) {
@@ -46,10 +73,17 @@ class ConfigurationProvider
         }
 
         $this->repository = Arr::get($config, 'repository');
+        $this->default = Arr::get($config, 'default');
 
         $this->loadServers(Arr::get($config, 'servers'), Arr::get($config, 'common', []));
     }
 
+    /**
+     * Load the servers from the current configuration.
+     *
+     * @param array $servers
+     * @param array $common
+     */
     protected function loadServers(array $servers, array $common): void
     {
         $this->servers = collect(array_map(function ($server) use ($common) {
@@ -63,6 +97,13 @@ class ConfigurationProvider
         });
     }
 
+    /**
+     * Validate the provided server configuration.
+     *
+     * @param array $config
+     * @throws ConfigurationException
+     * @todo Better validation is required here. We'll need to validate the values as well and not just that the key exists.
+     */
     protected function validateServer(array $config): void
     {
         if (! Arr::has($config, ['name', 'host', 'port', 'user', 'root', 'branch'])) {
@@ -70,18 +111,43 @@ class ConfigurationProvider
         }
     }
 
+    /**
+     * Get the configured repository URL.
+     *
+     * @return string
+     */
     public function repository(): string
     {
         return $this->repository;
     }
 
+    /**
+     * Get a collection of configured servers.
+     *
+     * @return Collection
+     */
     public function servers(): Collection
     {
         return $this->servers;
     }
 
-    public function server($key): Server
+    /**
+     * Get a single Server by its name.
+     *
+     * @param string|null $key
+     * @return Server
+     * @throws ConfigurationException
+     */
+    public function server(?string $key = null): Server
     {
+        if (! $key && ! $this->default) {
+            throw new ConfigurationException('No server key provided and no default specified');
+        }
+
+        if (! $key) {
+            $key = $this->default;
+        }
+
         if (! $this->servers->has($key)) {
             throw new ConfigurationException('Unknown server with key '.$key);
         }

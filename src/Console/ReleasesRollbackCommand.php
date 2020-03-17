@@ -2,37 +2,34 @@
 
 namespace TPG\Attache\Console;
 
-use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use TPG\Attache\ReleaseService;
 
 /**
  * Class ReleasesRollbackCommand.
  */
-class ReleasesRollbackCommand extends SymfonyCommand
+class ReleasesRollbackCommand extends Command
 {
-    use Command;
 
     /**
-     * Rollback the current release to the previous one.
+     * Configure the command.
      */
     protected function configure(): void
     {
         $this->setName('releases:rollback')
             ->setDescription('Rollback to the previous release on the specified server')
-            ->addArgument('server', InputArgument::REQUIRED, 'The name of the configured server');
-
-        $this->requiresConfig();
+            ->requiresConfig()
+            ->requiresServer();
     }
 
     /**
+     * Rollback the active release by one.
+     *
      * @return int
      */
     protected function fire(): int
     {
-        $server = $this->config->server($this->argument('server'));
-
-        $releaseService = (new ReleaseService($server))->fetch();
+        $releaseService = (new ReleaseService($this->server))->fetch();
 
         $rollbackId = $this->getRollbackId($releaseService);
 
@@ -47,6 +44,12 @@ class ReleasesRollbackCommand extends SymfonyCommand
         return 0;
     }
 
+    /**
+     * Get the release ID of the previous release.
+     *
+     * @param ReleaseService $releaseService
+     * @return mixed|null
+     */
     protected function getRollbackId(ReleaseService $releaseService)
     {
         $activeIndex = array_search($releaseService->active(), $releaseService->list(), true);

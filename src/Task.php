@@ -2,13 +2,21 @@
 
 namespace TPG\Attache;
 
+/**
+ * @package TPG\Attache
+ */
 class Task
 {
+    /**
+     * @var string
+     */
     protected string $script;
+    /**
+     * @var Server|null
+     */
     protected ?Server $server;
 
     /**
-     * Task constructor.
      * @param Server $server
      * @param string $script
      */
@@ -18,11 +26,21 @@ class Task
         $this->server = $server;
     }
 
+    /**
+     * Get the task server.
+     *
+     * @return Server|null
+     */
     public function server(): ?Server
     {
         return $this->server;
     }
 
+    /**
+     * Get the task script.
+     *
+     * @return string
+     */
     public function script(): string
     {
         return $this->script;

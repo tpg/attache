@@ -12,15 +12,18 @@ use TPG\Attache\Server;
 /**
  * Class ReleasesListCommand.
  */
-class ReleasesListCommand extends SymfonyCommand
+class ReleasesListCommand extends Command
 {
-    use Command;
-
     /**
      * @var ReleaseService
      */
     protected ?ReleaseService $releaseService;
 
+    /**
+     * @param string|null $name
+     * @param ConfigurationProvider|null $configurationProvider
+     * @param ReleaseService|null $releaseService
+     */
     public function __construct(string $name = null, ?ConfigurationProvider $configurationProvider = null, ?ReleaseService $releaseService = null)
     {
         parent::__construct($name);
@@ -30,28 +33,27 @@ class ReleasesListCommand extends SymfonyCommand
     }
 
     /**
-     * List the releases available on the server.
+     * Configure the command
      */
     protected function configure(): void
     {
         $this->setName('releases:list')
             ->setDescription('Get a list of available releases for the specified server')
-            ->addArgument('server');
-
-        $this->requiresConfig();
+            ->requiresServer()
+            ->requiresConfig();
     }
 
     /**
+     * Get a list of releases on the server.
+     *
      * @return int
-     * @throws ConfigurationException
      */
     protected function fire(): int
     {
-        $server = $this->config->server($this->argument('server'));
-        $releaseService = $this->getReleaseService($server);
+        $releaseService = $this->getReleaseService($this->server);
 
         if (! count($releaseService->list())) {
-            $this->output->writeln('<error>There appears to be no releases on '.$server->name().'</error>');
+            $this->output->writeln('<error>There appears to be no releases on '.$this->server->name().'</error>');
             exit(1);
         }
 
@@ -60,6 +62,12 @@ class ReleasesListCommand extends SymfonyCommand
         return 0;
     }
 
+    /**
+     * Get an instance of ReleaseService.
+     *
+     * @param Server $server
+     * @return ReleaseService
+     */
     protected function getReleaseService(Server $server): ReleaseService
     {
         if (! $this->releaseService) {
@@ -70,7 +78,7 @@ class ReleasesListCommand extends SymfonyCommand
     }
 
     /**
-     * Show the output on the console.
+     * Display the output on the console.
      *
      * @param array $releases
      * @param string $active

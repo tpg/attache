@@ -2,30 +2,36 @@
 
 namespace TPG\Attache\Console;
 
-use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use TPG\Attache\ReleaseService;
 
-class UpCommand extends SymfonyCommand
+/**
+ * Class UpCommand
+ * @package TPG\Attache\Console
+ */
+class UpCommand extends Command
 {
-    use Command;
-
+    /**
+     * Configure the command.
+     */
     protected function configure()
     {
         $this->setName('releases:up')
             ->setDescription('Put the specific release online')
-            ->addArgument('server', InputArgument::REQUIRED, 'The name of the configured server');
-
-        $this->requiresConfig();
+            ->requiresConfig()
+            ->requiresServer();
     }
 
+    /**
+     * Bring the active deployment offline.
+     *
+     * @return int
+     */
     protected function fire(): int
     {
-        $server = $this->config->server($this->argument('server'));
+        (new ReleaseService($this->server))->up();
 
-        (new ReleaseService($server))->up();
-
-        $this->output->writeln('<info>'.$server->name().'</info> is online');
+        $this->output->writeln('<info>'.$this->server->name().'</info> is online');
 
         return 0;
     }

@@ -5,6 +5,9 @@ namespace TPG\Attache;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
+/**
+ * @package TPG\Attache
+ */
 class ReleaseService
 {
     /**
@@ -12,8 +15,14 @@ class ReleaseService
      */
     protected Server $server;
 
+    /**
+     * @var array
+     */
     protected array $releases = [];
 
+    /**
+     * @var string|null
+     */
     protected ?string $active = null;
 
     /**
@@ -80,21 +89,42 @@ class ReleaseService
         return Arr::get($matches, 'id');
     }
 
+    /**
+     * Return a list of releases on the server.
+     *
+     * @return array
+     */
     public function list(): array
     {
         return $this->releases;
     }
 
+    /**
+     * Return the active release ID
+     *
+     * @return string|null
+     */
     public function active(): ?string
     {
         return $this->active;
     }
 
+    /**
+     * Check if a release exists.
+     *
+     * @param string $id
+     * @return bool
+     */
     public function exists(string $id): bool
     {
         return in_array($id, $this->releases, true);
     }
 
+    /**
+     * Activate the specified release ID.
+     *
+     * @param string $id
+     */
     public function activate(string $id): void
     {
         if ($id === 'latest') {
@@ -109,6 +139,11 @@ class ReleaseService
         (new Ssh($task))->run();
     }
 
+    /**
+     * Delete the specified release IDs.
+     *
+     * @param array $ids
+     */
     public function delete(array $ids): void
     {
         $commands = [];
@@ -123,6 +158,9 @@ class ReleaseService
         (new Ssh($task))->run();
     }
 
+    /**
+     * Execute `artisan down` in the current release.
+     */
     public function down(): void
     {
         $command = 'cd '.$this->server->path('serve').PHP_EOL
@@ -133,6 +171,9 @@ class ReleaseService
         (new Ssh($task))->run();
     }
 
+    /**
+     * Execute `artisan up` in the current release.
+     */
     public function up(): void
     {
         $command = 'cd '.$this->server->path('serve').PHP_EOL

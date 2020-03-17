@@ -1,5 +1,21 @@
 # Changelog
 
+## [Unreleased]
+## Added
+* Added a new `default` server feature.
+* Added a `Command::requiresServer()` method for commands that expect a specified server.
+* Added missing documentation to all class methods.
+
+## Changed
+* The server name is no longer required for commands that need a server if a `default` is set.
+* The `ReleasesActivateCommand` arguments have been reversed.
+* A fairly large cleanup of all the classes.
+* All of the task and step methods in `Deployer` no longer accept a `Server` instance as a parameter.
+* All commands now extend an `Attache\Console\Command` abstract class.
+
+## Removed
+* The `servers:show` command has been removed as it doesn't really serve any useful purpose.
+
 ## [0.3.2] 17-03-2020
 ### Changed
 * Changed how the `ConfigurationProvider::setConfig` method loads config.

@@ -28,6 +28,9 @@ class Deployer
      */
     protected OutputInterface $output;
 
+    /**
+     * @var string|null
+     */
     protected ?string $installEnv = null;
 
     /**
@@ -56,7 +59,7 @@ class Deployer
      */
     public function deploy(string $releaseId, bool $install = false): void
     {
-        $tasks = $this->getTasks($this->server, $releaseId, $install);
+        $tasks = $this->getTasks($releaseId, $install);
 
         $this->executeTasks($tasks);
     }
@@ -104,35 +107,33 @@ class Deployer
      * @param bool $install
      * @return array
      */
-    public function getTasks(Server $server, string $releaseId, bool $install = false): array
+    public function getTasks(string $releaseId, bool $install = false): array
     {
         return [
-            $this->buildTask($server),
+            $this->buildTask(),
             $this->DeploymentTask(
-                $server,
                 $releaseId,
                 $this->server->migrate(),
                 $install
                 ),
-            $this->assetTask($server, $releaseId),
-            $this->liveTask($server, $releaseId),
+            $this->assetTask($releaseId),
+            $this->liveTask($releaseId),
         ];
     }
 
     /**
      * The build task.
      *
-     * @param Server $server
      * @return Task
      */
-    protected function buildTask(Server $server): Task
+    protected function buildTask(): Task
     {
         $command = 'yarn prod';
 
         $commands = [
-            ...$server->script('before-build'),
+            ...$this->server->script('before-build'),
             $command,
-            ...$server->script('after-build'),
+            ...$this->server->script('after-build'),
         ];
 
         return new Task(implode(PHP_EOL, $commands));
@@ -141,70 +142,67 @@ class Deployer
     /**
      * The deployment task.
      *
-     * @param Server $server
      * @param string $releaseId
      * @param bool $migrate
      * @param bool $install
      * @return Task
      */
-    protected function DeploymentTask(Server $server, string $releaseId, $migrate = false, $install = false): Task
+    protected function DeploymentTask(string $releaseId, $migrate = false, $install = false): Task
     {
-        $releasePath = $this->releasePath($server, $releaseId);
+        $releasePath = $this->releasePath($releaseId);
 
         $commands = array_filter([
-            ...$server->script('before-deploy'),
+            ...$this->server->script('before-deploy'),
             'printf "\033c"',
-            ...$this->cloneSteps($server, $releasePath),
-            ...$this->getComposer($server, $releasePath),
-            ...$this->composerSteps($server, $releasePath),
-            ...$this->installationSteps($install, $server, $releasePath),
-            ...$this->envSteps($server, $releasePath),
-            ...$this->symlinkSteps($server, $releasePath),
-            ...$this->migrationSteps($migrate, $server, $releasePath),
-            ...$server->script('after-deploy'),
+            ...$this->cloneSteps($releasePath),
+            ...$this->getComposer($releasePath),
+            ...$this->composerSteps($releasePath),
+            ...$this->installationSteps($install, $releasePath),
+            ...$this->envSteps($releasePath),
+            ...$this->symlinkSteps($releasePath),
+            ...$this->migrationSteps($migrate, $releasePath),
+            ...$this->server->script('after-deploy'),
         ], static function ($command) {
             return $command !== null;
         });
 
-        return new Task(implode(PHP_EOL, $commands), $server);
+        return new Task(implode(PHP_EOL, $commands), $this->server);
     }
 
     /**
      * Git clone steps.
      *
-     * @param Server $server
      * @param string $releasePath
      * @return array
      */
-    protected function cloneSteps(Server $server, string $releasePath): array
+    protected function cloneSteps(string $releasePath): array
     {
         return [
-            ...$server->script('before-clone'),
-            'git clone -b '.$server->branch().' --depth=1 '.$this->config->repository().' '.$releasePath,
-            ...$server->script('after-clone'),
+            ...$this->server->script('before-clone'),
+            'git clone -b '.$this->server->branch().' --depth=1 '.$this->config->repository().' '.$releasePath,
+            ...$this->server->script('after-clone'),
         ];
     }
 
     /**
      * Get a copy of composer.
      *
-     * @param Server $server
      * @param string $releasePath
      * @return array
      */
-    protected function getComposer(Server $server, string $releasePath): array
+    protected function getComposer(string $releasePath): array
     {
-        if ($server->composer('local')) {
+        if ($this->server->composer('local')) {
             return [
-                ...$server->script('before-prep-composer'),
-                'if test ! -f "'.$server->composerBin().'"; then',
+                ...$this->server->script('before-prep-composer'),
+                'if test ! -f "'.$this->server->composerBin().'"; then',
                 'curl -sS https://getcomposer.org/installer -o composer-installer.php',
-                $server->phpBin().' composer-installer.php --install-dir='.$server->root().' --filename='.$server->composer('bin'),
+                $this->server->phpBin().' composer-installer.php --install-dir='.$this->server->root().' --filename='.$this->server->composer('bin'),
                 'rm composer-installer.php',
                 'else',
-                $server->composerBin().' self-update',
+                $this->server->composerBin().' self-update',
                 'fi',
-                ...$server->script('after-prep-composer'),
+                ...$this->server->script('after-prep-composer'),
             ];
         }
 
@@ -214,19 +212,18 @@ class Deployer
     /**
      * The composer install steps.
      *
-     * @param Server $server
      * @param string $releasePath
      * @return array
      */
-    protected function composerSteps(Server $server, string $releasePath): array
+    protected function composerSteps(string $releasePath): array
     {
-        $composerExec = $server->phpBin().' '.$server->composerBin();
+        $composerExec = $this->server->phpBin().' '.$this->server->composerBin();
 
         return [
-            ...$server->script('before-composer'),
+            ...$this->server->script('before-composer'),
             'cd '.$releasePath.PHP_EOL
             .$composerExec.' install --no-dev --ansi',
-            ...$server->script('after-composer'),
+            ...$this->server->script('after-composer'),
         ];
     }
 
@@ -234,27 +231,32 @@ class Deployer
      * Get the installation steps if needed.
      *
      * @param bool $install
-     * @param Server $server
      * @param string $releasePath
      * @return array
      */
-    protected function installationSteps(bool $install, Server $server, string $releasePath): array
+    protected function installationSteps(bool $install, string $releasePath): array
     {
         return [
-            ...$server->script('before-install'),
+            ...$this->server->script('before-install'),
             $install
-                ? 'mv '.$releasePath.'/storage '.$server->path('storage')
+                ? 'mv '.$releasePath.'/storage '.$this->server->path('storage')
                 : 'rm -rf '.$releasePath.'/storage',
-            ...$server->script('after-install'),
+            ...$this->server->script('after-install'),
         ];
     }
 
-    protected function envSteps(Server $server, string $releasePath): array
+    /**
+     * Steps to place a new `.env` file.
+     *
+     * @param string $releasePath
+     * @return array
+     */
+    protected function envSteps(string $releasePath): array
     {
         $env = null;
 
         if ($this->installEnv) {
-            $env = 'cat > '.$server->path('env').' << \'ENV-EOF\''.PHP_EOL
+            $env = 'cat > '.$this->server->path('env').' << \'ENV-EOF\''.PHP_EOL
                 .$this->installEnv.PHP_EOL
                 .'ENV-EOF';
         }
@@ -265,18 +267,17 @@ class Deployer
     /**
      * The symbolic link steps.
      *
-     * @param Server $server
      * @param string $releasePath
      * @return array
      */
-    protected function symlinkSteps(Server $server, string $releasePath): array
+    protected function symlinkSteps(string $releasePath): array
     {
         return [
-            ...$server->script('before-symlinks'),
-            'ln -nfs '.$server->path('storage').' '.$releasePath.'/storage',
-            'ln -nfs '.$server->path('env').' '.$releasePath.'/.env',
-            $server->phpBin().' artisan storage:link',
-            ...$server->script('after-symlinks'),
+            ...$this->server->script('before-symlinks'),
+            'ln -nfs '.$this->server->path('storage').' '.$releasePath.'/storage',
+            'ln -nfs '.$this->server->path('env').' '.$releasePath.'/.env',
+            $this->server->phpBin().' artisan storage:link',
+            ...$this->server->script('after-symlinks'),
         ];
     }
 
@@ -284,50 +285,47 @@ class Deployer
      * The database migration steps if needed.
      *
      * @param bool $migrate
-     * @param Server $server
      * @param string $releasePath
      * @return array
      */
-    protected function migrationSteps(bool $migrate, Server $server, string $releasePath): array
+    protected function migrationSteps(bool $migrate, string $releasePath): array
     {
         return $migrate ? [
-            ...$server->script('before-migrate'),
+            ...$this->server->script('before-migrate'),
             'php artisan migrate --force',
-            ...$server->script('after-migrate'),
+            ...$this->server->script('after-migrate'),
         ] : [];
     }
 
     /**
      * The release path to deploy into.
      *
-     * @param Server $server
      * @param $releaseId
      * @return string
      */
-    protected function releasePath(Server $server, $releaseId): string
+    protected function releasePath($releaseId): string
     {
-        return $server->path('releases').'/'.$releaseId;
+        return $this->server->path('releases').'/'.$releaseId;
     }
 
     /**
      * The asset migration task.
      *
-     * @param Server $server
      * @param string $releaseId
      * @return Task
      */
-    protected function assetTask(Server $server, string $releaseId): Task
+    protected function assetTask(string $releaseId): Task
     {
-        $releasePath = $server->path('releases').'/'.$releaseId;
+        $releasePath = $this->server->path('releases').'/'.$releaseId;
 
         $commands = [
-            ...$server->script('before-assets'),
+            ...$this->server->script('before-assets'),
             'printf "\033c"',
             'echo "Copying assets..."',
-            'scp -P '.$server->port().' -r public/js '.$server->user().'@'.$server->host().':'.$releasePath.'/public',
-            'scp -P '.$server->port().' -r public/css '.$server->user().'@'.$server->host().':'.$releasePath.'/public',
-            'scp -P '.$server->port().' -r public/mix-manifest.json '.$server->user().'@'.$server->host().':'.$releasePath.'/public',
-            ...$server->script('after-assets'),
+            'scp -P '.$this->server->port().' -r public/js '.$this->server->user().'@'.$this->server->host().':'.$releasePath.'/public',
+            'scp -P '.$this->server->port().' -r public/css '.$this->server->user().'@'.$this->server->host().':'.$releasePath.'/public',
+            'scp -P '.$this->server->port().' -r public/mix-manifest.json '.$this->server->user().'@'.$this->server->host().':'.$releasePath.'/public',
+            ...$this->server->script('after-assets'),
         ];
 
         return new Task(implode(PHP_EOL, $commands));
@@ -336,21 +334,20 @@ class Deployer
     /**
      * The live task.
      *
-     * @param Server $server
      * @param string $releaseId
      * @return Task
      */
-    protected function liveTask(Server $server, string $releaseId): Task
+    protected function liveTask(string $releaseId): Task
     {
-        $releasePath = $server->path('releases').'/'.$releaseId;
+        $releasePath = $this->server->path('releases').'/'.$releaseId;
 
         $commands = [
-            ...$server->script('before-live'),
-            'ln -nfs '.$releasePath.' '.$server->path('serve'),
+            ...$this->server->script('before-live'),
+            'ln -nfs '.$releasePath.' '.$this->server->path('serve'),
             'printf "\033c"',
-            ...$server->script('after-live'),
+            ...$this->server->script('after-live'),
         ];
 
-        return new Task(implode(PHP_EOL, $commands), $server);
+        return new Task(implode(PHP_EOL, $commands), $this->server);
     }
 }

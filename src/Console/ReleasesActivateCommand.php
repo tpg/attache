@@ -2,39 +2,36 @@
 
 namespace TPG\Attache\Console;
 
-use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use TPG\Attache\ReleaseService;
 
 /**
  * Class ReleasesActivateCommand.
  */
-class ReleasesActivateCommand extends SymfonyCommand
+class ReleasesActivateCommand extends Command
 {
-    use Command;
-
     /**
-     * Activate the specified release.
+     * Configure the command.
      */
     protected function configure()
     {
         $this->setName('releases:activate')
             ->setDescription('Activate a release on the specified server')
-            ->addArgument('server', InputArgument::REQUIRED, 'The name of the configured server')
-            ->addArgument('release', InputArgument::REQUIRED, 'The ID of the release to activate');
-
-        $this->requiresConfig();
+            ->addArgument('release', InputArgument::REQUIRED, 'The ID of the release to activate')
+            ->requiresServer()
+            ->requiresConfig();
     }
 
     /**
+     * Activate a release.
+     *
      * @return int
      */
     protected function fire(): int
     {
-        $server = $this->config->server($this->argument('server'));
         $id = $this->argument('release');
 
-        $releaseService = (new ReleaseService($server))->fetch();
+        $releaseService = (new ReleaseService($this->server))->fetch();
 
         if ($id !== 'latest' && ! $releaseService->exists($id)) {
             throw new \RuntimeException('A release with ID '.$id.' does not exist');

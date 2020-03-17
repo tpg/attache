@@ -19,6 +19,7 @@
             "local": true
         }
     },
+    "default": "production",
     "servers": [
         {
             "name": "production",

@@ -2,36 +2,32 @@
 
 namespace TPG\Attache\Console;
 
-use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputArgument;
 
 /**
  * Class SshCommand.
  */
-class SshCommand extends SymfonyCommand
+class SshCommand extends Command
 {
-    use Command;
-
     /**
-     * Open an SSH connection to the specified server.
+     * Configure the command.
      */
     protected function configure(): void
     {
         $this->setName('ssh')
             ->setDescription('Open an SSH connection to the specified server')
-            ->addArgument('server', InputArgument::REQUIRED, 'The name of the configured server');
-
-        $this->requiresConfig();
+            ->requiresServer()
+            ->requiresConfig();
     }
 
     /**
+     * Open an SSH connection to the specified server.
+     *
      * @return int
      */
     protected function fire(): int
     {
-        $connection = $this->config->serverConnectionString($this->argument('server'));
-
-        passthru('ssh '.$connection);
+        passthru('ssh '.$this->server->sshConnectionString());
 
         return 0;
     }

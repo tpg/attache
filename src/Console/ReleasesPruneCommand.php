@@ -2,7 +2,6 @@
 
 namespace TPG\Attache\Console;
 
-use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
@@ -12,36 +11,54 @@ use TPG\Attache\Server;
 /**
  * Class ReleasesPruneCommand.
  */
-class ReleasesPruneCommand extends SymfonyCommand
+class ReleasesPruneCommand extends Command
 {
-    use Command;
+    /**
+     * @var ReleaseService
+     */
+    protected ReleaseService $releaseService;
 
     /**
-     * Prune the releases on the server leaving the active one and the previous one.
+     * Configure the command.
      */
     public function configure()
     {
         $this->setName('releases:prune')
             ->setDescription('Prune releases from the specified server. Retains the most recent two')
-            ->addArgument('server', InputArgument::REQUIRED, 'The name of the configured server')
             ->addOption('count', 'o', InputOption::VALUE_REQUIRED, 'The number of releases to prune.')
-            ->addOption('force', 'f', InputOption::VALUE_NONE, 'Do not confirm.');
-
-        $this->requiresConfig();
+            ->addOption('force', 'f', InputOption::VALUE_NONE, 'Do not confirm.')
+            ->requiresConfig()
+            ->requiresServer();
     }
 
     /**
+     * Prune old releases from the server leaving at least the latest 2.
+     *
      * @return int
      */
     public function fire(): int
     {
-        $server = $this->config->server($this->argument('server'));
+        $this->releaseService = (new ReleaseService($this->server))->fetch();
 
-        $releaseService = (new ReleaseService($server))->fetch();
+        $pruneIds = $this->getIdsToDelete($this->releaseService->list(), $this->option('count'));
 
-        $pruneIds = $this->getIdsToDelete($releaseService->list(), $this->option('count'));
+        $this->validate($pruneIds);
 
-        if (in_array($releaseService->active(), $pruneIds, true)) {
+        $this->releaseService->delete($pruneIds);
+
+        $this->output->writeln('Pruned '.count($pruneIds).' releases from <info>'.$this->server->name().'</info>');
+
+        return 0;
+    }
+
+    /**
+     * This is a destructive command, so get user validation.
+     *
+     * @param array $pruneIds
+     */
+    protected function validate(array $pruneIds): void
+    {
+        if (in_array($this->releaseService->active(), $pruneIds, true)) {
             $this->output->writeln('<error>You cannot prune the currently active release.</error>');
             exit(1);
         }
@@ -51,18 +68,19 @@ class ReleasesPruneCommand extends SymfonyCommand
             exit(1);
         }
 
-        if (! $this->option('force') && ! $this->confirmDeletion($server, $pruneIds)) {
+        if (! $this->option('force') && ! $this->confirmDeletion($this->server, $pruneIds)) {
             $this->output->writeln('Cancelled.');
             exit(1);
         }
-
-        $releaseService->delete($pruneIds);
-
-        $this->output->writeln('Pruned '.count($pruneIds).' releases from <info>'.$server->name().'</info>');
-
-        return 0;
     }
 
+    /**
+     * Get an array of release IDs to remove from the server.
+     *
+     * @param array $releases
+     * @param int|null $count
+     * @return array
+     */
     protected function getIdsToDelete(array $releases, ?int $count = null): array
     {
         if (! $count || $count > count($releases) - 2) {
@@ -72,6 +90,13 @@ class ReleasesPruneCommand extends SymfonyCommand
         return array_slice($releases, 0, $count);
     }
 
+    /**
+     * Confirm the deletion with the user.
+     *
+     * @param Server $server
+     * @param array $ids
+     * @return bool
+     */
     protected function confirmDeletion(Server $server, array $ids): bool
     {
         $helper = $this->getHelper('question');
