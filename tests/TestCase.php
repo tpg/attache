@@ -26,15 +26,15 @@ class TestCase extends \PHPUnit\Framework\TestCase
                 'branch' => 'master',
                 'scripts' => [
                     'before-deploy' => [
-                        '@php @composer {{ @release }}/artisan some-command'
-                    ]
+                        '@php @composer {{ @release }}/artisan some-command',
+                    ],
                 ],
                 'php' => [
                     'bin' => 'php-7.4',
                 ],
                 'composer' => [
                     'bin' => 'composer.phar',
-                ]
+                ],
             ], [
                 'name' => 'server-2',
             ],
