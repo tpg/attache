@@ -223,6 +223,7 @@ class Server
     public function script(string $key): array
     {
         $script = Arr::get($this->config, 'scripts.'.$key, []);
+
         return (new ScriptCompiler($this))->compile($script);
     }
 
@@ -235,8 +236,9 @@ class Server
     {
         $paths = glob($this->path('releases'), GLOB_ONLYDIR);
 
-        $releases = array_map(fn($path) => basename($path), $paths);
+        $releases = array_map(fn ($path) => basename($path), $paths);
         sort($releases);
+
         return $releases;
     }
 
