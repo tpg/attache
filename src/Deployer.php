@@ -265,7 +265,7 @@ class Deployer
 
         return [
             'cd '.$this->server->root(),
-            $env
+            $env,
         ];
     }
 
