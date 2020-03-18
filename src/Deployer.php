@@ -149,8 +149,9 @@ class Deployer
         $releasePath = $this->releasePath($releaseId);
 
         $commands = array_filter([
-            ...$this->server->script('before-deploy'),
             'printf "\033c"',
+            'cd '.$this->server->root(),
+            ...$this->server->script('before-deploy'),
             ...$this->cloneSteps($releasePath),
             ...$this->getComposer($releasePath),
             ...$this->composerSteps($releasePath),
@@ -175,6 +176,7 @@ class Deployer
     protected function cloneSteps(string $releasePath): array
     {
         return [
+            'cd '.$this->server->root(),
             ...$this->server->script('before-clone'),
             'git clone -b '.$this->server->branch().' --depth=1 '.$this->config->repository().' '.$releasePath,
             ...$this->server->script('after-clone'),
@@ -191,6 +193,7 @@ class Deployer
     {
         if ($this->server->composer('local')) {
             return [
+                'cd '.$this->server->root(),
                 ...$this->server->script('before-prep-composer'),
                 'if test ! -f "'.$this->server->composerBin().'"; then',
                 'curl -sS https://getcomposer.org/installer -o composer-installer.php',
@@ -217,6 +220,7 @@ class Deployer
         $composerExec = $this->server->phpBin().' '.$this->server->composerBin();
 
         return [
+            'cd '.$this->server->root(),
             ...$this->server->script('before-composer'),
             'cd '.$releasePath.PHP_EOL
             .$composerExec.' install --no-dev --ansi',
@@ -234,6 +238,7 @@ class Deployer
     protected function installationSteps(bool $install, string $releasePath): array
     {
         return [
+            'cd '.$this->server->root(),
             ...$this->server->script('before-install'),
             $install
                 ? 'mv '.$releasePath.'/storage '.$this->server->path('storage')
@@ -258,7 +263,10 @@ class Deployer
                 .'ENV-EOF';
         }
 
-        return [$env];
+        return [
+            'cd '.$this->server->root(),
+            $env
+        ];
     }
 
     /**
@@ -270,6 +278,7 @@ class Deployer
     protected function symlinkSteps(string $releasePath): array
     {
         return [
+            'cd '.$this->server->root(),
             ...$this->server->script('before-symlinks'),
             'ln -nfs '.$this->server->path('storage').' '.$releasePath.'/storage',
             'ln -nfs '.$this->server->path('env').' '.$releasePath.'/.env',
@@ -288,6 +297,7 @@ class Deployer
     protected function migrationSteps(bool $migrate, string $releasePath): array
     {
         return $migrate ? [
+            'cd '.$this->server->root(),
             ...$this->server->script('before-migrate'),
             'php artisan migrate --force',
             ...$this->server->script('after-migrate'),
@@ -316,8 +326,8 @@ class Deployer
         $releasePath = $this->server->path('releases').'/'.$releaseId;
 
         $commands = [
-            ...$this->server->script('before-assets'),
             'printf "\033c"',
+            ...$this->server->script('before-assets'),
             'echo "Copying assets..."',
             'scp -P '.$this->server->port().' -r public/js '.$this->server->user().'@'.$this->server->host().':'.$releasePath.'/public',
             'scp -P '.$this->server->port().' -r public/css '.$this->server->user().'@'.$this->server->host().':'.$releasePath.'/public',
@@ -339,10 +349,11 @@ class Deployer
         $releasePath = $this->server->path('releases').'/'.$releaseId;
 
         $commands = [
+            'cd '.$this->server->root(),
             ...$this->server->script('before-live'),
             'ln -nfs '.$releasePath.' '.$this->server->path('serve'),
-            'printf "\033c"',
             ...$this->server->script('after-live'),
+            'printf "\033c"',
         ];
 
         return new Task(implode(PHP_EOL, $commands), $this->server);
