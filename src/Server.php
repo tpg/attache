@@ -222,7 +222,22 @@ class Server
      */
     public function script(string $key): array
     {
-        return Arr::get($this->config, 'scripts.'.$key, []);
+        $script = Arr::get($this->config, 'scripts.'.$key, []);
+        return (new ScriptCompiler($this))->compile($script);
+    }
+
+    public function latestReleaseId(): string
+    {
+        return array_reverse($this->releaseIds())[0];
+    }
+
+    public function releaseIds(): array
+    {
+        $paths = glob($this->path('releases'), GLOB_ONLYDIR);
+
+        $releases = array_map(fn($path) => basename($path), $paths);
+        sort($releases);
+        return $releases;
     }
 
     /**

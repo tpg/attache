@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.1] 18-03-2020
+## Added
+* Added a set of tags to the scripts so that correct deployment values can be used.
+* Added a new `ScriptCompiler` class that translates tags into actual values.
+* The `Server` instances now have a new `latestReleaseId()` method and a `releaseIds()` method.
+* Added a test for the `ScriptCompiler`.
+
 ## [0.4.0] 17-03-2020
 ## Added
 * Added a new `default` server feature.
