@@ -11,7 +11,6 @@ class ScriptCompiler
      */
     protected Server $server;
 
-
     /**
      * ScriptCompiler constructor.
      * @param Server $server
@@ -32,7 +31,6 @@ class ScriptCompiler
             }
 
             return preg_replace('/\{\{\s?(.+?)\s?\}\}/', '$1', $line);
-
         }, $lines);
     }
 

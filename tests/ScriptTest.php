@@ -26,7 +26,7 @@ class ScriptTest extends TestCase
         $server->setConfig($this->config['servers'][0]);
 
         $expected = [
-            $server->phpBin().' '.$server->composerBin().' '.$server->latestReleaseId().'/artisan some-command'
+            $server->phpBin().' '.$server->composerBin().' '.$server->latestReleaseId().'/artisan some-command',
         ];
 
         $this->assertSame($expected, $server->script('before-deploy'));
