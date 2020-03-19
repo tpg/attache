@@ -10,4 +10,4 @@ Install Attache globally using Composer:
 composer global require thepublicgood/attache
 ```
 
-For detailed documentation please see [https://tpg.github.io/attache/]().
+For more details and useage instructions please see the [official documentation](https://tpg.github.io/attache/).
