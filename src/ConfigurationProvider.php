@@ -133,7 +133,7 @@ class ConfigurationProvider
         return $this->servers;
     }
 
-    public function default(): string
+    public function default(): ?string
     {
         return $this->default;
     }

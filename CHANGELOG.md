@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.4.4] 19-03-2020
+## [0.4.5] 19-03-2020
 ### Fixed
 * Fixed a bug in the `deploy` command that was not running the `prune` command correctly when uring the `--prune` option.
 * Fixed a bug in the `deploy` command that was not passing the server name to the `prune` command.
