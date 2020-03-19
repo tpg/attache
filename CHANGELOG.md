@@ -1,34 +1,40 @@
 # Changelog
 
+## [0.4.3] 19-03-2020
+### Fixed
+* Fixed a bug where only the current task would exit if a non-zero exit code is returned.
+* Fixed a bug that was not running the `artisan storage:link` command correctly.
+* Fixed a bug when running global composer but still prefixing with the PHP binary.
+
 ## [0.4.2] 19-03-2020
-## Fixed
+### Fixed
 * The `Initializer::getConfig()` method was not setting `composer.local` to a valid boolean value.
 
-## Changed
+### Changed
 * Cleaned up the `Command::execute()` method a little.
 * The `Command::fire()` method now returns a valid integer value by default. 
 
 ## [0.4.1] 18-03-2020
-## Added
+### Added
 * Added a set of tags to the scripts so that correct deployment values can be used.
 * Added a new `ScriptCompiler` class that translates tags into actual values.
 * The `Server` instances now have a new `latestReleaseId()` method and a `releaseIds()` method.
 * Added a test for the `ScriptCompiler`.
 
 ## [0.4.0] 17-03-2020
-## Added
+### Added
 * Added a new `default` server feature.
 * Added a `Command::requiresServer()` method for commands that expect a specified server.
 * Added missing documentation to all class methods.
 
-## Changed
+### Changed
 * The server name is no longer required for commands that need a server if a `default` is set.
 * The `ReleasesActivateCommand` arguments have been reversed.
 * A fairly large cleanup of all the classes.
 * All of the task and step methods in `Deployer` no longer accept a `Server` instance as a parameter.
 * All commands now extend an `Attache\Console\Command` abstract class.
 
-## Removed
+### Removed
 * The `servers:show` command has been removed as it doesn't really serve any useful purpose.
 
 ## [0.3.2] 17-03-2020

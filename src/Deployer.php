@@ -82,9 +82,13 @@ class Deployer
     {
         foreach ($tasks as $task) {
             if ($task->server()) {
-                (new Ssh($task))->tty()->run(function ($task, $type, $output) {
+                $code = (new Ssh($task))->tty()->run(function ($task, $type, $output) {
                     $this->output->writeln($output);
                 });
+
+                if ($code !== 0) {
+                    throw new \RuntimeException('One or more tasks did not complete correctly');
+                }
             } else {
                 $process = Process::fromShellCommandline($task->script());
                 $process
@@ -217,7 +221,11 @@ class Deployer
      */
     protected function composerSteps(string $releasePath): array
     {
-        $composerExec = $this->server->phpBin().' '.$this->server->composerBin();
+        $composerExec = $this->server->composerBin();
+
+        if ($this->server->composer('local')) {
+            $composerExec = $this->server->phpBin().' '.$this->server->composerBin();
+        }
 
         return [
             'cd '.$this->server->root(),
@@ -282,7 +290,7 @@ class Deployer
             ...$this->server->script('before-symlinks'),
             'ln -nfs '.$this->server->path('storage').' '.$releasePath.'/storage',
             'ln -nfs '.$this->server->path('env').' '.$releasePath.'/.env',
-            $this->server->phpBin().' artisan storage:link',
+            $this->server->phpBin().' '.$releasePath.'/artisan storage:link',
             ...$this->server->script('after-symlinks'),
         ];
     }
