@@ -104,13 +104,9 @@ abstract class Command extends SymfonyCommand
         $this->input = $input;
         $this->output = $output;
 
-        if (! $this->config && $this->input->hasOption('config')) {
-            $this->loadConfig();
-        }
+        $this->loadConfig();
 
-        if ($this->config && $this->input->hasArgument('server')) {
-            $this->setConfiguredServer();
-        }
+        $this->setConfiguredServer();
 
         return (int) $this->fire();
     }
@@ -122,7 +118,7 @@ abstract class Command extends SymfonyCommand
      */
     protected function fire(): int
     {
-        //
+        return 0;
     }
 
     /**
@@ -133,7 +129,9 @@ abstract class Command extends SymfonyCommand
      */
     protected function loadConfig(): void
     {
-        $this->config = new ConfigurationProvider($this->option('config'));
+        if (! $this->config && $this->input->hasOption('config')) {
+            $this->config = new ConfigurationProvider($this->option('config'));
+        }
     }
 
     /**
@@ -143,7 +141,9 @@ abstract class Command extends SymfonyCommand
      */
     protected function setConfiguredServer(): void
     {
-        $this->server = $this->config->server($this->argument('server'));
+        if ($this->config && $this->input->hasArgument('server')) {
+            $this->server = $this->config->server($this->argument('server'));
+        }
     }
 
     /**

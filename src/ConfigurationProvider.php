@@ -61,6 +61,7 @@ class ConfigurationProvider
      * Set the configuration.
      *
      * @param string|array $config
+     * @throws ConfigurationException
      */
     public function setConfig($config): void
     {
@@ -71,7 +72,12 @@ class ConfigurationProvider
         $this->repository = Arr::get($config, 'repository');
         $this->default = Arr::get($config, 'default');
 
-        $this->loadServers(Arr::get($config, 'servers'), Arr::get($config, 'common', []));
+        $servers = Arr::get($config, 'servers');
+        if (!$servers) {
+            throw new ConfigurationException('No servers have been configured');
+        }
+
+        $this->loadServers($servers, Arr::get($config, 'common', []));
     }
 
     /**
