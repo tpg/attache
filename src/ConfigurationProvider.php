@@ -133,6 +133,11 @@ class ConfigurationProvider
         return $this->servers;
     }
 
+    public function default(): string
+    {
+        return $this->default;
+    }
+
     /**
      * Get a single Server by its name.
      *

@@ -61,10 +61,8 @@ class DeployCommand extends Command
 
         if ($this->option('prune')) {
             $command = new ReleasesPruneCommand(null, $this->config);
-            $command->execute(new ArrayInput([
-                'server' => 'production',
-                '--force' => true,
-            ]), $this->output);
+
+            $command->run(new ArrayInput($this->getPruneArguments()), $this->output);
         }
 
         return 0;
@@ -83,5 +81,18 @@ class DeployCommand extends Command
         }
 
         return $this->deployer;
+    }
+
+    /**
+     * Get arguments and options to pass to `PruneCommand`.
+     *
+     * @return array
+     */
+    protected function getPruneArguments(): array
+    {
+        return [
+            'server' => $this->argument('server'),
+            '--force' => true,
+        ];
     }
 }
