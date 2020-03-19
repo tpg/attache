@@ -124,7 +124,7 @@ class Initializer
                     ],
                     'composer' => [
                         'bin' => 'composer',
-                        'local' => 'false',
+                        'local' => false,
                     ],
                     'branch' => 'master',
                     'migrate' => false,

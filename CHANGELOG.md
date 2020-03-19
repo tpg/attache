@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.4.2] 19-03-2020
+## Fixed
+* The `Initializer::getConfig()` method was not setting `composer.local` to a valid boolean value.
+
+## Changed
+* Cleaned up the `Command::execute()` method a little.
+* The `Command::fire()` method now returns a valid integer value by default. 
+
 ## [0.4.1] 18-03-2020
 ## Added
 * Added a set of tags to the scripts so that correct deployment values can be used.
