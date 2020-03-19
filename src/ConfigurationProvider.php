@@ -73,7 +73,7 @@ class ConfigurationProvider
         $this->default = Arr::get($config, 'default');
 
         $servers = Arr::get($config, 'servers');
-        if (!$servers) {
+        if (! $servers) {
             throw new ConfigurationException('No servers have been configured');
         }
 
