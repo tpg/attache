@@ -14,11 +14,30 @@ class Initializer
     protected array $remotes = [];
 
     /**
+     * @param string|null $gitConfigFilename
      * @throws ConfigurationException
      */
-    public function __construct()
+    public function __construct(string $gitConfigFilename = null)
     {
-        $this->discoverGitRemotes();
+        if ($gitConfigFilename) {
+            $this->loadGitConfig($gitConfigFilename);
+        }
+    }
+
+    /**
+     * Load the Git config from a config file.
+     *
+     * @param string $filename
+     * @throws ConfigurationException
+     */
+    public function loadGitConfig(string $filename): void
+    {
+        if (! file_exists($filename)) {
+            throw new ConfigurationException('Not a git repository');
+        }
+
+        $ini = file_get_contents($filename);
+        $this->discoverGitRemotes($ini);
     }
 
     /**
@@ -46,23 +65,30 @@ class Initializer
     /**
      * Discover the configured Git remote URL.
      *
-     * @throws ConfigurationException
+     * @param string $gitConfig
      */
-    protected function discoverGitRemotes(): void
+    public function discoverGitRemotes(string $gitConfig): void
     {
-        if (! file_exists('.git/config')) {
-            throw new ConfigurationException('Not a git repository');
-        }
+        $ini = parse_ini_string($gitConfig, true);
+        $this->remotes = $this->getGitConfigKeys($ini);
+    }
 
-        $ini = parse_ini_file('.git/config', true);
-
+    /**
+     * @param array $ini
+     * @return array
+     */
+    protected function getGitConfigKeys(array $ini): array
+    {
         $keys = array_values(array_filter(array_keys($ini), static function ($key) {
             return Str::startsWith($key, 'remote');
         }));
 
+        $remotes = [];
         foreach ($keys as $key) {
-            $this->remotes[Str::after($key, 'remote ')] = Arr::get($ini, $key.'.url');
+            $remotes[Str::after($key, 'remote ')] = Arr::get($ini, $key.'.url');
         }
+
+        return $remotes;
     }
 
     /**

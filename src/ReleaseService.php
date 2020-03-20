@@ -37,6 +37,18 @@ class ReleaseService
      */
     public function fetch(): self
     {
+        $outputs = $this->getReleaseData();
+
+        $this->releases = $this->getReleasesFromOutput(Arr::get($outputs, 0, ''));
+        if (count($this->releases)) {
+            $this->active = $this->getActiveFromOutput(Arr::get($outputs, 1, ''));
+        }
+
+        return $this;
+    }
+
+    protected function getReleaseData(): array
+    {
         $command = 'ls '.$this->server->path('releases').PHP_EOL
             .'ls -l '.$this->server->root();
         $task = new Task($command, $this->server);
@@ -46,12 +58,7 @@ class ReleaseService
             $outputs[] = $output;
         });
 
-        $this->releases = $this->getReleasesFromOutput(Arr::get($outputs, 0, ''));
-        if (count($this->releases)) {
-            $this->active = $this->getActiveFromOutput(Arr::get($outputs, 1, ''));
-        }
-
-        return $this;
+        return $outputs;
     }
 
     /**

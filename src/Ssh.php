@@ -9,7 +9,7 @@ class Ssh
     /**
      * @var Task
      */
-    protected Task $task;
+    protected ?Task $task = null;
 
     /**
      * @var bool
@@ -24,7 +24,14 @@ class Ssh
     /**
      * @param Task $task
      */
-    public function __construct(Task $task)
+    public function __construct(Task $task = null)
+    {
+        if ($task) {
+            $this->setTask($task);
+        }
+    }
+
+    public function setTask(Task $task): void
     {
         $this->task = $task;
     }
@@ -37,6 +44,14 @@ class Ssh
      */
     public function run(\Closure $callback = null): int
     {
+        if (! $this->task) {
+            throw new \RuntimeException('No task specified');
+        }
+
+        if (! $this->task->server()) {
+            throw new \RuntimeException('No server to connect to');
+        }
+
         $process = $this->getProcess();
 
         if ($this->tty) {

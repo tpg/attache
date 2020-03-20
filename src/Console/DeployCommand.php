@@ -25,9 +25,8 @@ class DeployCommand extends Command
      */
     public function __construct(string $name = null, ?ConfigurationProvider $configurationProvider = null, ?Deployer $deployer = null)
     {
-        parent::__construct($name);
+        parent::__construct($name, $configurationProvider);
 
-        $this->config = $configurationProvider;
         $this->deployer = $deployer;
     }
 

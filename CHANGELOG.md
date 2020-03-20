@@ -1,5 +1,18 @@
 # Changelog
 
+## [Unreleased]
+* The `Deployer::DeploymentTask` method has been renamed `Deployer::deploymentTask`.
+* The `InstallCommand` constructor will now accept an instance of `Deployer`.
+* The env steps and installation steps have been swapped around in `Deployer::deploymentTask`.
+* A `Deployer::generateKeySteps` has been added. Will run `artisan key:generate` after the symlink steps.
+* The `Initializer::discoverGitRemotes()` method will no longer be called from the constructor.
+* A new `Initializer::loadGitConfig()` method will be called only if a config filename is passed to the constructor.
+* The `Initializer::discoverGitRemotes()` method is now public.
+* Took the SSH task execution out of the `ReleaseServer::fetch()` method and moved it to a protected `getReleaseData` method.
+* The `Task` parameter on the `Ssh` constructor is now optional.
+* A new `Ssh::setTask` method can be used to set a task on the `Ssh` instance.
+* `Ssh::run` will now throw an exception if the task instance doesn't have a server, or if a task instance isn't set.
+
 ## [0.4.5] 19-03-2020
 ### Fixed
 * Fixed a bug in the `deploy` command that was not running the `prune` command correctly when uring the `--prune` option.

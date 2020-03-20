@@ -8,9 +8,68 @@ use Symfony\Component\Console\Tester\CommandTester;
 use TPG\Attache\ConfigurationProvider;
 use TPG\Attache\Console\ReleasesListCommand;
 use TPG\Attache\ReleaseService;
+use TPG\Attache\Task;
 
 class ReleaseTest extends TestCase
 {
+    /**
+     * @test
+     */
+    public function it_can_process_release_data_from_the_server()
+    {
+        $config = $this->getConfig();
+
+        $releaseService = \Mockery::mock(ReleaseService::class, [$config->server('server-1')])
+            ->makePartial()
+            ->shouldAllowMockingProtectedMethods();
+
+        $releaseService->shouldReceive('getReleaseData')
+            ->once()
+            ->andReturn($this->releaseData());
+
+        $releaseService->fetch();
+
+        $this->assertSame([
+            '20200101010100',
+            '20200101010200',
+            '20200101010300',
+        ], $releaseService->list());
+
+        $this->assertSame('20200101010300', $releaseService->active());
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_check_if_a_release_exists()
+    {
+        $config = $this->getConfig();
+
+        $releaseService = \Mockery::mock(ReleaseService::class, [$config->server('server-1')])
+            ->makePartial()
+            ->shouldAllowMockingProtectedMethods();
+
+        $releaseService->shouldReceive('getReleaseData')
+            ->once()
+            ->andReturn($this->releaseData());
+
+        $releaseService->fetch();
+
+        $this->assertTrue($releaseService->exists('20200101010200'));
+    }
+
+    protected function releaseData()
+    {
+        return [
+            '20200101010100'.PHP_EOL.'20200101010200'.PHP_EOL.'20200101010300',
+            'total 1932'.
+            '-rwxr-xr-x  1 ubuntu ubuntu 1969526 Mar 17 13:13 composer.phar'.PHP_EOL.
+            'lrwxrwxrwx  1 ubuntu ubuntu      44 Mar 18 20:56 live -> /app/releases/20200101010300'.PHP_EOL.
+            'drwxrwxr-x  5 ubuntu ubuntu    4096 Mar 18 20:56 releases'.PHP_EOL.
+            'drwxrwxr-x+ 5 ubuntu ubuntu    4096 Feb 15 06:33 storage'
+        ];
+    }
+
     /**
      * @test
      */

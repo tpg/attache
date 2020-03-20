@@ -3,11 +3,21 @@
 namespace TPG\Attache\Console;
 
 use Symfony\Component\Console\Input\InputOption;
+use TPG\Attache\ConfigurationProvider;
 use TPG\Attache\Deployer;
 use TPG\Attache\ReleaseService;
 
 class InstallCommand extends Command
 {
+    protected ?Deployer $deployer;
+
+    public function __construct(string $name = null, ?ConfigurationProvider $configurationProvider = null, ?Deployer $deployer = null)
+    {
+        parent::__construct($name, $configurationProvider);
+
+        $this->deployer = $deployer;
+    }
+
     /**
      * Configure the command.
      */
@@ -68,9 +78,36 @@ class InstallCommand extends Command
         }
 
         try {
-            return file_get_contents($filename);
+            return $this->updateEnv(file_get_contents($filename));
+
         } catch (\Exception $e) {
             $this->output->writeln($this->error($filename.' does not exist'));
         }
+    }
+
+    /**
+     *
+     *
+     * @param string $env
+     * @return string
+     */
+    protected function updateEnv(string $env)
+    {
+        $env = explode(PHP_EOL, $env);
+
+        array_walk($env, function (&$line) {
+            $parts = explode('=', $line);
+            switch ($parts[0]) {
+                case 'APP_ENV':
+                    $parts[1] = 'production';
+                    break;
+                case 'APP_DEBUG':
+                    $parts[1] = 'true';
+                    break;
+            }
+            $env = implode('=', $parts);
+        });
+
+        return implode(PHP_EOL, $env);
     }
 }

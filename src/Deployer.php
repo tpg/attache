@@ -112,7 +112,7 @@ class Deployer
     {
         return [
             $this->buildTask(),
-            $this->DeploymentTask(
+            $this->deploymentTask(
                 $releaseId,
                 $this->server->migrate(),
                 $install
@@ -148,7 +148,7 @@ class Deployer
      * @param bool $install
      * @return Task
      */
-    protected function DeploymentTask(string $releaseId, $migrate = false, $install = false): Task
+    protected function deploymentTask(string $releaseId, $migrate = false, $install = false): Task
     {
         $releasePath = $this->releasePath($releaseId);
 
@@ -159,9 +159,10 @@ class Deployer
             ...$this->cloneSteps($releasePath),
             ...$this->getComposer($releasePath),
             ...$this->composerSteps($releasePath),
-            ...$this->installationSteps($install, $releasePath),
             ...$this->envSteps($releasePath),
+            ...$this->installationSteps($install, $releasePath),
             ...$this->symlinkSteps($releasePath),
+            ...$this->generateKeySteps($install, $releasePath),
             ...$this->migrationSteps($migrate, $releasePath),
             ...$this->server->script('after-deploy'),
         ], static function ($command) {
@@ -237,25 +238,6 @@ class Deployer
     }
 
     /**
-     * Get the installation steps if needed.
-     *
-     * @param bool $install
-     * @param string $releasePath
-     * @return array
-     */
-    protected function installationSteps(bool $install, string $releasePath): array
-    {
-        return [
-            'cd '.$this->server->root(),
-            ...$this->server->script('before-install'),
-            $install
-                ? 'mv '.$releasePath.'/storage '.$this->server->path('storage')
-                : 'rm -rf '.$releasePath.'/storage',
-            ...$this->server->script('after-install'),
-        ];
-    }
-
-    /**
      * Steps to place a new `.env` file.
      *
      * @param string $releasePath
@@ -278,6 +260,25 @@ class Deployer
     }
 
     /**
+     * Get the installation steps if needed.
+     *
+     * @param bool $install
+     * @param string $releasePath
+     * @return array
+     */
+    protected function installationSteps(bool $install, string $releasePath): array
+    {
+        return [
+            'cd '.$this->server->root(),
+            ...$this->server->script('before-install'),
+            $install
+                ? 'mv '.$releasePath.'/storage '.$this->server->path('storage')
+                : 'rm -rf '.$releasePath.'/storage',
+            ...$this->server->script('after-install'),
+        ];
+    }
+
+    /**
      * The symbolic link steps.
      *
      * @param string $releasePath
@@ -293,6 +294,15 @@ class Deployer
             $this->server->phpBin().' '.$releasePath.'/artisan storage:link',
             ...$this->server->script('after-symlinks'),
         ];
+    }
+
+    protected function generateKeySteps(bool $install, string $releasePath): array
+    {
+        return $install
+            ? [
+                $this->server->phpBin().' '.$releasePath.'/artisan key:generate',
+            ]
+            : [];
     }
 
     /**
