@@ -2,7 +2,6 @@
 
 namespace TPG\Attache\Tests;
 
-use http\Exception\RuntimeException;
 use TPG\Attache\Ssh;
 use TPG\Attache\Task;
 

@@ -38,14 +38,14 @@ class InitializerTest extends TestCase
 
         $config = [
             '[remote "origin"]',
-            'url = git@origin.git'
+            'url = git@origin.git',
         ];
 
         $initializer->discoverGitRemotes(implode(PHP_EOL, $config));
         $initializer->createConfig(__DIR__.'/test-config.json', $initializer->remote());
 
         $config = json_decode(
-            file_get_contents(__DIR__ . '/test-config.json'),
+            file_get_contents(__DIR__.'/test-config.json'),
             true,
             512,
             JSON_THROW_ON_ERROR
