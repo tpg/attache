@@ -8,7 +8,6 @@ use Symfony\Component\Console\Tester\CommandTester;
 use TPG\Attache\ConfigurationProvider;
 use TPG\Attache\Console\ReleasesListCommand;
 use TPG\Attache\ReleaseService;
-use TPG\Attache\Task;
 
 class ReleaseTest extends TestCase
 {
@@ -66,7 +65,7 @@ class ReleaseTest extends TestCase
             '-rwxr-xr-x  1 ubuntu ubuntu 1969526 Mar 17 13:13 composer.phar'.PHP_EOL.
             'lrwxrwxrwx  1 ubuntu ubuntu      44 Mar 18 20:56 live -> /app/releases/20200101010300'.PHP_EOL.
             'drwxrwxr-x  5 ubuntu ubuntu    4096 Mar 18 20:56 releases'.PHP_EOL.
-            'drwxrwxr-x+ 5 ubuntu ubuntu    4096 Feb 15 06:33 storage'
+            'drwxrwxr-x+ 5 ubuntu ubuntu    4096 Feb 15 06:33 storage',
         ];
     }
 

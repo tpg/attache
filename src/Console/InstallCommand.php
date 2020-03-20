@@ -79,15 +79,12 @@ class InstallCommand extends Command
 
         try {
             return $this->updateEnv(file_get_contents($filename));
-
         } catch (\Exception $e) {
             $this->output->writeln($this->error($filename.' does not exist'));
         }
     }
 
     /**
-     *
-     *
      * @param string $env
      * @return string
      */
