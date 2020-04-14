@@ -13,6 +13,13 @@
 * A new `Ssh::setTask` method can be used to set a task on the `Ssh` instance.
 * `Ssh::run` will now throw an exception if the task instance doesn't have a server, or if a task instance isn't set.
 
+## [0.4.6] 14-04-2020
+### Added
+* No longer need to specify the server name for single server configs.
+
+### Fixed
+* Updated the version number in the `attache` bin correctly.
+
 ## [0.4.5] 19-03-2020
 ### Fixed
 * Fixed a bug in the `deploy` command that was not running the `prune` command correctly when uring the `--prune` option.
