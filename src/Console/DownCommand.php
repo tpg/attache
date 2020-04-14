@@ -9,7 +9,7 @@ class DownCommand extends Command
     /**
      * Configure the command.
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('releases:down')
             ->setDescription('Take the specific release offline')

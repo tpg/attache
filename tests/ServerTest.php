@@ -3,6 +3,7 @@
 namespace TPG\Attache\Tests;
 
 use Symfony\Component\Console\Tester\CommandTester;
+use TPG\Attache\ConfigurationProvider;
 use TPG\Attache\Console\ServersListCommand;
 
 class ServerTest extends TestCase
@@ -45,5 +46,31 @@ class ServerTest extends TestCase
         $server = $config->server();
 
         $this->assertSame('server-1', $server->name());
+    }
+
+    /**
+     * @test
+     */
+    public function single_server_config_will_be_the_default_server()
+    {
+        $config = $this->config;
+        $config['default'] = null;
+        $config['servers'] = [
+            [
+                'name' => 'single',
+                'host' => 'single-host',
+                'user' => 'single-user',
+                'port' => 22,
+                'branch' => 'master',
+                'root' => 'single-root'
+            ]
+        ];
+
+        $provider = new ConfigurationProvider();
+        $provider->setConfig($config);
+
+        $server = $provider->server();
+
+        $this->assertSame('single', $server->name());
     }
 }

@@ -46,9 +46,7 @@ class DeployCommand extends Command
      * Run the deployment.
      *
      * @return int
-     * @throws ConfigurationException
-     * @throws FileNotFoundException
-     * @throws \JsonException
+     * @throws \Exception
      */
     protected function fire(): int
     {

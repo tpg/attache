@@ -21,7 +21,7 @@ class InstallCommand extends Command
     /**
      * Configure the command.
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('install')
             ->setDescription('Initial installation and deployment to the specified server')
@@ -88,7 +88,7 @@ class InstallCommand extends Command
      * @param string $env
      * @return string
      */
-    protected function updateEnv(string $env)
+    protected function updateEnv(string $env): string
     {
         $env = explode(PHP_EOL, $env);
 

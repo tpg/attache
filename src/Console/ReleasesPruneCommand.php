@@ -17,7 +17,7 @@ class ReleasesPruneCommand extends Command
     /**
      * Configure the command.
      */
-    public function configure()
+    public function configure(): void
     {
         $this->setName('releases:prune')
             ->setDescription('Prune releases from the specified server. Retains the most recent two')

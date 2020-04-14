@@ -9,7 +9,7 @@ class UpCommand extends Command
     /**
      * Configure the command.
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('releases:up')
             ->setDescription('Put the specific release online')

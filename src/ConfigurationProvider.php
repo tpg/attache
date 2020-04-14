@@ -147,6 +147,10 @@ class ConfigurationProvider
      */
     public function server(?string $key = null): Server
     {
+        if (! $this->default && $this->servers->count() === 1) {
+            return $this->servers->first();
+        }
+
         if (! $key && ! $this->default) {
             throw new ConfigurationException('No server key provided and no default specified');
         }

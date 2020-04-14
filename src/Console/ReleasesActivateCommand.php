@@ -10,7 +10,7 @@ class ReleasesActivateCommand extends Command
     /**
      * Configure the command.
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('releases:activate')
             ->setDescription('Activate a release on the specified server')

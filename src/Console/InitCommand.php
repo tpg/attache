@@ -13,7 +13,7 @@ class InitCommand extends Command
     /**
      * Configure the command.
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('init')
             ->setDescription('Initialize Attaché in the current project directory')
@@ -24,7 +24,7 @@ class InitCommand extends Command
      * Initialize the project by creating a new config file.
      *
      * @return int
-     * @throws ConfigurationException
+     * @throws \JsonException
      */
     protected function fire(): int
     {

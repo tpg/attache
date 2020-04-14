@@ -141,14 +141,19 @@ abstract class Command extends SymfonyCommand
      */
     protected function setConfiguredServer(): void
     {
-        if ($this->config && $this->input->hasArgument('server')) {
-            $serverString = $this->argument('server') ?: $this->config->default();
+        $serverString = $this->config->servers()->first()->name();
 
-            if (! $serverString) {
-                throw new ConfigurationException('No server specified');
-            }
-            $this->server = $this->config->server($serverString);
+        if ($this->config
+            && $this->input->hasArgument('server')
+            && $this->config->servers()->count() > 1) {
+
+            $serverString = $this->argument('server') ?: $this->config->default();
         }
+
+        if (! $serverString) {
+            throw new ConfigurationException('No server specified');
+        }
+        $this->server = $this->config->server($serverString);
     }
 
     /**
