@@ -146,7 +146,6 @@ abstract class Command extends SymfonyCommand
         if ($this->config
             && $this->input->hasArgument('server')
             && $this->config->servers()->count() > 1) {
-
             $serverString = $this->argument('server') ?: $this->config->default();
         }
 

@@ -5,7 +5,6 @@ namespace TPG\Attache\Console;
 use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Question\ChoiceQuestion;
-use TPG\Attache\Exceptions\ConfigurationException;
 use TPG\Attache\Initializer;
 
 class InitCommand extends Command

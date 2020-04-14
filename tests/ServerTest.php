@@ -62,8 +62,8 @@ class ServerTest extends TestCase
                 'user' => 'single-user',
                 'port' => 22,
                 'branch' => 'master',
-                'root' => 'single-root'
-            ]
+                'root' => 'single-root',
+            ],
         ];
 
         $provider = new ConfigurationProvider();
