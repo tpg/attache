@@ -2,12 +2,10 @@
 
 namespace TPG\Attache\Console;
 
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputOption;
 use TPG\Attache\ConfigurationProvider;
 use TPG\Attache\Deployer;
-use TPG\Attache\Exceptions\ConfigurationException;
 use TPG\Attache\Server;
 
 class DeployCommand extends Command
