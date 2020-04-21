@@ -48,7 +48,6 @@ class Initializer
      */
     public function createConfig(string $filename, string $gitUrl = null): void
     {
-
         $config = $this->getConfig($gitUrl);
 
         file_put_contents(

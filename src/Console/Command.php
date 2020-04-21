@@ -141,7 +141,7 @@ abstract class Command extends SymfonyCommand
      */
     protected function setConfiguredServer(): void
     {
-        if (!$this->input->hasArgument('server')) {
+        if (! $this->input->hasArgument('server')) {
             return;
         }
 
