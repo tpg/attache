@@ -141,6 +141,10 @@ abstract class Command extends SymfonyCommand
      */
     protected function setConfiguredServer(): void
     {
+        if (!$this->input->hasArgument('server')) {
+            return;
+        }
+
         $serverString = $this->config->servers()->first()->name();
 
         if ($this->config

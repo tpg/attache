@@ -13,7 +13,11 @@
 * A new `Ssh::setTask` method can be used to set a task on the `Ssh` instance.
 * `Ssh::run` will now throw an exception if the task instance doesn't have a server, or if a task instance isn't set.
 
-## [0.4.6] 14-04-2020
+## [0.4.8] 21-04-2020
+### Fixed
+* Fixed a bug causing a crash when intializing a project that does not have a Git remote yet.
+
+## [0.4.7] 14-04-2020
 ### Added
 * No longer need to specify the server name for single server configs.
 

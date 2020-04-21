@@ -46,8 +46,9 @@ class Initializer
      * @param string $filename
      * @param string $gitUrl
      */
-    public function createConfig(string $filename, string $gitUrl): void
+    public function createConfig(string $filename, string $gitUrl = null): void
     {
+
         $config = $this->getConfig($gitUrl);
 
         file_put_contents(
@@ -128,10 +129,10 @@ class Initializer
      * @param string $remote
      * @return array
      */
-    protected function getConfig(string $remote): array
+    protected function getConfig(string $remote = null): array
     {
         return [
-            'repository' => $remote,
+            'repository' => $remote ?: 'git@remote.com:vendor/repository.git',
             'servers' => [
                 [
                     'name' => 'production',
