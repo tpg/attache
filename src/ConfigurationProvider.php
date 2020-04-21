@@ -64,7 +64,7 @@ class ConfigurationProvider
             try {
                 $config = json_decode($config, true, 512, JSON_THROW_ON_ERROR);
             } catch (\Exception $e) {
-                throw new \JsonException('Unable to read config.' . "\n" . $e->getMessage());
+                throw new \JsonException('Unable to read config.'."\n".$e->getMessage());
             }
         }
 
