@@ -13,7 +13,13 @@
 * A new `Ssh::setTask` method can be used to set a task on the `Ssh` instance.
 * `Ssh::run` will now throw an exception if the task instance doesn't have a server, or if a task instance isn't set.
 
-## [0.4.8] 21-04-2020
+## [0.4.9] 21-04-2020
+### Changed
+* The `branch` and `port` server attributes are no longer required and will default to `master` and `22` respectively.
+* If there is a missing attribute, the exception will now include the name of the attribute.
+* Server configurations will now through a `ServerException` instead of a `RuntimeException`.
+* Invalid script tags will now through a `ConfigurationException` instead of a `RuntimeException`.
+
 ### Fixed
 * Fixed a bug causing a crash when intializing a project that does not have a Git remote yet.
 

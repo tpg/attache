@@ -49,24 +49,23 @@ class ConfigurationProvider
             throw new FileNotFoundException('Cannot find config file '.$filename);
         }
 
-        try {
-            $this->setConfig(file_get_contents($filename));
-        } catch (\Exception $e) {
-            throw new \JsonException('Unable to read config.'."\n".$e->getMessage());
-            exit(1);
-        }
+        $this->setConfig(file_get_contents($filename));
     }
 
     /**
      * Set the configuration.
      *
      * @param string|array $config
-     * @throws ConfigurationException
+     * @throws ConfigurationException|\JsonException
      */
     public function setConfig($config): void
     {
         if (is_string($config)) {
-            $config = json_decode($config, true, 512, JSON_THROW_ON_ERROR);
+            try {
+                $config = json_decode($config, true, 512, JSON_THROW_ON_ERROR);
+            } catch (\Exception $e) {
+                throw new \JsonException('Unable to read config.' . "\n" . $e->getMessage());
+            }
         }
 
         $this->repository = Arr::get($config, 'repository');
@@ -108,8 +107,12 @@ class ConfigurationProvider
      */
     protected function validateServer(array $config): void
     {
-        if (! Arr::has($config, ['name', 'host', 'port', 'user', 'root', 'branch'])) {
-            throw new ConfigurationException('Missing server configuration key');
+        $required = ['name', 'host', 'user', 'root'];
+
+        foreach ($required as $attr) {
+            if (! Arr::has($config, $attr)) {
+                throw new ConfigurationException('Missing server configuration key: '.$attr);
+            }
         }
     }
 

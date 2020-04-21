@@ -2,14 +2,14 @@
 
 namespace TPG\Attache;
 
-use http\Exception\RuntimeException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use TPG\Attache\Exceptions\ServerException;
 
 class ReleaseService
 {
     /**
-     * @var array
+     * @var Server
      */
     protected Server $server;
 
@@ -35,6 +35,7 @@ class ReleaseService
      * Fetch release data from the server.
      *
      * @return $this
+     * @throws ServerException
      */
     public function fetch(): self
     {
@@ -78,7 +79,7 @@ class ReleaseService
     protected function validateOutput(array $output): bool
     {
         if (count($output) !== 2) {
-            throw new RuntimeException('Failed to fetch current releases from '.$this->server->name()
+            throw new ServerException('Failed to fetch current releases from '.$this->server->name()
                 .'. Double check your configuration and try again.');
         }
 
@@ -94,7 +95,7 @@ class ReleaseService
     protected function getReleasesFromOutput(string $output): array
     {
         if (! $output) {
-            throw new \RuntimeException('There was no response from '.$this->server->name()
+            throw new ServerException('There was no response from '.$this->server->name()
                 .'. Try again or double check your connection to the server.');
         }
 

@@ -3,6 +3,7 @@
 namespace TPG\Attache;
 
 use Illuminate\Support\Arr;
+use TPG\Attache\Exceptions\ConfigurationException;
 
 class ScriptCompiler
 {
@@ -45,7 +46,7 @@ class ScriptCompiler
                 case 'release':
                     return $this->server->latestReleaseId();
                 default:
-                    throw new \RuntimeException('No such tag @'.$tag);
+                    throw new ConfigurationException('No such tag @'.$tag);
             }
         }, $tags);
 
