@@ -2,6 +2,7 @@
 
 namespace TPG\Attache;
 
+use http\Exception\RuntimeException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
@@ -47,6 +48,11 @@ class ReleaseService
         return $this;
     }
 
+    /**
+     * Get release data from the server by running a simple `ls` command.
+     *
+     * @return array
+     */
     protected function getReleaseData(): array
     {
         $command = 'ls '.$this->server->path('releases').PHP_EOL
@@ -58,7 +64,25 @@ class ReleaseService
             $outputs[] = $output;
         });
 
+        $this->validateOutput($outputs);
+
         return $outputs;
+    }
+
+    /**
+     * Validate that the output matches the correct format.
+     *
+     * @param array $output
+     * @return bool
+     */
+    protected function validateOutput(array $output): bool
+    {
+        if (count($output) !== 2) {
+            throw new RuntimeException('Failed to fetch current releases from '.$this->server->name()
+                .'. Double check your configuration and try again.');
+        }
+
+        return true;
     }
 
     /**
