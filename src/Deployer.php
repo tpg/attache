@@ -56,6 +56,8 @@ class Deployer
      */
     public function deploy(string $releaseId, bool $install = false): void
     {
+        set_time_limit(0);
+
         $tasks = $this->getTasks($releaseId, $install);
 
         $this->executeTasks($tasks);
@@ -69,7 +71,10 @@ class Deployer
      */
     public function install(string $releaseId, string $env = null): void
     {
+        set_time_limit(0);
+
         $this->installEnv = $env;
+
         $this->deploy($releaseId, true);
     }
 
