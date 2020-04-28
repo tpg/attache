@@ -2,6 +2,7 @@
 
 namespace TPG\Attache\Tests;
 
+use TPG\Attache\Exceptions\ConfigurationException;
 use TPG\Attache\ScriptCompiler;
 use TPG\Attache\Server;
 
@@ -40,7 +41,7 @@ class ScriptTest extends TestCase
         $config = $this->getConfig();
         $server = $config->server('server-1');
 
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(ConfigurationException::class);
         $compiler = new ScriptCompiler($server);
         $compiler->compile(['try @badtag']);
     }
