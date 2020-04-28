@@ -13,6 +13,11 @@
 * A new `Ssh::setTask` method can be used to set a task on the `Ssh` instance.
 * `Ssh::run` will now throw an exception if the task instance doesn't have a server, or if a task instance isn't set.
 
+## [0.4.10] 28-04-2020
+### Changed
+* Set the execution timeout to 0 when running the deployer.
+* Fixed a bug in the `ScriptTest` that was expecting the wrong exception.
+
 ## [0.4.9] 21-04-2020
 ### Changed
 * The `branch` and `port` server attributes are no longer required and will default to `master` and `22` respectively.
