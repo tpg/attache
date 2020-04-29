@@ -41,12 +41,22 @@ class ReleaseService
     {
         $outputs = $this->getReleaseData();
 
+        $this->validateOutput($outputs);
+
         $this->releases = $this->getReleasesFromOutput(Arr::get($outputs, 0, ''));
         if (count($this->releases)) {
             $this->active = $this->getActiveFromOutput(Arr::get($outputs, 1, ''));
         }
 
         return $this;
+    }
+
+    public function hasInstallation(): bool
+    {
+        $outputs = $this->getReleaseData();
+        $releases = $this->getReleasesFromOutput($outputs[0]);
+
+        return count($releases) > 0;
     }
 
     /**
@@ -64,8 +74,6 @@ class ReleaseService
         (new Ssh($task))->run(static function (Task $task, $type, $output) use (&$outputs) {
             $outputs[] = $output;
         });
-
-        $this->validateOutput($outputs);
 
         return $outputs;
     }

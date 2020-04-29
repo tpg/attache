@@ -1,17 +1,9 @@
 # Changelog
 
-## [Unreleased]
-* The `Deployer::DeploymentTask` method has been renamed `Deployer::deploymentTask`.
-* The `InstallCommand` constructor will now accept an instance of `Deployer`.
-* The env steps and installation steps have been swapped around in `Deployer::deploymentTask`.
-* A `Deployer::generateKeySteps` has been added. Will run `artisan key:generate` after the symlink steps.
-* The `Initializer::discoverGitRemotes()` method will no longer be called from the constructor.
-* A new `Initializer::loadGitConfig()` method will be called only if a config filename is passed to the constructor.
-* The `Initializer::discoverGitRemotes()` method is now public.
-* Took the SSH task execution out of the `ReleaseServer::fetch()` method and moved it to a protected `getReleaseData` method.
-* The `Task` parameter on the `Ssh` constructor is now optional.
-* A new `Ssh::setTask` method can be used to set a task on the `Ssh` instance.
-* `Ssh::run` will now throw an exception if the task instance doesn't have a server, or if a task instance isn't set.
+## [0.4.11] 29-04-2020
+### Fixed
+* Fixed a bug in the `InstallCommand` that was erroring out when no intallation was found.
+* The `install` command will now perform its own check. 
 
 ## [0.4.10] 28-04-2020
 ### Changed

@@ -37,9 +37,9 @@ class InstallCommand extends Command
      */
     protected function fire(): int
     {
-        $releases = (new ReleaseService($this->server))->fetch();
+        $service = new ReleaseService($this->server);
 
-        if (count($releases->list()) > 0) {
+        if ($service->hasInstallation()) {
             $this->output->writeln(
                 '<error>There is already an installation on '
                 .$this->server->name()
