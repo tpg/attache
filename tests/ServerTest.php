@@ -88,10 +88,10 @@ class ServerTest extends TestCase
         $server = $provider->server();
 
         $this->assertSame([
-            'public/js',
-            'public/css',
-            'public/mix-manifest.json',
-            'public/example'
+            'public/js' => 'public/js',
+            'public/css' => 'public/css',
+            'public/mix-manifest.json' => 'public/mix-manifest.json',
+            'public/example' => 'public/example',
         ], $server->assets());
     }
 }
