@@ -91,7 +91,7 @@ class ServerTest extends TestCase
             'public/js' => 'public/js',
             'public/css' => 'public/css',
             'public/mix-manifest.json' => 'public/mix-manifest.json',
-            'public/example' => 'public/example'
+            'public/example' => 'public/example',
         ], $server->assets());
     }
 }

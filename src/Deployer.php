@@ -366,7 +366,6 @@ class Deployer
         $commands = [];
 
         foreach ($assets as $asset => $target) {
-
             $target = Str::startsWith($target, '/') ? $target : '/'.$target;
 
             $commands[] = 'scp -P'
