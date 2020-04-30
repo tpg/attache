@@ -365,14 +365,15 @@ class Deployer
     {
         $commands = [];
 
-        foreach ($assets as $asset => $target) {
-            $target = Str::startsWith($target, '/') ? $target : '/'.$target;
+        foreach ($assets as $asset) {
+
+            $asset = Str::startsWith($asset, '/') ? substr($asset, 1) : $asset;
 
             $commands[] = 'scp -P'
                 .$this->server->port() // port
                 .' -r '.$asset.' ' // local asset
                 .$this->server->user().'@'.$this->server->host() // remote
-                .':'.$releasePath.$target; // remote path
+                .':'.$releasePath.'/'.$asset; // remote path
         }
 
         return $commands;
