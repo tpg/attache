@@ -2,6 +2,7 @@
 
 namespace TPG\Attache;
 
+use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
@@ -108,7 +109,6 @@ class Deployer
     /**
      * Get the tasks to execute.
      *
-     * @param Server $server
      * @param string $releaseId
      * @param bool $install
      * @return array
@@ -348,17 +348,35 @@ class Deployer
     {
         $releasePath = $this->server->path('releases').'/'.$releaseId;
 
+        $assets = $this->getAssetCommands($this->server->assets(), $releasePath);
+
         $commands = [
             'printf "\033c"',
             ...$this->server->script('before-assets'),
             'echo "Copying assets..."',
-            'scp -P '.$this->server->port().' -r public/js '.$this->server->user().'@'.$this->server->host().':'.$releasePath.'/public',
-            'scp -P '.$this->server->port().' -r public/css '.$this->server->user().'@'.$this->server->host().':'.$releasePath.'/public',
-            'scp -P '.$this->server->port().' -r public/mix-manifest.json '.$this->server->user().'@'.$this->server->host().':'.$releasePath.'/public',
+            ...$assets,
             ...$this->server->script('after-assets'),
         ];
 
         return new Task(implode(PHP_EOL, $commands));
+    }
+
+    protected function getAssetCommands(array $assets, string $releasePath): array
+    {
+        $commands = [];
+
+        foreach ($assets as $asset => $target) {
+
+            $target = Str::startsWith($target, '/') ? $target : '/'.$target;
+
+            $commands[] = 'scp -P'
+                .$this->server->port() // port
+                .' -r '.$asset.' ' // local asset
+                .$this->server->user().'@'.$this->server->host() // remote
+                .':'.$releasePath.$target; // remote path
+        }
+
+        return $commands;
     }
 
     /**

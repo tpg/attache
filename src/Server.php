@@ -30,6 +30,11 @@ class Server
             'bin' => 'composer',
             'local' => false,
         ],
+        'assets' => [
+            'public/js' => 'public/js',
+            'public/css' => 'public/css',
+            'public/mix-manifest.json' => 'public/mix-manifest.json',
+        ],
         'scripts' => [],
     ];
 
@@ -215,6 +220,19 @@ class Server
     }
 
     /**
+     * Get an asset target.
+     *
+     * @param string|null $key
+     * @return mixed
+     */
+    public function assets(string $key = null)
+    {
+        $key = 'assets'.($key ? '.'.$key : null);
+
+        return Arr::get($this->config, $key, null);
+    }
+
+    /**
      * Get a script hook value by its key.
      *
      * @param string $key
@@ -227,11 +245,21 @@ class Server
         return (new ScriptCompiler($this))->compile($script);
     }
 
+    /**
+     * Get the most recent release ID.
+     *
+     * @return string
+     */
     public function latestReleaseId(): string
     {
         return array_reverse($this->releaseIds())[0];
     }
 
+    /**
+     * Get an array of release IDs.
+     *
+     * @return array
+     */
     public function releaseIds(): array
     {
         $paths = glob($this->path('releases'), GLOB_ONLYDIR);

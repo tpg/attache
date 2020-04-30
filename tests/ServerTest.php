@@ -73,4 +73,25 @@ class ServerTest extends TestCase
 
         $this->assertSame('single', $server->name());
     }
+
+    /**
+     * @test
+     */
+    public function it_can_have_a_custom_set_of_assets()
+    {
+        $config = $this->config;
+        $config['servers'][0]['assets']['public/example'] = 'public/example';
+
+        $provider = new ConfigurationProvider();
+        $provider->setConfig($config);
+
+        $server = $provider->server();
+
+        $this->assertSame([
+            'public/js' => 'public/js',
+            'public/css' => 'public/css',
+            'public/mix-manifest.json' => 'public/mix-manifest.json',
+            'public/example' => 'public/example'
+        ], $server->assets());
+    }
 }

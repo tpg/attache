@@ -1,5 +1,8 @@
 # Changelog
 
+## Unreleased
+* Ability to specify additional files to copy to the server during deployment that are not included in the repository.
+
 ## [0.4.11] 29-04-2020
 ### Fixed
 * Fixed a bug in the `InstallCommand` that was erroring out when no intallation was found.
