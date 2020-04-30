@@ -1,7 +1,7 @@
 # Changelog
 
-## Unreleased
-* Ability to specify additional files to copy to the server during deployment that are not included in the repository.
+## [0.4.12] 30-04-2020
+* Ability to specify additional assets to copy to the server during deployment that are not included in the repository.
 
 ## [0.4.11] 29-04-2020
 ### Fixed
