@@ -1,6 +1,11 @@
 # Changelog
 
+## [0.4.13] 05-05-2020
+### Fixed
+Fixed a bug that was not executing the `migrate` Artisan command correctly.
+
 ## [0.4.12] 30-04-2020
+### Added
 * Ability to specify additional assets to copy to the server during deployment that are not included in the repository.
 
 ## [0.4.11] 29-04-2020

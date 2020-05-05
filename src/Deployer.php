@@ -322,7 +322,7 @@ class Deployer
         return $migrate ? [
             'cd '.$this->server->root(),
             ...$this->server->script('before-migrate'),
-            'php artisan migrate --force',
+            $this->server->phpBin().' '.$releasePath.'/artisan migrate --force',
             ...$this->server->script('after-migrate'),
         ] : [];
     }
