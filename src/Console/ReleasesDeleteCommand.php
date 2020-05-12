@@ -39,7 +39,7 @@ class ReleasesDeleteCommand extends Command
 
     protected function validate(string $id): void
     {
-        if (!in_array($id, $this->releaseService->list(), true)) {
+        if (! in_array($id, $this->releaseService->list(), true)) {
             $this->output->writeln('<error>The release '.$id.' does not exist on '.$this->server->name().'.</error>');
             exit(1);
         }
