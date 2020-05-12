@@ -127,7 +127,7 @@ class ReleasesListCommand extends Command
     protected function releaseDate(string $release): string
     {
         $date = \DateTime::createFromFormat('YmdHis', $release);
-        if (!$date) {
+        if (! $date) {
             return 'Unknown';
         }
 
