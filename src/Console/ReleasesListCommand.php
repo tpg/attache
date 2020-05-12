@@ -126,7 +126,12 @@ class ReleasesListCommand extends Command
      */
     protected function releaseDate(string $release): string
     {
-        return \DateTime::createFromFormat('YmdHis', $release)->format('d F Y H:i');
+        $date = \DateTime::createFromFormat('YmdHis', $release);
+        if (!$date) {
+            return 'Unknown';
+        }
+
+        return $date->format('d F Y H:i');
     }
 
     /**
