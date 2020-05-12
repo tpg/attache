@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.4.14] 12-05-2020
+### Fixed
+Fixed a bug in the `releases:list` command that would crash if a release has a non-timestamp directory name.
+
 ## [0.4.13] 05-05-2020
 ### Fixed
 Fixed a bug that was not executing the `migrate` Artisan command correctly.
