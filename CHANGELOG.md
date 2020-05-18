@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.4.16] 19-05-2020
+### Changed
+* Rearranged the deployment steps a little to avoid a rare bug where the composer installatino needed access to the `.env` config.
+
 ## [0.4.15] 12-05-2020
 ### Added
 * Added a new `releases:delete` command.

@@ -163,10 +163,11 @@ class Deployer
             ...$this->server->script('before-deploy'),
             ...$this->cloneSteps($releasePath),
             ...$this->getComposer($releasePath),
-            ...$this->composerSteps($releasePath),
             ...$this->envSteps($releasePath),
             ...$this->installationSteps($install, $releasePath),
             ...$this->symlinkSteps($releasePath),
+            ...$this->composerSteps($releasePath),
+            ...$this->storageLinkSteps($releasePath),
             ...$this->generateKeySteps($install, $releasePath),
             ...$this->migrationSteps($migrate, $releasePath),
             ...$this->server->script('after-deploy'),
@@ -242,6 +243,13 @@ class Deployer
         ];
     }
 
+    protected function storageLinkSteps(string $releasePath): array
+    {
+        return [
+            $this->server->phpBin().' '.$releasePath.'/artisan storage:link',
+        ];
+    }
+
     /**
      * Steps to place a new `.env` file.
      *
@@ -296,7 +304,6 @@ class Deployer
             ...$this->server->script('before-symlinks'),
             'ln -nfs '.$this->server->path('storage').' '.$releasePath.'/storage',
             'ln -nfs '.$this->server->path('env').' '.$releasePath.'/.env',
-            $this->server->phpBin().' '.$releasePath.'/artisan storage:link',
             ...$this->server->script('after-symlinks'),
         ];
     }
