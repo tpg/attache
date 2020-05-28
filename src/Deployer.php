@@ -236,7 +236,7 @@ class Deployer
 
         $composerCommand = $composerExec.' install --ansi';
 
-        if (!$this->server->composer('dev')) {
+        if (! $this->server->composer('dev')) {
             $composerCommand .= ' --no-dev';
         }
 
