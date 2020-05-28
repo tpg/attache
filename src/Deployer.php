@@ -234,11 +234,17 @@ class Deployer
             $composerExec = $this->server->phpBin().' '.$this->server->composerBin();
         }
 
+        $composerCommand = $composerExec.' install --ansi';
+
+        if (!$this->server->composer('dev')) {
+            $composerCommand .= ' --no-dev';
+        }
+
         return [
             'cd '.$this->server->root(),
             ...$this->server->script('before-composer'),
             'cd '.$releasePath.PHP_EOL
-            .$composerExec.' install --no-dev --ansi',
+            .$composerCommand,
             ...$this->server->script('after-composer'),
         ];
     }
