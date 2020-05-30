@@ -2,6 +2,7 @@
     "name": "thepublicgood/attache",
     "description": "A highly opinionated deployment tool for Laravel applications.",
     "keywords": ["ssh", "laravel", "deployment"],
+    "homepage": "https://tpg.github.io/attache/",
     "license": "MIT",
     "authors": [
         {

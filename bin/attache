@@ -1,6 +1,15 @@
 #!/usr/bin/env php
 <?php
 
+/**
+ * Attaché - A highly opinionated deployment tool for Laravel.
+ *
+ * https://tpg.github.io/attache/
+ *
+ * @package Attache
+ * @author  Warrick Bayman <me@warrickbayman.co.za>
+ */
+
 if (file_exists(__DIR__.'/../vendor/autoload.php')) {
     require __DIR__.'/../vendor/autoload.php';
 } else {
