@@ -39,13 +39,10 @@ class ReleaseService
      */
     public function fetch(): self
     {
-        $outputs = $this->getReleaseData();
+        $this->releases = $this->getReleases();
 
-        $this->validateOutput($outputs);
-
-        $this->releases = $this->getReleasesFromOutput(Arr::get($outputs, 0, ''));
         if (count($this->releases)) {
-            $this->active = $this->getActiveFromOutput(Arr::get($outputs, 1, ''));
+            $this->active = $this->getActiveRelease();
         }
 
         return $this;
@@ -53,8 +50,8 @@ class ReleaseService
 
     public function hasInstallation(): bool
     {
-        $outputs = $this->getReleaseData();
-        $releases = $this->getReleasesFromOutput($outputs[0]);
+        $releases = $this->getReleases();
+        //$releases = $this->getReleasesFromOutput($output);
 
         return count($releases) > 0;
     }
@@ -64,66 +61,52 @@ class ReleaseService
      *
      * @return array
      */
-    protected function getReleaseData(): array
+    protected function getReleases(): array
     {
-        $command = 'ls '.$this->server->path('releases').PHP_EOL
-            .'ls -l '.$this->server->root();
+        $command = 'ls '.$this->server->path('releases');
+
         $task = new Task($command, $this->server);
 
-        $outputs = [];
-        (new Ssh($task))->run(static function (Task $task, $type, $output) use (&$outputs) {
-            $outputs[] = $output;
+        $data = $this->run($task);
+
+        return array_filter(explode(PHP_EOL, $data), static function ($release) {
+            return $release !== '';
+        });
+    }
+
+    protected function getActiveRelease(): ?string
+    {
+        $command = 'ls -la '.$this->server->root();
+
+        $task = new Task($command, $this->server);
+
+        $data = $this->run($task);
+
+        preg_match('/'.$this->server->path('serve', false).'.*\/(?<id>.+)/', $data, $matches);
+
+        return Arr::get($matches, 'id');
+    }
+
+    protected function run(Task $task): string
+    {
+        $data = null;
+
+        (new Ssh($task))->run(static function (Task $task, $output) use (&$data) {
+            $data = $output;
         });
 
-        return $outputs;
+        return $data;
     }
 
     /**
      * Validate that the output matches the correct format.
      *
-     * @param array $output
+     * @param string $output
      * @return bool
      */
-    protected function validateOutput(array $output): bool
+    protected function validateOutput(string $output): bool
     {
-        if (count($output) !== 2) {
-            throw new ServerException('Failed to fetch current releases from '.$this->server->name()
-                .'. Double check your configuration and try again.');
-        }
-
         return true;
-    }
-
-    /**
-     * Get an array of release IDs from the output returned after execution.
-     *
-     * @param string $output
-     * @return array
-     */
-    protected function getReleasesFromOutput(string $output): array
-    {
-        if (! $output) {
-            throw new ServerException('There was no response from '.$this->server->name()
-                .'. Try again or double check your connection to the server.');
-        }
-
-        return array_filter(
-            explode(PHP_EOL, $output),
-            fn ($release) => $release !== '' && ! Str::contains(strtolower($release), 'no such file or directory')
-        );
-    }
-
-    /**
-     * Get a string ID of the currently active release.
-     *
-     * @param string $output
-     * @return string
-     */
-    protected function getActiveFromOutput(string $output): ?string
-    {
-        preg_match('/'.$this->server->path('serve', false).'.*\/(?<id>.+)/', $output, $matches);
-
-        return Arr::get($matches, 'id');
     }
 
     /**

@@ -1,8 +1,15 @@
 # Changelog
 
+## [Unreleased]
+### Added
+* Added a new `dev` setting to the Composer config.
+
+### Changed
+* Running SSH commands will now happen synchronously and will not return output until the entire task is complete. This should completely do away with the random errors received when getting the currrent releases list.
+
 ## [0.4.16] 19-05-2020
 ### Changed
-* Rearranged the deployment steps a little to avoid a rare bug where the composer installatino needed access to the `.env` config.
+* Rearranged the deployment steps a little to avoid a rare bug where the composer installation needed access to the `.env` config.
 
 ## [0.4.15] 12-05-2020
 ### Added

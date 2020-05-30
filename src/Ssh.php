@@ -58,11 +58,11 @@ class Ssh
             $process->setTty(Process::isTtySupported());
         }
 
-        $process->run(function ($type, $output) use ($callback) {
-            if ($callback) {
-                $callback($this->task, $type, $output);
-            }
-        });
+        $process->run();
+
+        if ($callback) {
+            $callback($this->task, $process->getOutput());
+        }
 
         return $process->getExitCode();
     }

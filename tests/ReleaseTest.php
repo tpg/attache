@@ -22,9 +22,13 @@ class ReleaseTest extends TestCase
             ->makePartial()
             ->shouldAllowMockingProtectedMethods();
 
-        $releaseService->shouldReceive('getReleaseData')
+        $releaseService->shouldReceive('getReleases')
             ->once()
-            ->andReturn($this->releaseData());
+            ->andReturn(explode(PHP_EOL, $this->releaseListData()));
+
+        $releaseService->shouldReceive('getActiveRelease')
+            ->once()
+            ->andReturn('20200101010300');
 
         $releaseService->fetch();
 
@@ -48,25 +52,27 @@ class ReleaseTest extends TestCase
             ->makePartial()
             ->shouldAllowMockingProtectedMethods();
 
-        $releaseService->shouldReceive('getReleaseData')
+        $releaseService->shouldReceive('getReleases')
             ->once()
-            ->andReturn($this->releaseData());
+            ->andReturn(explode(PHP_EOL, $this->releaseListData()));
 
         $releaseService->fetch();
 
         $this->assertTrue($releaseService->exists('20200101010200'));
     }
 
-    protected function releaseData()
+    protected function releaseListData(): string
     {
-        return [
-            '20200101010100'.PHP_EOL.'20200101010200'.PHP_EOL.'20200101010300',
-            'total 1932'.
+        return '20200101010100'.PHP_EOL.'20200101010200'.PHP_EOL.'20200101010300';
+    }
+
+    protected function currentReleaseData(): string
+    {
+        return 'total 1932'.
             '-rwxr-xr-x  1 ubuntu ubuntu 1969526 Mar 17 13:13 composer.phar'.PHP_EOL.
             'lrwxrwxrwx  1 ubuntu ubuntu      44 Mar 18 20:56 live -> /app/releases/20200101010300'.PHP_EOL.
             'drwxrwxr-x  5 ubuntu ubuntu    4096 Mar 18 20:56 releases'.PHP_EOL.
-            'drwxrwxr-x+ 5 ubuntu ubuntu    4096 Feb 15 06:33 storage',
-        ];
+            'drwxrwxr-x+ 5 ubuntu ubuntu    4096 Feb 15 06:33 storage';
     }
 
     /**
