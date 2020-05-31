@@ -77,7 +77,7 @@ class DeployerTest extends TestCase
                 new Task('echo "Task 3"'),
             ]);
 
-        $deployer->install('1');
+        $deployer->deploy('1');
 
         $buffer = $output->fetch();
 

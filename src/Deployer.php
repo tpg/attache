@@ -32,6 +32,11 @@ class Deployer
     protected ?string $installEnv = null;
 
     /**
+     * @var bool
+     */
+    protected bool $tty = false;
+
+    /**
      * @param ConfigurationProvider $config
      * @param Server $server
      * @param InputInterface $input
@@ -96,12 +101,18 @@ class Deployer
                     throw new \RuntimeException('One or more tasks did not complete correctly');
                 }
             } else {
-                $process = Process::fromShellCommandline($task->script());
+                $process = Process::fromShellCommandline($task->script())
+                    ->disableOutput();
+
+                if ($this->tty) {
+                    $process->setTty(Process::isTtySupported());
+                }
+
                 $process
-                    ->setTty(Process::isTtySupported())
                     ->run(function ($type, $output) {
                         $this->getOutput()->writeln($output);
                     });
+
             }
         }
     }
@@ -420,5 +431,15 @@ class Deployer
     protected function getOutput(): OutputInterface
     {
         return $this->output;
+    }
+
+    /**
+     * Set TTY use
+     *
+     * @param bool $tty
+     */
+    public function tty(bool $tty = true): void
+    {
+        $this->tty = $tty;
     }
 }

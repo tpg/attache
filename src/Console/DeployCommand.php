@@ -72,7 +72,9 @@ class DeployCommand extends Command
     protected function getDeployer(Server $server): Deployer
     {
         if (! $this->deployer) {
-            return new Deployer($this->config, $server, $this->input, $this->output);
+            $deployer = new Deployer($this->config, $server, $this->input, $this->output);
+            $deployer->tty();
+            $this->deployer = $deployer;
         }
 
         return $this->deployer;
