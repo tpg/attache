@@ -148,7 +148,7 @@ class Deployer
                 true
             ),
             $this->assetTask($releaseId),
-            $this->liveTask($releaseId)
+            $this->liveTask($releaseId),
         ];
     }
 
