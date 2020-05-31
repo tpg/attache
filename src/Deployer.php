@@ -89,7 +89,7 @@ class Deployer
         foreach ($tasks as $task) {
             if ($task->server()) {
                 $code = (new Ssh($task))->tty()->run(function ($task, $type, $output) {
-                    $this->output->writeln($output);
+                    $this->getOutput()->writeln($output);
                 });
 
                 if ($code !== 0) {
@@ -100,7 +100,7 @@ class Deployer
                 $process
                     ->setTty(Process::isTtySupported())
                     ->run(function ($type, $output) {
-                        $this->output->writeln($output);
+                        $this->getOutput()->writeln($output);
                     });
             }
         }
@@ -410,5 +410,15 @@ class Deployer
         ];
 
         return new Task(implode(PHP_EOL, $commands), $this->server);
+    }
+
+    /**
+     * Get the current OutputInterface.
+     *
+     * @return OutputInterface
+     */
+    protected function getOutput(): OutputInterface
+    {
+        return $this->output;
     }
 }

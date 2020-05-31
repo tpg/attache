@@ -3,11 +3,14 @@
 namespace TPG\Attache\Tests;
 
 use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Tester\CommandTester;
 use TPG\Attache\ConfigurationProvider;
 use TPG\Attache\Console\DeployCommand;
 use TPG\Attache\Deployer;
+use TPG\Attache\Server;
+use TPG\Attache\Task;
 
 class DeployerTest extends TestCase
 {
@@ -54,5 +57,33 @@ class DeployerTest extends TestCase
         $tasks = $deployer->getTasks($id);
 
         $this->assertSame($script, $tasks[0]->script());
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_execute_a_list_of_tasks()
+    {
+        $deployer = \Mockery::mock(Deployer::class)
+            ->makePartial()
+            ->shouldAllowMockingProtectedMethods();
+
+        $deployer->shouldReceive('getOutput')
+            ->andReturn($output = new BufferedOutput());
+
+        $deployer->shouldReceive('getTasks')
+            ->andReturn([
+                new Task('echo "Task 1"'),
+                new Task('echo "Task 2"'),
+                new Task('echo "Task 3"'),
+            ]);
+
+        $deployer->install('1');
+
+        $buffer = $output->fetch();
+
+        $this->assertStringContainsString('Task 1', $buffer);
+        $this->assertStringContainsString('Task 2', $buffer);
+        $this->assertStringContainsString('Task 3', $buffer);
     }
 }
