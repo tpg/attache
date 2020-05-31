@@ -112,7 +112,6 @@ class Deployer
                     ->run(function ($type, $output) {
                         $this->getOutput()->writeln($output);
                     });
-
             }
         }
     }
@@ -434,7 +433,7 @@ class Deployer
     }
 
     /**
-     * Set TTY use
+     * Set TTY use.
      *
      * @param bool $tty
      */
