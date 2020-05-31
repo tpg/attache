@@ -60,11 +60,11 @@ class Deployer
      * @param string $releaseId
      * @param bool $install
      */
-    public function deploy(string $releaseId, bool $install = false): void
+    public function deploy(string $releaseId): void
     {
         set_time_limit(0);
 
-        $tasks = $this->getTasks($releaseId, $install);
+        $tasks = $this->getTasks($releaseId);
 
         $this->executeTasks($tasks);
     }
@@ -81,7 +81,9 @@ class Deployer
 
         $this->installEnv = $env;
 
-        $this->deploy($releaseId, true);
+        $tasks = $this->getInstallationTasks($releaseId);
+
+        $this->executeTasks($tasks);
     }
 
     /**
@@ -93,7 +95,7 @@ class Deployer
     {
         foreach ($tasks as $task) {
             if ($task->server()) {
-                $code = (new Ssh($task))->tty()->run(function ($task, $type, $output) {
+                $code = (new Ssh($task))->tty()->run(function ($task, $output) {
                     $this->getOutput()->writeln($output);
                 });
 
@@ -123,17 +125,30 @@ class Deployer
      * @param bool $install
      * @return array
      */
-    public function getTasks(string $releaseId, bool $install = false): array
+    public function getTasks(string $releaseId): array
     {
         return [
             $this->buildTask(),
             $this->deploymentTask(
                 $releaseId,
                 $this->server->migrate(),
-                $install
                 ),
             $this->assetTask($releaseId),
             $this->liveTask($releaseId),
+        ];
+    }
+
+    public function getInstallationTasks(string $releaseId): array
+    {
+        return [
+            $this->buildTask(),
+            $this->deploymentTask(
+                $releaseId,
+                $this->server->migrate(),
+                true
+            ),
+            $this->assetTask($releaseId),
+            $this->liveTask($releaseId)
         ];
     }
 

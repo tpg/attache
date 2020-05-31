@@ -50,7 +50,6 @@ class ReleaseService
     public function hasInstallation(): bool
     {
         $releases = $this->getReleases();
-        //$releases = $this->getReleasesFromOutput($output);
 
         return count($releases) > 0;
     }

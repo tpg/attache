@@ -6,6 +6,7 @@ use Symfony\Component\Console\Input\InputOption;
 use TPG\Attache\ConfigurationProvider;
 use TPG\Attache\Deployer;
 use TPG\Attache\ReleaseService;
+use TPG\Attache\Server;
 
 class InstallCommand extends Command
 {
@@ -52,10 +53,9 @@ class InstallCommand extends Command
 
         $env = $this->getEnv($this->option('env'));
 
-        (new Deployer($this->config, $this->server, $this->input, $this->output))->install($releaseId, $env);
+        $this->getDeployer($this->server)->install($releaseId, $env);
 
-        $this->output->writeln('Installation is complete and <info>'.$releaseId.
-            '</info> is now live on <info>'.$this->server->name().'</info>');
+        $this->output->writeln('Installation is complete<info>');
 
         return 0;
     }
@@ -106,5 +106,16 @@ class InstallCommand extends Command
         });
 
         return implode(PHP_EOL, $env);
+    }
+
+    protected function getDeployer(Server $server): Deployer
+    {
+        if (! $this->deployer) {
+            $deployer = new Deployer($this->config, $server, $this->input, $this->output);
+            $deployer->tty();
+            $this->deployer = $deployer;
+        }
+
+        return $this->deployer;
     }
 }

@@ -1,11 +1,12 @@
 # Changelog
 
-## [Unreleased]
+## [0.5.1] 31-05-2020
 ### Added
 * Added a new `dev` setting to the Composer config.
 
 ### Changed
 * Running SSH commands will now happen synchronously and will not return output until the entire task is complete. This should completely do away with the random errors received when getting the currrent releases list.
+* Updates to the `install` command to make it just a little less error prone.
 
 ## [0.4.16] 19-05-2020
 ### Changed
