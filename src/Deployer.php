@@ -62,8 +62,6 @@ class Deployer
      */
     public function deploy(string $releaseId): void
     {
-        set_time_limit(0);
-
         $tasks = $this->getTasks($releaseId);
 
         $this->executeTasks($tasks);

@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.5.2] 09-06-2020
+### Fixed
+* There was a chance that the build process could cause a timeout which would cause Attache to crash. The limit has been removed.
+
 ## [0.5.1] 31-05-2020
 ### Added
 * Added a new `dev` setting to the Composer config.
