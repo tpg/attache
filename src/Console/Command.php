@@ -101,6 +101,8 @@ abstract class Command extends SymfonyCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        set_time_limit(0);
+
         $this->input = $input;
         $this->output = $output;
 

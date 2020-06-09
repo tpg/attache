@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.5.3] 09-06-2020
+### Added
+* Added the ability to change the commands run during the build stage.
+
 ## [0.5.2] 09-06-2020
 ### Fixed
 * There was a chance that the build process could cause a timeout which would cause Attache to crash. The limit has been removed.

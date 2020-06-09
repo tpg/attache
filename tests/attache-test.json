@@ -26,6 +26,9 @@
             "root": "/path/to/application",
             "migrate": true,
             "scripts": {
+                "build": [
+                    "some-build-command"
+                ],
                 "before-migrate": [
                     "before-migrate-script"
                 ],

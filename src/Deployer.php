@@ -9,6 +9,8 @@ use Symfony\Component\Process\Process;
 
 class Deployer
 {
+    protected const BUILD_COMMAND = ['yarn prod'];
+
     /**
      * @var ConfigurationProvider
      */
@@ -75,8 +77,6 @@ class Deployer
      */
     public function install(string $releaseId, string $env = null): void
     {
-        set_time_limit(0);
-
         $this->installEnv = $env;
 
         $tasks = $this->getInstallationTasks($releaseId);
@@ -157,11 +157,11 @@ class Deployer
      */
     protected function buildTask(): Task
     {
-        $command = 'yarn prod';
+        $command = $this->server->script('build') ?: self::BUILD_COMMAND;
 
         $commands = [
             ...$this->server->script('before-build'),
-            $command,
+            ...$command,
             ...$this->server->script('after-build'),
         ];
 

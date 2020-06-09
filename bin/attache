@@ -16,7 +16,7 @@ if (file_exists(__DIR__.'/../vendor/autoload.php')) {
     require __DIR__.'/../../../autoload.php';
 }
 
-$app = new \Symfony\Component\Console\Application('Attaché', '0.5.2');
+$app = new \Symfony\Component\Console\Application('Attaché', '0.5.3');
 
 $app->add(new \TPG\Attache\Console\InitCommand());
 $app->add(new \TPG\Attache\Console\ServersListCommand());
@@ -30,7 +30,5 @@ $app->add(new \TPG\Attache\Console\InstallCommand());
 $app->add(new \TPG\Attache\Console\DeployCommand());
 $app->add(new \TPG\Attache\Console\DownCommand());
 $app->add(new \TPG\Attache\Console\UpCommand());
-
-set_time_limit(0);
 
 $app->run();
