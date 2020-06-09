@@ -45,7 +45,7 @@ class DeployerTest extends TestCase
         $config = new ConfigurationProvider(__DIR__.'/attache-test.json');
         $server = $config->server('production');
 
-        $script = implode(PHP_EOL, array_merge($server->script('before-build'), ['yarn prod']));
+        $script = implode(PHP_EOL, array_merge($server->script('before-build'), ['some-build-command']));
 
         $input = new ArrayInput(['server' => 'production']);
         $output = new ConsoleOutput();
