@@ -60,7 +60,6 @@ class Ssh
         }
 
         $process->run(function ($type, $data) use ($callback) {
-
             if ($type === Process::ERR) {
                 throw new ProcessException($data);
             }
@@ -69,7 +68,6 @@ class Ssh
                 $callback($this->task, $data);
             }
         });
-
 
         return $process->getExitCode();
     }

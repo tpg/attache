@@ -50,7 +50,7 @@ class Task
 
     public function getBashScript($ssh = false): string
     {
-        return $this->getBashExec($ssh)." << \\".self::DELIMITER.PHP_EOL
+        return $this->getBashExec($ssh).' << \\'.self::DELIMITER.PHP_EOL
             .'('.PHP_EOL
             .'set -e'.PHP_EOL
             .$this->script().PHP_EOL
