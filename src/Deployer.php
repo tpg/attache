@@ -408,14 +408,12 @@ class Deployer
     {
         foreach ($tasks as $task) {
             if ($task->server()) {
-
                 $this->executeTaskOnServer($task);
 
                 return;
             }
 
             $this->executeTaskLocally($task);
-
         }
     }
 
