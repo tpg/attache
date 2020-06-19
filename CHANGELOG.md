@@ -1,5 +1,9 @@
 # Changelog
 
+## [Unreleased]
+## Changed
+* Made some changes to how tasks are executed locally. Attaché should now throw an exception if one or more commands fail in the same way the SSH scripts work.
+
 ## [0.5.3] 09-06-2020
 ### Added
 * Added the ability to change the commands run during the build stage.

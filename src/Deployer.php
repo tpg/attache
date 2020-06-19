@@ -6,9 +6,13 @@ use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
+use TPG\Attache\Exceptions\ProcessException;
 
 class Deployer
 {
+    /**
+     * The default build command.
+     */
     protected const BUILD_COMMAND = ['yarn prod'];
 
     /**
@@ -70,53 +74,6 @@ class Deployer
     }
 
     /**
-     * Install a release.
-     *
-     * @param string $releaseId
-     * @param string|null $env
-     */
-    public function install(string $releaseId, string $env = null): void
-    {
-        $this->installEnv = $env;
-
-        $tasks = $this->getInstallationTasks($releaseId);
-
-        $this->executeTasks($tasks);
-    }
-
-    /**
-     * Execute an array of tasks.
-     *
-     * @param array $tasks
-     */
-    protected function executeTasks(array $tasks): void
-    {
-        foreach ($tasks as $task) {
-            if ($task->server()) {
-                $code = (new Ssh($task))->tty()->run(function ($task, $output) {
-                    $this->getOutput()->writeln($output);
-                });
-
-                if ($code !== 0) {
-                    throw new \RuntimeException('One or more tasks did not complete correctly');
-                }
-            } else {
-                $process = Process::fromShellCommandline($task->script())
-                    ->disableOutput();
-
-                if ($this->tty) {
-                    $process->setTty(Process::isTtySupported());
-                }
-
-                $process
-                    ->run(function ($type, $output) {
-                        $this->getOutput()->writeln($output);
-                    });
-            }
-        }
-    }
-
-    /**
      * Get the tasks to execute.
      *
      * @param string $releaseId
@@ -131,20 +88,6 @@ class Deployer
                 $releaseId,
                 $this->server->migrate(),
                 ),
-            $this->assetTask($releaseId),
-            $this->liveTask($releaseId),
-        ];
-    }
-
-    public function getInstallationTasks(string $releaseId): array
-    {
-        return [
-            $this->buildTask(),
-            $this->deploymentTask(
-                $releaseId,
-                $this->server->migrate(),
-                true
-            ),
             $this->assetTask($releaseId),
             $this->liveTask($releaseId),
         ];
@@ -202,6 +145,17 @@ class Deployer
     }
 
     /**
+     * The release path to deploy into.
+     *
+     * @param $releaseId
+     * @return string
+     */
+    protected function releasePath($releaseId): string
+    {
+        return $this->server->path('releases').'/'.$releaseId;
+    }
+
+    /**
      * Git clone steps.
      *
      * @param string $releasePath
@@ -241,42 +195,6 @@ class Deployer
         }
 
         return [];
-    }
-
-    /**
-     * The composer install steps.
-     *
-     * @param string $releasePath
-     * @return array
-     */
-    protected function composerSteps(string $releasePath): array
-    {
-        $composerExec = $this->server->composerBin();
-
-        if ($this->server->composer('local')) {
-            $composerExec = $this->server->phpBin().' '.$this->server->composerBin();
-        }
-
-        $composerCommand = $composerExec.' install --ansi';
-
-        if (! $this->server->composer('dev')) {
-            $composerCommand .= ' --no-dev';
-        }
-
-        return [
-            'cd '.$this->server->root(),
-            ...$this->server->script('before-composer'),
-            'cd '.$releasePath.PHP_EOL
-            .$composerCommand,
-            ...$this->server->script('after-composer'),
-        ];
-    }
-
-    protected function storageLinkSteps(string $releasePath): array
-    {
-        return [
-            $this->server->phpBin().' '.$releasePath.'/artisan storage:link',
-        ];
     }
 
     /**
@@ -337,6 +255,55 @@ class Deployer
         ];
     }
 
+    /**
+     * The composer install steps.
+     *
+     * @param string $releasePath
+     * @return array
+     */
+    protected function composerSteps(string $releasePath): array
+    {
+        $composerExec = $this->server->composerBin();
+
+        if ($this->server->composer('local')) {
+            $composerExec = $this->server->phpBin().' '.$this->server->composerBin();
+        }
+
+        $composerCommand = $composerExec.' install --ansi';
+
+        if (! $this->server->composer('dev')) {
+            $composerCommand .= ' --no-dev';
+        }
+
+        return [
+            'cd '.$this->server->root(),
+            ...$this->server->script('before-composer'),
+            'cd '.$releasePath.PHP_EOL
+            .$composerCommand,
+            ...$this->server->script('after-composer'),
+        ];
+    }
+
+    /**
+     * Get the steps for creating the storage links through Artisan.
+     *
+     * @param string $releasePath
+     * @return array|string[]
+     */
+    protected function storageLinkSteps(string $releasePath): array
+    {
+        return [
+            $this->server->phpBin().' '.$releasePath.'/artisan storage:link',
+        ];
+    }
+
+    /**
+     * Generate the application encryption key through Artisan.
+     *
+     * @param bool $install
+     * @param string $releasePath
+     * @return array|string[]
+     */
     protected function generateKeySteps(bool $install, string $releasePath): array
     {
         return $install
@@ -364,17 +331,6 @@ class Deployer
     }
 
     /**
-     * The release path to deploy into.
-     *
-     * @param $releaseId
-     * @return string
-     */
-    protected function releasePath($releaseId): string
-    {
-        return $this->server->path('releases').'/'.$releaseId;
-    }
-
-    /**
      * The asset migration task.
      *
      * @param string $releaseId
@@ -397,6 +353,13 @@ class Deployer
         return new Task(implode(PHP_EOL, $commands));
     }
 
+    /**
+     * Get the asset installation commands.
+     *
+     * @param array $assets
+     * @param string $releasePath
+     * @return array
+     */
     protected function getAssetCommands(array $assets, string $releasePath): array
     {
         $commands = [];
@@ -436,6 +399,44 @@ class Deployer
     }
 
     /**
+     * Execute an array of tasks.
+     *
+     * @param Task[] $tasks
+     * @throws ProcessException
+     */
+    protected function executeTasks(array $tasks): void
+    {
+        foreach ($tasks as $task) {
+            if ($task->server()) {
+
+                $this->executeTaskOnServer($task);
+
+                return;
+            }
+
+            $this->executeTaskLocally($task);
+
+        }
+    }
+
+    /**
+     * Execute tasks on the server through an `Ssh` instance.
+     *
+     * @param Task $task
+     * @throws ProcessException
+     */
+    protected function executeTaskOnServer(Task $task): void
+    {
+        $code = (new Ssh($task))->tty()->run(function ($task, $output) {
+            $this->getOutput()->writeln($output);
+        });
+
+        if ($code !== 0) {
+            $this->failProcess();
+        }
+    }
+
+    /**
      * Get the current OutputInterface.
      *
      * @return OutputInterface
@@ -443,6 +444,79 @@ class Deployer
     protected function getOutput(): OutputInterface
     {
         return $this->output;
+    }
+
+    /**
+     * End the current execution and throw an exception.
+     *
+     * @param string|null $err
+     * @throws ProcessException
+     */
+    protected function failProcess(string $err = null): void
+    {
+        throw new ProcessException($err ?: 'Failed to execute one or more tasks');
+    }
+
+    /**
+     * Execute tasks on the local environment.
+     *
+     * @param Task $task
+     * @throws ProcessException
+     */
+    protected function executeTaskLocally(Task $task): void
+    {
+        $process = Process::fromShellCommandline($task->getBashScript())->disableOutput();
+
+        if ($this->tty) {
+            $process->setTty(Process::isTtySupported());
+        }
+
+        $process
+            ->run(function ($type, $output) {
+                if ($type === Process::ERR) {
+                    $this->failProcess($output);
+                }
+                $this->getOutput()->writeln($output);
+            });
+
+        if ($process->getExitCode() !== 0) {
+            $this->failProcess();
+        }
+    }
+
+    /**
+     * Install a release.
+     *
+     * @param string $releaseId
+     * @param string|null $env
+     */
+    public function install(string $releaseId, string $env = null): void
+    {
+        $this->installEnv = $env;
+
+        $tasks = $this->getInstallationTasks($releaseId);
+
+        $this->executeTasks($tasks);
+    }
+
+    /**
+     * Get tasks needed for installation.
+     *
+     * @param string $releaseId
+     * @return array
+     */
+    public function getInstallationTasks(string $releaseId): array
+    {
+        return [
+            $this->buildTask(),
+            $this->deploymentTask(
+                $releaseId,
+                $this->server->migrate(),
+                true
+            ),
+            $this->assetTask($releaseId),
+            $this->liveTask($releaseId),
+        ];
     }
 
     /**

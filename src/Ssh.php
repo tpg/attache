@@ -3,6 +3,7 @@
 namespace TPG\Attache;
 
 use Symfony\Component\Process\Process;
+use TPG\Attache\Exceptions\ProcessException;
 
 class Ssh
 {
@@ -58,11 +59,17 @@ class Ssh
             $process->setTty(Process::isTtySupported());
         }
 
-        $process->run();
+        $process->run(function ($type, $data) use ($callback) {
 
-        if ($callback) {
-            $callback($this->task, $process->getOutput());
-        }
+            if ($type === Process::ERR) {
+                throw new ProcessException($data);
+            }
+
+            if ($callback) {
+                $callback($this->task, $data);
+            }
+        });
+
 
         return $process->getExitCode();
     }
@@ -99,12 +106,7 @@ class Ssh
      */
     public function script(): string
     {
-        return "'bash -se' << \\".self::DELIMITER.PHP_EOL
-            .'('.PHP_EOL
-            .'set -e'.PHP_EOL
-            .$this->task->script().PHP_EOL
-            .')'.PHP_EOL
-            .self::DELIMITER;
+        return $this->task->getBashScript(true);
     }
 
     /**
