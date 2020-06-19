@@ -15,7 +15,7 @@ class SshTest extends TestCase
         $config = $this->getConfig();
 
         $task = \Mockery::mock(Task::class, ['echo "testing"']);
-        $task->shouldReceive('script')
+        $task->shouldReceive('getBashScript')
             ->once()
             ->andReturn('echo "testing"');
 

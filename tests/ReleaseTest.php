@@ -56,6 +56,9 @@ class ReleaseTest extends TestCase
             ->once()
             ->andReturn(explode(PHP_EOL, $this->releaseListData()));
 
+        $releaseService->shouldReceive('getActiveRelease')
+            ->once();
+
         $releaseService->fetch();
 
         $this->assertTrue($releaseService->exists('20200101010200'));
