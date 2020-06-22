@@ -409,11 +409,9 @@ class Deployer
         foreach ($tasks as $task) {
             if ($task->server()) {
                 $this->executeTaskOnServer($task);
-
-                return;
+            } else {
+                $this->executeTaskLocally($task);
             }
-
-            $this->executeTaskLocally($task);
         }
     }
 

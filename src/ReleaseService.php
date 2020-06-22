@@ -150,7 +150,7 @@ class ReleaseService
         }
 
         $command = 'ln -nfs '.$this->server->path('releases').'/'.$id.' '.
-            $this->server->root().'/live';
+            $this->server->path('serve');
 
         $task = new Task($command, $this->server);
 
