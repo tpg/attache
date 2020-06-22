@@ -1,8 +1,8 @@
 # Changelog
 
-## [Unreleased]
+## [0.6.0] 22-06-2020
 ### Changed
-* Made some changes to how tasks are executed locally. Attaché should now throw an exception if one or more commands fail in the same way the SSH scripts work.
+* Rewrote how tasks are executed locally. Attaché should now throw an exception if one or more commands fail in the same way the SSH scripts work.
 
 ### Fixed
 * Fixed a bug with the `releases:activate` command that was not creating the correct symlink.
