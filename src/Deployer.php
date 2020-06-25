@@ -485,6 +485,7 @@ class Deployer
      *
      * @param string $releaseId
      * @param string|null $env
+     * @throws ProcessException
      */
     public function install(string $releaseId, string $env = null): void
     {
@@ -505,6 +506,7 @@ class Deployer
     {
         return [
             $this->buildTask(),
+            $this->buildRootTask(),
             $this->deploymentTask(
                 $releaseId,
                 $this->server->migrate(),
@@ -513,6 +515,15 @@ class Deployer
             $this->assetTask($releaseId),
             $this->liveTask($releaseId),
         ];
+    }
+
+    protected function buildRootTask(): Task
+    {
+        $commands = [
+            'mkdir -p '.$this->server->path('releases')
+        ];
+
+        return new Task(implode(PHP_EOL, $commands), $this->server);
     }
 
     /**

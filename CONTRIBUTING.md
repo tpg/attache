@@ -1,17 +1,18 @@
 # Contributing
 
-Contributions are **welcome** and will be fully **credited**. We only accept contributions via pull requests on [Github](https://github.com/tpg/attache).
+Contributions are **welcome** and will be fully **credited**. All contributions will be considered, but we can't guarantee that everything will be implemented.
 
 ## Pull Requests
 
-- **[PSR-2 Coding Standard.](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md)** The easiest way to apply the conventions is to install [PHP CS Fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer).
-- **Test!** Nothing will be accepted if there are no tests.
-- **Document.** Make sure you update any documentation. The `README.md` and any other relevant documentation should be kept up-to-date.
-- **Consider our release cycle.** We try to follow [SemVer v2.0.0](http://semver.org/).
+- **We only accept code contributions via pull request.** If you want to make a change, make a pull request. If you want to discuss a change, make an issue. 
+- **[PSR-2 Coding Standard.](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md)**.
+- **Test!** Please write tests for as much as possible. We don't aim for 100%, but we try to test all the important bits.
+- **Document.** Make sure you update any documentation. The `README.md` and any other relevant documentation should be kept up-to-date. The Attaché documentation repo is at [https://github.com/tpg/attache-docs]().
+- **Consider our release cycle.** We try to follow [SemVer v2.0.0](http://semver.org/) as much as possible but things are little hairy until 1.0.0 is released.
 - **Create branches.** Don't ask us to pull from your master branch.
 - **One pull request per feature.** If you want to do more than one thing, send multiple pull requests.
 
-For any major features or request, please open an issue first to discuss your ideas.
+For any major features or request, please open an issue of [GitHub](https://github.com/tpg/attache/issues) first to discuss your ideas.
 
 ## Running Tests
 

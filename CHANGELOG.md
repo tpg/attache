@@ -1,5 +1,9 @@
 # Changelog
 
+## [Unreleased]
+### Changed
+* The `install` command will now attempt to create the project root directory with a `mkdir -p` command.
+
 ## [0.6.1] 25-06-2020
 ### Fixed
 * Fixed a bug in the `init` command that wasn't locating the Git config correctly and wasn't setting the default remote URL.

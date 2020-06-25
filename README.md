@@ -28,6 +28,8 @@ Update the config file to reflect your server and repository settings making sur
 attache install
 ```
 
+Now update the new `.env` file on your server, cache the config, and whatever other tasks you need to complete. That's it! Deployment complete.
+
 Whenever you need to deploy a new version, simply run:
 
 ```bash

@@ -5,6 +5,7 @@ namespace TPG\Attache\Console;
 use Symfony\Component\Console\Input\InputOption;
 use TPG\Attache\ConfigurationProvider;
 use TPG\Attache\Deployer;
+use TPG\Attache\Exceptions\ProcessException;
 use TPG\Attache\ReleaseService;
 use TPG\Attache\Server;
 
@@ -35,12 +36,14 @@ class InstallCommand extends Command
      * Run the server installation.
      *
      * @return int
+     * @throws ProcessException
      */
     protected function fire(): int
     {
         $service = new ReleaseService($this->server);
 
         if ($service->hasInstallation()) {
+
             $this->output->writeln(
                 '<error>There is already an installation on '
                 .$this->server->name()
