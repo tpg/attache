@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.6.1] 25-06-2020
+### Fixed
+* Fixed a bug in the `init` command that wasn't locating the Git config correctly and wasn't setting the default remote URL.
+* Fixed a bug in the `init` command that was not setting the Git remote correctly when more than one remote is configured.
+
 ## [0.6.0] 22-06-2020
 ### Changed
 * Rewrote how tasks are executed locally. Attaché should now throw an exception if one or more commands fail in the same way the SSH scripts work.
