@@ -4,7 +4,6 @@ namespace TPG\Attache;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use TPG\Attache\Exceptions\ProcessException;
 use TPG\Attache\Exceptions\ServerException;
 
 class ReleaseService
@@ -53,6 +52,7 @@ class ReleaseService
     {
         try {
             $releases = $this->getReleases();
+
             return count($releases) > 0;
         } catch (\Exception $e) {
             if (! Str::contains(strtolower($e->getMessage()), 'no such file or directory')) {

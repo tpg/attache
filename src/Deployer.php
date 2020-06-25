@@ -520,7 +520,7 @@ class Deployer
     protected function buildRootTask(): Task
     {
         $commands = [
-            'mkdir -p '.$this->server->path('releases')
+            'mkdir -p '.$this->server->path('releases'),
         ];
 
         return new Task(implode(PHP_EOL, $commands), $this->server);

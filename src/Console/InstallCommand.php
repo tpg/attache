@@ -43,7 +43,6 @@ class InstallCommand extends Command
         $service = new ReleaseService($this->server);
 
         if ($service->hasInstallation()) {
-
             $this->output->writeln(
                 '<error>There is already an installation on '
                 .$this->server->name()
