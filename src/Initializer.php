@@ -19,9 +19,16 @@ class Initializer
      */
     public function __construct(string $gitConfigFilename = null)
     {
-        if ($gitConfigFilename) {
-            $this->loadGitConfig($gitConfigFilename);
+        if (! $gitConfigFilename) {
+            $gitConfigFilename = $this->getDefaultGitConfigFilename();
         }
+
+        $this->loadGitConfig($gitConfigFilename);
+    }
+
+    protected function getDefaultGitConfigFilename(): string
+    {
+        return '.git/config';
     }
 
     /**
@@ -35,7 +42,6 @@ class Initializer
         if (! file_exists($filename)) {
             throw new ConfigurationException('Not a git repository');
         }
-
         $ini = file_get_contents($filename);
         $this->discoverGitRemotes($ini);
     }

@@ -54,12 +54,14 @@ class InitCommand extends Command
         $helper = $this->getHelper('question');
 
         $question = new ChoiceQuestion(
-            'There is more than one remote URL available.Please select the oen to use for Attaché:',
+            'There is more than one remote URL available. Please select the one to use by typing its name:',
             array_map(static function ($key) {
                 return Str::after($key, 'remote ');
             }, $remotes)
         );
 
-        return $helper->ask($this->input, $this->output, $question);
+        $key = $helper->ask($this->input, $this->output, $question);
+
+        return $remotes[$key];
     }
 }
