@@ -43,6 +43,7 @@ class ScriptCompiler
     public function setReleaseId(string $releaseId = null): self
     {
         $this->releaseId = $releaseId;
+
         return $this;
     }
 
