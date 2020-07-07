@@ -30,7 +30,7 @@ class ScriptTest extends TestCase
             $server->phpBin().' '.$server->composerBin().' '.$server->latestReleaseId().'/artisan some-command',
         ];
 
-        $this->assertSame($expected, $server->script('before-deploy'));
+        $this->assertSame($expected, $server->script('before-deploy', $server->latestReleaseId()));
     }
 
     /**

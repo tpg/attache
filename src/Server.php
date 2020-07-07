@@ -236,19 +236,21 @@ class Server
      * Get a script hook value by its key.
      *
      * @param string $key
+     * @param string|null $releaseId
      * @return array
      */
-    public function script(string $key): array
+    public function script(string $key, string $releaseId = null): array
     {
         $script = Arr::get($this->config, 'scripts.'.$key, []);
 
-        return (new ScriptCompiler($this))->compile($script);
+        return (new ScriptCompiler($this))->setReleaseId($releaseId)->compile($script);
     }
 
     /**
      * Get the most recent release ID.
      *
      * @return string
+     * @deprecated 0.6.2 No longer used to fetch the current release ID.
      */
     public function latestReleaseId(): string
     {

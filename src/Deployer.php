@@ -126,7 +126,7 @@ class Deployer
         $commands = array_filter([
             'printf "\033c"',
             'cd '.$this->server->root(),
-            ...$this->server->script('before-deploy'),
+            ...$this->server->script('before-deploy', $releaseId),
             ...$this->cloneSteps($releasePath),
             ...$this->getComposer($releasePath),
             ...$this->envSteps($releasePath),
@@ -136,7 +136,7 @@ class Deployer
             ...$this->storageLinkSteps($releasePath),
             ...$this->generateKeySteps($install, $releasePath),
             ...$this->migrationSteps($migrate, $releasePath),
-            ...$this->server->script('after-deploy'),
+            ...$this->server->script('after-deploy', $releaseId),
         ], static function ($command) {
             return $command !== null;
         });

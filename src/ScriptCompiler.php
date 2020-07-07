@@ -13,6 +13,11 @@ class ScriptCompiler
     protected Server $server;
 
     /**
+     * @var string|null
+     */
+    protected ?string $releaseId;
+
+    /**
      * ScriptCompiler constructor.
      * @param Server $server
      */
@@ -35,6 +40,12 @@ class ScriptCompiler
         }, $lines);
     }
 
+    public function setReleaseId(string $releaseId = null): self
+    {
+        $this->releaseId = $releaseId;
+        return $this;
+    }
+
     protected function tagValues(array $tags)
     {
         $values = array_map(function ($tag) {
@@ -44,7 +55,7 @@ class ScriptCompiler
                 case 'composer':
                     return $this->server->composerBin();
                 case 'release':
-                    return $this->server->latestReleaseId();
+                    return $this->releaseId;
                 default:
                     throw new ConfigurationException('No such tag @'.$tag);
             }
