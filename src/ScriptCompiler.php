@@ -29,8 +29,14 @@ class ScriptCompiler
     public function compile(array $lines): array
     {
         return array_map(function ($line) {
-            preg_match_all('/@(?<tag>[a-z]+?)(?=\s|\}|$)/', $line, $matches);
-            $tags = $this->tagValues(Arr::get($matches, 'tag'));
+            preg_match_all('/@(?<tag>[a-z]+?)(:(?<param>[a-z]+?))?(?=\s|\}|$)/', $line, $matches, PREG_SET_ORDER, 0);
+
+            $tags = $this->tagValues(array_map(function ($match) {
+                return [
+                    'tag' => Arr::get($match, 'tag'),
+                    'param' => Arr::get($match, 'param'),
+                ];
+            }, $matches));
 
             foreach ($tags as $tag => $value) {
                 $line = str_replace('@'.$tag, $value, $line);
@@ -49,19 +55,36 @@ class ScriptCompiler
 
     protected function tagValues(array $tags)
     {
-        $values = array_map(function ($tag) {
-            switch ($tag) {
-                case 'php':
-                    return $this->server->phpBin();
-                case 'composer':
-                    return $this->server->composerBin();
-                case 'release':
-                    return $this->releaseId;
-                default:
-                    throw new ConfigurationException('No such tag @'.$tag);
-            }
-        }, $tags);
+        $results = [];
 
-        return array_combine($tags, $values);
+        foreach ($tags as $tag) {
+
+            $tagName = $tag['tag'] . ($tag['param'] ? ':'.$tag['param'] : '');
+            $value = '';
+
+            switch ($tag['tag']) {
+                case 'php':
+                    $value = $this->server->phpBin();
+                    break;
+                case 'composer':
+                    $value = $this->server->composerBin();
+                    break;
+                case 'root':
+                    $value = $this->server->root();
+                    break;
+                case 'path':
+                    $value = $this->server->path($tag['param']);
+                    break;
+                case 'release':
+                    $value = $this->releaseId;
+                    break;
+                default:
+                    throw new ConfigurationException('No such tag @'.$tag['tag']);
+            }
+
+            $results[$tagName] = $value;
+        }
+
+        return $results;
     }
 }

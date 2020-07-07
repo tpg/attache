@@ -45,4 +45,18 @@ class ScriptTest extends TestCase
         $compiler = new ScriptCompiler($server);
         $compiler->compile(['try @badtag']);
     }
+
+    /**
+     * @test
+     */
+    public function it_will_return_a_server_path_tag()
+    {
+        $config = $this->getConfig();
+        $server = $config->server('server-1');
+
+        $compiler = new ScriptCompiler($server);
+        $result = $compiler->compile(['script-test @path:releases']);
+
+        $this->assertSame(['script-test '.$server->path('releases')], $result);
+    }
 }

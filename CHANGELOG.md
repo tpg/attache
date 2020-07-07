@@ -1,5 +1,9 @@
 # Changelog
 
+## [Unreleased]
+### Added
+* Added two new script tags: `@root` points to the project root on the server. There is now a `@path` tag which takes one parameter. So `@path:releases` will give you the project releases path.
+
 ## [0.6.2] 07-07-2020
 ### Fixed
 * Fixed a bug in the script compiler that was not able to fetch the latest release ID since scripts are compiled BEFORE connecting to the server. The release ID is now passed into the compiler.
