@@ -182,7 +182,7 @@ class Deployer
         if ($this->server->composer('local')) {
             return [
                 'cd '.$this->server->root(),
-                ...$this->server->script('before-prep-composer'),
+                ...$this->server->script('before-prepcomposer'),
                 'if test ! -f "'.$this->server->composerBin().'"; then',
                 'curl -sS https://getcomposer.org/installer -o composer-installer.php',
                 $this->server->phpBin().' composer-installer.php --install-dir='.$this->server->root().' --filename='.$this->server->composer('bin'),
@@ -190,7 +190,7 @@ class Deployer
                 'else',
                 $this->server->composerBin().' self-update',
                 'fi',
-                ...$this->server->script('after-prep-composer'),
+                ...$this->server->script('after-prepcomposer'),
             ];
         }
 

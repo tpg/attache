@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.6.4] 13-07-2020
+### Changed
+* The `before-prep-composer` and `after-prep-composer` script hooks have been renamed to `before-prepcomposer` and `after-prepcomposer` respectively.
+
 ## [0.6.3] 13-07-2020
 ### Added
 * Added two new script tags: `@root` points to the project root on the server. There is now a `@path` tag which takes one parameter. So `@path:releases` will give you the project releases path.
