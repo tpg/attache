@@ -6,6 +6,7 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputOption;
 use TPG\Attache\ConfigurationProvider;
 use TPG\Attache\Deployer;
+use TPG\Attache\ReleaseService;
 use TPG\Attache\Server;
 
 class DeployCommand extends Command
@@ -36,6 +37,7 @@ class DeployCommand extends Command
         $this->setName('deploy')
             ->setDescription('Run a deployment to the configured server')
             ->addOption('prune', 'p', InputOption::VALUE_NONE, 'Prune old releases')
+            ->addOption('force', 'f', InputOption::VALUE_NONE, 'Deploy even if there is no installation present at the target')
             ->requiresConfig()
             ->requiresServer();
     }
@@ -48,6 +50,8 @@ class DeployCommand extends Command
      */
     protected function fire(): int
     {
+        $this->checkForInstallation();
+
         $releaseId = date('YmdHis');
 
         $this->getDeployer($this->server)->deploy($releaseId);
@@ -61,6 +65,15 @@ class DeployCommand extends Command
         }
 
         return 0;
+    }
+
+    protected function checkForInstallation(): void
+    {
+        if (! $this->option('force') && ! (new ReleaseService($this->server))->hasInstallation()) {
+            $this->output->writeln($this->error('No installation at target: '.$this->server->root().'.'));
+            $this->output->writeln($this->info('Try running "attache install '.$this->server->name().'" first.'));
+            exit(100);
+        }
     }
 
     /**

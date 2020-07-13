@@ -75,9 +75,9 @@ class Server
     /**
      * Get the name of the server.
      *
-     * @return mixed
+     * @return string
      */
-    public function name()
+    public function name(): string
     {
         return Arr::get($this->config, 'name');
     }
@@ -85,9 +85,9 @@ class Server
     /**
      * Get the host.
      *
-     * @return mixed
+     * @return string
      */
-    public function host()
+    public function host(): string
     {
         return Arr::get($this->config, 'host');
     }
@@ -95,19 +95,19 @@ class Server
     /**
      * Get the port number.
      *
-     * @return mixed
+     * @return int
      */
-    public function port()
+    public function port(): int
     {
-        return Arr::get($this->config, 'port', 22);
+        return (int)Arr::get($this->config, 'port', 22);
     }
 
     /**
      * Get the server user.
      *
-     * @return mixed
+     * @return string
      */
-    public function user()
+    public function user(): string
     {
         return Arr::get($this->config, 'user');
     }
@@ -156,9 +156,9 @@ class Server
      *
      * @param string $key
      * @param bool $absolute
-     * @return mixed|string
+     * @return ?string
      */
-    public function path(string $key, bool $absolute = true)
+    public function path(string $key, bool $absolute = true): ?string
     {
         $path = Arr::get($this->paths(), $key);
 

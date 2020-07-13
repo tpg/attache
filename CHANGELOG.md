@@ -1,8 +1,9 @@
 # Changelog
 
-## [Unreleased]
+## [0.6.3] 13-07-2020
 ### Added
 * Added two new script tags: `@root` points to the project root on the server. There is now a `@path` tag which takes one parameter. So `@path:releases` will give you the project releases path.
+* The `deploy` command will now check if an installation is present. If not, it will fail and exit. An installation must be completed first.
 
 ## [0.6.2] 07-07-2020
 ### Fixed

@@ -9,6 +9,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 use TPG\Attache\ConfigurationProvider;
 use TPG\Attache\Console\DeployCommand;
 use TPG\Attache\Deployer;
+use TPG\Attache\ReleaseService;
 use TPG\Attache\Task;
 
 class DeployerTest extends TestCase
@@ -33,7 +34,7 @@ class DeployerTest extends TestCase
 
         $command = new DeployCommand(null, $config, $deployer);
         $commandTester = new CommandTester($command);
-        $commandTester->execute(['server' => 'production']);
+        $commandTester->execute(['server' => 'production', '--force' => true]);
         $this->assertStringContainsString($id, $commandTester->getDisplay());
     }
 
