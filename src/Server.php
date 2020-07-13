@@ -99,7 +99,7 @@ class Server
      */
     public function port(): int
     {
-        return (int)Arr::get($this->config, 'port', 22);
+        return (int) Arr::get($this->config, 'port', 22);
     }
 
     /**
