@@ -9,7 +9,6 @@ use Symfony\Component\Console\Tester\CommandTester;
 use TPG\Attache\ConfigurationProvider;
 use TPG\Attache\Console\DeployCommand;
 use TPG\Attache\Deployer;
-use TPG\Attache\ReleaseService;
 use TPG\Attache\Task;
 
 class DeployerTest extends TestCase

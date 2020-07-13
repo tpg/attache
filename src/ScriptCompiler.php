@@ -58,8 +58,7 @@ class ScriptCompiler
         $results = [];
 
         foreach ($tags as $tag) {
-
-            $tagName = $tag['tag'] . ($tag['param'] ? ':'.$tag['param'] : '');
+            $tagName = $tag['tag'].($tag['param'] ? ':'.$tag['param'] : '');
             $value = '';
 
             switch ($tag['tag']) {
