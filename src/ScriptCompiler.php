@@ -26,12 +26,12 @@ class ScriptCompiler
         $this->server = $server;
     }
 
-    public function compile(array $lines): array
+    public function compile(array $lines, string $path = null): array
     {
-        return array_map(function ($line) {
+        $script = array_map(function ($line) {
             preg_match_all('/@(?<tag>[a-z]+?)(:(?<param>[a-z]+?))?(?=\s|\}|$)/', $line, $matches, PREG_SET_ORDER, 0);
 
-            $tags = $this->tagValues(array_map(function ($match) {
+            $tags = $this->tagValues(array_map(static function ($match) {
                 return [
                     'tag' => Arr::get($match, 'tag'),
                     'param' => Arr::get($match, 'param'),
@@ -44,6 +44,8 @@ class ScriptCompiler
 
             return preg_replace('/\{\{\s?(.+?)\s?\}\}/', '$1', $line);
         }, $lines);
+
+        return $this->setPath($script, $path);
     }
 
     public function setReleaseId(string $releaseId = null): self
@@ -53,7 +55,7 @@ class ScriptCompiler
         return $this;
     }
 
-    protected function tagValues(array $tags)
+    protected function tagValues(array $tags): array
     {
         $results = [];
 
@@ -85,5 +87,16 @@ class ScriptCompiler
         }
 
         return $results;
+    }
+
+    protected function setPath(array $scripts, string $path = null): array
+    {
+        if ($path) {
+            return array_merge([
+                'cd '.$path,
+            ], $scripts);
+        }
+
+        return $scripts;
     }
 }

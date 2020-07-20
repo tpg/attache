@@ -237,13 +237,14 @@ class Server
      *
      * @param string $key
      * @param string|null $releaseId
+     * @param string|null $path
      * @return array
      */
-    public function script(string $key, string $releaseId = null): array
+    public function script(string $key, string $releaseId = null, string $path = null): array
     {
         $script = Arr::get($this->config, 'scripts.'.$key, []);
 
-        return (new ScriptCompiler($this))->setReleaseId($releaseId)->compile($script);
+        return (new ScriptCompiler($this))->setReleaseId($releaseId)->compile($script, $path);
     }
 
     /**
