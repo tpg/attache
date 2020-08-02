@@ -90,12 +90,11 @@ class ConfigurationProvider
         $collected = collect();
 
         collect($servers)->each(static function ($config, $name) use ($common, $collected) {
-
             $config = array_replace_recursive($common, $config);
             $collected->push(new Server($name, $config));
         });
 
-        $this->servers = $collected->keyBy(fn($server) => $server->name());
+        $this->servers = $collected->keyBy(fn ($server) => $server->name());
     }
 
     /**
