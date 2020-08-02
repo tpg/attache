@@ -1,5 +1,10 @@
 # Changelog
 
+## [Unreleased]
+### Changed
+* The configuration requires the `server` config setting has been changed from an array of objects to an object of servers keyed by their names.
+* The `name` server config attribute has been removed.
+
 ## [0.6.4] 13-07-2020
 ### Changed
 * The `before-prep-composer` and `after-prep-composer` script hooks have been renamed to `before-prepcomposer` and `after-prepcomposer` respectively.
