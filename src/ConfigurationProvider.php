@@ -87,15 +87,15 @@ class ConfigurationProvider
      */
     protected function loadServers(array $servers, array $common): void
     {
-        $this->servers = collect(array_map(function ($server) use ($common) {
-            $config = array_replace_recursive($common, $server);
+        $collected = collect();
 
-            $this->validateServer($config);
+        collect($servers)->each(static function ($config, $name) use ($common, $collected) {
 
-            return new Server($config);
-        }, $servers))->keyBy(function ($item) {
-            return $item->name();
+            $config = array_replace_recursive($common, $config);
+            $collected->push(new Server($name, $config));
         });
+
+        $this->servers = $collected->keyBy(fn($server) => $server->name());
     }
 
     /**
@@ -107,7 +107,7 @@ class ConfigurationProvider
      */
     protected function validateServer(array $config): void
     {
-        $required = ['name', 'host', 'user', 'root'];
+        $required = ['host', 'user', 'root'];
 
         foreach ($required as $attr) {
             if (! Arr::has($config, $attr)) {

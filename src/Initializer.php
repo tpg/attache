@@ -139,8 +139,7 @@ class Initializer
         return [
             'repository' => $remote ?: 'git@remote.com:vendor/repository.git',
             'servers' => [
-                [
-                    'name' => 'production',
+                'production' => [
                     'host' => 'example.test',
                     'port' => 22,
                     'user' => 'user',

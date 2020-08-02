@@ -17,9 +17,8 @@ class TestCase extends \PHPUnit\Framework\TestCase
         ],
         'default' => 'server-1',
         'servers' => [
-            [
-                'name' => 'server-1',
-                'host' => 'production.test',
+            "server-1" => [
+                'host' => 'server1.test',
                 'user' => 'user',
                 'port' => 22,
                 'root' => '/path/to/application',
@@ -35,8 +34,8 @@ class TestCase extends \PHPUnit\Framework\TestCase
                 'composer' => [
                     'bin' => 'composer.phar',
                 ],
-            ], [
-                'name' => 'server-2',
+            ],
+            "server-2" => [
             ],
         ],
     ];

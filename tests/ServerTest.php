@@ -34,7 +34,7 @@ class ServerTest extends TestCase
         $commandTester->execute([]);
 
         $this->assertStringContainsString('server-1', $commandTester->getDisplay());
-        $this->assertStringContainsString('production.test', $commandTester->getDisplay());
+        $this->assertStringContainsString('server1.test', $commandTester->getDisplay());
     }
 
     /**
@@ -56,8 +56,7 @@ class ServerTest extends TestCase
         $config = $this->config;
         $config['default'] = null;
         $config['servers'] = [
-            [
-                'name' => 'single',
+            'single' => [
                 'host' => 'single-host',
                 'user' => 'single-user',
                 'port' => 22,
@@ -80,7 +79,7 @@ class ServerTest extends TestCase
     public function it_can_have_a_custom_set_of_assets()
     {
         $config = $this->config;
-        $config['servers'][0]['assets']['public/example'] = 'public/example';
+        $config['servers']['server-1']['assets']['public/example'] = 'public/example';
 
         $provider = new ConfigurationProvider();
         $provider->setConfig($config);

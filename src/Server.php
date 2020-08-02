@@ -7,11 +7,9 @@ use Illuminate\Support\Str;
 
 class Server
 {
-    /**
-     * @var array
-     */
+    protected string $name;
+
     protected array $config = [
-        'name' => null,
         'branch' => 'master',
         'host' => null,
         'port' => 22,
@@ -39,13 +37,23 @@ class Server
     ];
 
     /**
+     * @param string $name
      * @param array|null $config
      */
-    public function __construct(array $config = null)
+    public function __construct(string $name, array $config = null)
     {
+        $this->setName($name);
+
         if ($config) {
             $this->setConfig($config);
         }
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
     }
 
     /**
@@ -79,7 +87,7 @@ class Server
      */
     public function name(): string
     {
-        return Arr::get($this->config, 'name');
+        return $this->name;
     }
 
     /**

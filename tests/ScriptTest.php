@@ -24,7 +24,7 @@ class ScriptTest extends TestCase
                 '00000002',
             ]);
 
-        $server->setConfig($this->config['servers'][0]);
+        $server->setConfig($this->config['servers']['server-1']);
 
         $expected = [
             $server->phpBin().' '.$server->composerBin().' '.$server->latestReleaseId().'/artisan some-command',

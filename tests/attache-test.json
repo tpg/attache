@@ -20,8 +20,8 @@
         }
     },
     "default": "production",
-    "servers": [
-        {
+    "servers": {
+        "production": {
             "name": "production",
             "root": "/path/to/application",
             "migrate": true,
@@ -37,7 +37,7 @@
                 ]
             }
         },
-        {
+        "staging": {
             "name": "staging",
             "host": "staging.test",
             "port": 22,
@@ -45,5 +45,5 @@
             "root": "/path/to/application",
             "branch": "staging"
         }
-    ]
+    }
 }

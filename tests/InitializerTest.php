@@ -52,12 +52,12 @@ class InitializerTest extends TestCase
         );
 
         $this->assertSame('git@origin.git', $config['repository']);
-        $this->assertSame('example.test', Arr::get($config, 'servers.0.host'));
+        $this->assertSame('example.test', Arr::get($config, 'servers.production.host'));
 
         $provider = new ConfigurationProvider();
         $provider->setConfig($config);
 
-        $this->assertSame('example.test', $provider->server('production')->host());
+        $this->assertSame('example.test', $provider->server('server-1')->host());
 
         unlink(__DIR__.'/test-config.json');
     }
