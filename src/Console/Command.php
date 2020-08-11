@@ -159,24 +159,30 @@ abstract class Command extends SymfonyCommand
             throw new ConfigurationException('No server specified');
         }
 
-        $this->server = $this->config->server($serverString);
-
-        $this->updateBranch();
+        $this->server = $this->getServer($serverString);
     }
 
     /**
-     * Update the Git branch if one is specified as an option.
+     * Get the server from the configuration and set the Git branch
+     *
+     * @param string $serverString
+     * @return Server
+     * @throws ConfigurationException
      */
-    protected function updateBranch(): void
+    protected function getServer(string $serverString): Server
     {
+        $server = $this->config->server($serverString);
+
         $branch = null;
         if ($this->input->hasOption('branch')) {
             $branch = $this->option('branch');
         }
 
-        if ($branch) {
-            $this->server->setConfig(['branch' => $branch]);
+        if ($branch && $server) {
+            $server->setConfig(['branch' => $branch]);
         }
+
+        return $server;
     }
 
     /**
@@ -207,7 +213,7 @@ abstract class Command extends SymfonyCommand
      * @param string $message
      * @return string
      */
-    public function info(string $message)
+    public function info(string $message): string
     {
         return '<info>'.$message.'</info>';
     }
@@ -218,7 +224,7 @@ abstract class Command extends SymfonyCommand
      * @param string $message
      * @return string
      */
-    public function error(string $message)
+    public function error(string $message): string
     {
         return '<error>'.$message.'</error>';
     }
