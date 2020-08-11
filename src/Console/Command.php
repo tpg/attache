@@ -163,7 +163,7 @@ abstract class Command extends SymfonyCommand
     }
 
     /**
-     * Get the server from the configuration and set the Git branch
+     * Get the server from the configuration and set the Git branch.
      *
      * @param string $serverString
      * @return Server
