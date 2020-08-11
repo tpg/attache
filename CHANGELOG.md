@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [0.7.0] 12-08-2020
 ### Changed
 * The configuration requires the `server` config setting has been changed from an array of objects to an object of servers keyed by their names.
 * The `name` server config attribute has been removed.
