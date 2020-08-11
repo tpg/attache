@@ -171,7 +171,6 @@ abstract class Command extends SymfonyCommand
     {
         $branch = null;
         if ($this->input->hasOption('branch')) {
-
             $branch = $this->option('branch');
         }
 
