@@ -4,6 +4,7 @@
 ### Changed
 * The configuration requires the `server` config setting has been changed from an array of objects to an object of servers keyed by their names.
 * The `name` server config attribute has been removed.
+* Added a new `--branch` option to the `deploy` and `install` commands.
 
 ## [0.6.4] 13-07-2020
 ### Changed

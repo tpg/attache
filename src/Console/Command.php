@@ -158,7 +158,26 @@ abstract class Command extends SymfonyCommand
         if (! $serverString) {
             throw new ConfigurationException('No server specified');
         }
+
         $this->server = $this->config->server($serverString);
+
+        $this->updateBranch();
+    }
+
+    /**
+     * Update the Git branch if one is specified as an option.
+     */
+    protected function updateBranch(): void
+    {
+        $branch = null;
+        if ($this->input->hasOption('branch')) {
+
+            $branch = $this->option('branch');
+        }
+
+        if ($branch) {
+            $this->server->setConfig(['branch' => $branch]);
+        }
     }
 
     /**

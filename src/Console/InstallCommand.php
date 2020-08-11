@@ -28,6 +28,7 @@ class InstallCommand extends Command
         $this->setName('install')
             ->setDescription('Initial installation and deployment to the specified server')
             ->addOption('env', 'e', InputOption::VALUE_REQUIRED, 'The installation .env file', '.env.example')
+            ->addOption('branch', 'b', InputOption::VALUE_REQUIRED, 'Override the configured branch')
             ->requiresConfig()
             ->requiresServer();
     }

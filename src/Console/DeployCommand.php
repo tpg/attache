@@ -38,6 +38,7 @@ class DeployCommand extends Command
             ->setDescription('Run a deployment to the configured server')
             ->addOption('prune', 'p', InputOption::VALUE_NONE, 'Prune old releases')
             ->addOption('force', 'f', InputOption::VALUE_NONE, 'Deploy even if there is no installation present at the target')
+            ->addOption('branch', 'b', InputOption::VALUE_REQUIRED, 'Override the configured branch')
             ->requiresConfig()
             ->requiresServer();
     }
