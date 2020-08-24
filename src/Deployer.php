@@ -16,6 +16,11 @@ class Deployer
     protected const BUILD_COMMAND = ['yarn prod'];
 
     /**
+     * Process timeout in seconds.
+     */
+    protected const PROCESS_TIMEOUT = 3600;
+
+    /**
      * @var ConfigurationProvider
      */
     protected ConfigurationProvider $config;
@@ -64,7 +69,7 @@ class Deployer
      * Deploy a release.
      *
      * @param string $releaseId
-     * @param bool $install
+     * @throws ProcessException
      */
     public function deploy(string $releaseId): void
     {
@@ -77,7 +82,6 @@ class Deployer
      * Get the tasks to execute.
      *
      * @param string $releaseId
-     * @param bool $install
      * @return array
      */
     public function getTasks(string $releaseId): array
@@ -423,7 +427,7 @@ class Deployer
     {
         $code = (new Ssh($task))->tty()->run(function ($task, $output) {
             $this->getOutput()->writeln($output);
-        });
+        }, self::PROCESS_TIMEOUT);
 
         if ($code !== 0) {
             $this->failProcess();
@@ -460,6 +464,7 @@ class Deployer
     protected function executeTaskLocally(Task $task): void
     {
         $process = Process::fromShellCommandline($task->getBashScript())->disableOutput();
+        $process->setTimeout(self::PROCESS_TIMEOUT);
 
         if ($this->tty) {
             $process->setTty(Process::isTtySupported());

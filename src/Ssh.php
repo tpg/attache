@@ -41,9 +41,10 @@ class Ssh
      * Run the task.
      *
      * @param \Closure|null $callback
+     * @param int $timeout
      * @return int
      */
-    public function run(\Closure $callback = null): int
+    public function run(\Closure $callback = null, int $timeout = 60): int
     {
         if (! $this->task) {
             throw new \RuntimeException('No task specified');
@@ -53,7 +54,7 @@ class Ssh
             throw new \RuntimeException('No server to connect to');
         }
 
-        $process = $this->getProcess();
+        $process = $this->getProcess($timeout);
 
         if ($this->tty) {
             $process->setTty(Process::isTtySupported());
@@ -87,14 +88,19 @@ class Ssh
     /**
      * Get a Process instance.
      *
+     * @param int $timeout
      * @return Process
      */
-    protected function getProcess(): Process
+    protected function getProcess(int $timeout = 60): Process
     {
-        return Process::fromShellCommandline(
+        $process = Process::fromShellCommandline(
             'ssh '.$this->getServerConnectionString().' '
             .$this->script()
         )->setTimeout(null);
+
+        $process->setTimeout($timeout);
+
+        return $process;
     }
 
     /**
