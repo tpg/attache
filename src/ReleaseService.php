@@ -175,14 +175,18 @@ class ReleaseService
     {
         $commands = [];
         foreach ($ids as $id) {
-            $commands[] = 'rm -rf '.$this->server->path('releases').'/'.$id;
+            $label =
+            $commands[] = [
+                'echo "Purging release '.$id.'"',
+                'rm -rf '.$this->server->path('releases').'/'.$id,
+            ];
         }
 
-        $command = implode(' && ', $commands);
+        $command = implode(' && ', Arr::flatten($commands));
 
         $task = new Task($command, $this->server);
 
-        (new Ssh($task))->run();
+        (new Ssh($task))->tty()->run();
     }
 
     /**
