@@ -175,7 +175,6 @@ class ReleaseService
     {
         $commands = [];
         foreach ($ids as $id) {
-            $label =
             $commands[] = [
                 'echo "Purging release '.$id.'"',
                 'rm -rf '.$this->server->path('releases').'/'.$id,
