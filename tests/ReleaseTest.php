@@ -121,7 +121,7 @@ class ReleaseTest extends TestCase
      */
     public function it_can_prune_releases()
     {
-        $config = new ConfigurationProvider(__DIR__ . '/attache-test.json');
+        $config = new ConfigurationProvider(__DIR__.'/attache-test.json');
         $server = $config->server('production');
         $server->setConfig(['prune' => 2]);
 

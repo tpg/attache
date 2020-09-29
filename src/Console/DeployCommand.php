@@ -57,7 +57,6 @@ class DeployCommand extends Command
 
         $releaseId = date('YmdHis');
 
-
         $this->lock();
         $this->getDeployer($this->server)->deploy($releaseId);
         $this->unlock();
