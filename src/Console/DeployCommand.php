@@ -59,7 +59,7 @@ class DeployCommand extends Command
 
         $this->output->writeln('Release <info>'.$releaseId.'</info> is now live on <info>'.$this->server->name().'</info>');
 
-        if ($this->option('prune')) {
+        if ($this->server->prune() || $this->option('prune')) {
             $command = new ReleasesPruneCommand(null, $this->config);
 
             $command->run(new ArrayInput($this->getPruneArguments()), $this->output);

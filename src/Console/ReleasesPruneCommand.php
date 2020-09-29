@@ -79,8 +79,10 @@ class ReleasesPruneCommand extends Command
      */
     protected function getIdsToDelete(array $releases, ?int $count = null): array
     {
-        if (! $count || $count > count($releases) - 2) {
-            $count = count($releases) - 2;
+        $retain = $this->server->prune() ?: 2;
+
+        if (! $count || $count > count($releases) - $retain) {
+            $count = count($releases) - $retain;
         }
 
         return array_slice($releases, 0, $count);

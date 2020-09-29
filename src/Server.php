@@ -33,6 +33,7 @@ class Server
             'public/css' => 'public/css',
             'public/mix-manifest.json' => 'public/mix-manifest.json',
         ],
+        'prune' => 0,
         'scripts' => [],
     ];
 
@@ -238,6 +239,11 @@ class Server
         $key = 'assets'.($key ? '.'.$key : null);
 
         return Arr::get($this->config, $key, null);
+    }
+
+    public function prune(): int
+    {
+        return Arr::get($this->config, 'prune', 0);
     }
 
     /**
