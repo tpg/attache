@@ -167,6 +167,45 @@ class ReleaseService
     }
 
     /**
+     * Check if the server is currently locked for deployment.
+     *
+     * @return bool
+     */
+    public function locked(): bool
+    {
+        $command = 'test -f '.$this->server->root().'/.attache.lock && echo ".attache.lock exists"';
+
+        $task = new Task($command, $this->server);
+
+        $data = $this->run($task);
+        return Str::contains(strtolower($data), '.attache.lock exists');
+    }
+
+    /**
+     * Lock the server for deployment.
+     */
+    public function lock(): void
+    {
+        $command = 'touch '.$this->server->root().'/.attache.lock';
+
+        $task = new Task($command, $this->server);
+
+        $this->run($task);
+    }
+
+    /**
+     * Unlock the server for deployment.
+     */
+    public function unlock(): void
+    {
+        $command = 'test -f '.$this->server->root().'/.attache.lock && rm '.$this->server->root().'/.attache.lock';
+
+        $task = new Task($command, $this->server);
+
+        $this->run($task);
+    }
+
+    /**
      * Delete the specified release IDs.
      *
      * @param array $ids

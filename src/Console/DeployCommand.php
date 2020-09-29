@@ -38,6 +38,7 @@ class DeployCommand extends Command
             ->setDescription('Run a deployment to the configured server')
             ->addOption('prune', 'p', InputOption::VALUE_NONE, 'Prune old releases')
             ->addOption('force', 'f', InputOption::VALUE_NONE, 'Deploy even if there is no installation present at the target')
+            ->addOption('unlock', 'u', InputOption::VALUE_NONE, 'Clear a lock before deployment')
             ->addOption('branch', 'b', InputOption::VALUE_REQUIRED, 'Override the configured branch')
             ->requiresConfig()
             ->requiresServer();
@@ -52,10 +53,14 @@ class DeployCommand extends Command
     protected function fire(): int
     {
         $this->checkForInstallation();
+        $this->checkIfLocked();
 
         $releaseId = date('YmdHis');
 
+
+        $this->lock();
         $this->getDeployer($this->server)->deploy($releaseId);
+        $this->unlock();
 
         $this->output->writeln('Release <info>'.$releaseId.'</info> is now live on <info>'.$this->server->name().'</info>');
 
@@ -77,6 +82,21 @@ class DeployCommand extends Command
         }
     }
 
+    protected function checkIfLocked(): void
+    {
+        $releaseService = new ReleaseService($this->server);
+
+        if ($this->option('unlock')) {
+            $releaseService->unlock();
+        }
+
+        if ($releaseService->locked()) {
+            $this->output->writeln($this->error($this->server->name().' is locked. Another deployment may be in progress.'));
+            $this->output->writeln($this->info('Use "--unlock" to forcibly remove the lock before deployment'));
+            exit(101);
+        }
+    }
+
     /**
      * Get the Deployer instance.
      *
@@ -92,6 +112,16 @@ class DeployCommand extends Command
         }
 
         return $this->deployer;
+    }
+
+    protected function lock(): void
+    {
+        (new ReleaseService($this->server))->lock();
+    }
+
+    protected function unlock(): void
+    {
+        (new ReleaseService($this->server))->unlock();
     }
 
     /**

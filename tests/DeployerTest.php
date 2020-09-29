@@ -9,6 +9,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 use TPG\Attache\ConfigurationProvider;
 use TPG\Attache\Console\DeployCommand;
 use TPG\Attache\Deployer;
+use TPG\Attache\Exceptions\ProcessException;
 use TPG\Attache\Task;
 
 class DeployerTest extends TestCase
@@ -84,5 +85,27 @@ class DeployerTest extends TestCase
         $this->assertStringContainsString('Task 1', $buffer);
         $this->assertStringContainsString('Task 2', $buffer);
         $this->assertStringContainsString('Task 3', $buffer);
+    }
+
+    /**
+     * @test
+     */
+    public function it_will_not_deploy_to_a_locked_server()
+    {
+        $deployer = \Mockery::mock(Deployer::class)
+            ->makePartial()
+            ->shouldAllowMockingProtectedMethods();
+
+        $deployer->shouldReceive('isLocked')
+            ->once()
+            ->andReturn(true);
+
+
+        $this->expectException(ProcessException::class);
+        $deployer->deploy(1);
+
+        $buffer = $output->fetch();
+
+        $this->assertStringContainsString('Deployment is currently locked');
     }
 }

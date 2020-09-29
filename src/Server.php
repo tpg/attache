@@ -262,17 +262,6 @@ class Server
     }
 
     /**
-     * Get the most recent release ID.
-     *
-     * @return string
-     * @deprecated 0.6.2 No longer used to fetch the current release ID.
-     */
-    public function latestReleaseId(): string
-    {
-        return array_reverse($this->releaseIds())[0];
-    }
-
-    /**
      * Get an array of release IDs.
      *
      * @return array
