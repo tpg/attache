@@ -178,6 +178,7 @@ class ReleaseService
         $task = new Task($command, $this->server);
 
         $data = $this->run($task);
+
         return Str::contains(strtolower($data), '.attache.lock exists');
     }
 

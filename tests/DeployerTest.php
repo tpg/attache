@@ -100,7 +100,6 @@ class DeployerTest extends TestCase
             ->once()
             ->andReturn(true);
 
-
         $this->expectException(ProcessException::class);
         $deployer->deploy(1);
 
