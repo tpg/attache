@@ -34,7 +34,7 @@ class InitCommandTest extends TestCase
 
         $commandTester = new CommandTester($command);
         $commandTester->execute([
-            '--filename' => __DIR__.'/../.attache.json'
+            '--filename' => __DIR__.'/../.attache.json',
         ]);
 
         self::assertFileExists(__DIR__.'/../.attache.json');
