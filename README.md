@@ -7,6 +7,7 @@ Attaché is a deployment tool for Laravel originally based on the Laravel Envoy 
 
 Learn how to use Attaché: **[Official Documentation](https://tpg.github.io/attache)**
 
+> This branch is an attempt to rewrite parts of the Attaché code base in order to make it more testable, and add sone long missing features. The 0.7.* series will be maintained until complete feature parity has been reached. 
 ---
 ## Quick Start
 
