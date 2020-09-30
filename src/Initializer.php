@@ -62,7 +62,7 @@ class Initializer
             'repository' => 'git@remote.com:vendor/repository.git',
             'servers' => [
                 'production' => $this->defaultServerConfig(),
-            ]
+            ],
         ];
     }
 
