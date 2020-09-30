@@ -18,17 +18,6 @@ if (file_exists(__DIR__.'/../vendor/autoload.php')) {
 
 $app = new \Symfony\Component\Console\Application('Attaché', '0.8.0-0.1.0');
 
-$app->add(new \TPG\Attache\Console\InitCommand());
-$app->add(new \TPG\Attache\Console\ServersListCommand());
-$app->add(new \TPG\Attache\Console\SshCommand());
-$app->add(new \TPG\Attache\Console\ReleasesListCommand());
-$app->add(new \TPG\Attache\Console\ReleasesRollbackCommand());
-$app->add(new \TPG\Attache\Console\ReleasesActivateCommand());
-$app->add(new \TPG\Attache\Console\ReleasesPruneCommand());
-$app->add(new \TPG\Attache\Console\ReleasesDeleteCommand());
-$app->add(new \TPG\Attache\Console\InstallCommand());
-$app->add(new \TPG\Attache\Console\DeployCommand());
-$app->add(new \TPG\Attache\Console\DownCommand());
-$app->add(new \TPG\Attache\Console\UpCommand());
+$app->add(new \TPG\Attache\Commands\InitCommand());
 
 $app->run();

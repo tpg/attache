@@ -1,166 +1,93 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TPG\Attache;
 
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
-use TPG\Attache\Exceptions\ConfigurationException;
+use League\Flysystem\Adapter\Local;
+use League\Flysystem\Filesystem;
+use TPG\Attache\Contracts\PrinterInterface;
 
 class Initializer
 {
     /**
-     * @var array
+     * @var PrinterInterface
      */
-    protected array $remotes = [];
+    protected PrinterInterface $printer;
 
     /**
-     * @param string|null $gitConfigFilename
-     * @throws ConfigurationException
+     * Initializer constructor.
+     * @param PrinterInterface $printer
      */
-    public function __construct(string $gitConfigFilename = null)
+    public function __construct(PrinterInterface $printer)
     {
-        if (! $gitConfigFilename) {
-            $gitConfigFilename = $this->getDefaultGitConfigFilename();
-        }
-
-        $this->loadGitConfig($gitConfigFilename);
+        $this->printer = $printer;
     }
 
-    protected function getDefaultGitConfigFilename(): string
+    public function create(string $filename): void
+    {
+        $config = $this->defaultConfig();
+
+        try {
+            file_put_contents(
+                $filename,
+                json_encode(
+                    $config,
+                    JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES,
+                    512
+                )
+            );
+        } catch (\JsonException $e) {
+            $this->printer->error('Unable to write to file.');
+            exit(1);
+        }
+    }
+
+    public function loadGitConfig(): void
+    {
+        $filesystem = new Filesystem(new Local(__DIR__));
+
+        $config = $filesystem->read($this->defaultGitConfigFilename());
+        dump($config);
+    }
+
+    protected function defaultGitConfigFilename(): string
     {
         return '.git/config';
     }
 
-    /**
-     * Load the Git config from a config file.
-     *
-     * @param string $filename
-     * @throws ConfigurationException
-     */
-    public function loadGitConfig(string $filename): void
-    {
-        if (! file_exists($filename)) {
-            throw new ConfigurationException('Not a git repository');
-        }
-        $ini = file_get_contents($filename);
-        $this->discoverGitRemotes($ini);
-    }
-
-    /**
-     * Create a new configuration file.
-     *
-     * @param string $filename
-     * @param string $gitUrl
-     */
-    public function createConfig(string $filename, string $gitUrl = null): void
-    {
-        $config = $this->getConfig($gitUrl);
-
-        file_put_contents(
-            $filename,
-            json_encode(
-                $config,
-                JSON_THROW_ON_ERROR
-                | JSON_PRETTY_PRINT
-                | JSON_UNESCAPED_SLASHES,
-                512
-            )
-        );
-    }
-
-    /**
-     * Discover the configured Git remote URL.
-     *
-     * @param string $gitConfig
-     */
-    public function discoverGitRemotes(string $gitConfig): void
-    {
-        $ini = parse_ini_string($gitConfig, true);
-        $this->remotes = $this->getGitConfigKeys($ini);
-    }
-
-    /**
-     * @param array $ini
-     * @return array
-     */
-    protected function getGitConfigKeys(array $ini): array
-    {
-        $keys = array_values(array_filter(array_keys($ini), static function ($key) {
-            return Str::startsWith($key, 'remote');
-        }));
-
-        $remotes = [];
-        foreach ($keys as $key) {
-            $remotes[Str::after($key, 'remote ')] = Arr::get($ini, $key.'.url');
-        }
-
-        return $remotes;
-    }
-
-    /**
-     * Check if there are multiple Git remotes configured.
-     *
-     * @return bool
-     */
-    public function hasMultipleRemotes(): bool
-    {
-        return count($this->remotes) > 1;
-    }
-
-    /**
-     * Get an array of Git remotes.
-     *
-     * @return array
-     */
-    public function remotes(): array
-    {
-        return $this->remotes;
-    }
-
-    /**
-     * Get the named Git remote URL.
-     *
-     * @param string $name
-     * @return string|null
-     */
-    public function remote(string $name = 'origin'): ?string
-    {
-        return Arr::get($this->remotes(), $name);
-    }
-
-    /**
-     * Get the default configuration.
-     *
-     * @param string $remote
-     * @return array
-     */
-    protected function getConfig(string $remote = null): array
+    protected function defaultConfig(): array
     {
         return [
-            'repository' => $remote ?: 'git@remote.com:vendor/repository.git',
+            'repository' => 'git@remote.com:vendor/repository.git',
             'servers' => [
-                'production' => [
-                    'host' => 'example.test',
-                    'port' => 22,
-                    'user' => 'user',
-                    'root' => '/path/to/application',
-                    'paths' => [
-                        'releases' => 'releases',
-                        'serve' => 'live',
-                        'storage' => 'storage',
-                        'env' => '.env',
-                    ],
-                    'php' => [
-                        'bin' => 'php',
-                    ],
-                    'composer' => [
-                        'bin' => 'composer',
-                        'local' => false,
-                    ],
-                    'branch' => 'master',
-                    'migrate' => false,
-                ],
+                'production' => $this->defaultServerConfig(),
+            ]
+        ];
+    }
+
+    protected function defaultServerConfig(): array
+    {
+        return [
+            'host' => 'example.test',
+            'port' => 22,
+            'user' => 'user',
+            'root' => '/path/to/application',
+            'paths' => [
+                'releases' => 'releases',
+                'serve' => 'live',
+                'storage' => 'storage',
+                'env' => '.env',
             ],
+            'php' => [
+                'bin' => 'php',
+            ],
+            'composer' => [
+                'bin' => 'composer',
+                'local' => false,
+            ],
+            'branch' => 'master',
+            'migrate' => false,
         ];
     }
 }
