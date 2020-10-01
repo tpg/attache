@@ -6,5 +6,4 @@ namespace TPG\Attache\Exceptions;
 
 class ConfigurationException extends \Exception
 {
-
 }

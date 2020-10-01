@@ -6,7 +6,6 @@ namespace TPG\Attache\Tests\Feature;
 
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
-use TPG\Attache\Initializer;
 
 class InitCommandTest extends TestCase
 {

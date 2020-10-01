@@ -38,7 +38,6 @@ class ConfigurationProvider
                     512,
                     JSON_THROW_ON_ERROR)
             );
-
         } catch (FileNotFoundException $e) {
             throw new FilesystemException('Config file '.$filename.' not found.');
         } catch (\JsonException $e) {
