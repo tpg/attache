@@ -4,32 +4,53 @@ declare(strict_types=1);
 
 namespace TPG\Attache\Tests\Unit;
 
-use Symfony\Component\Console\Output\BufferedOutput;
+use League\Flysystem\Adapter\Local;
+use League\Flysystem\Filesystem;
+use TPG\Attache\Exceptions\FilesystemException;
 use TPG\Attache\Initializer;
-use TPG\Attache\Printer;
 
 class InitializerTest extends TestCase
 {
     /**
-     * @var Initializer
+     * @test
      */
-    protected Initializer $initializer;
-
-    protected function setUp(): void
+    public function it_can_discover_git_remotes()
     {
-        parent::setUp();
-        $output = new BufferedOutput();
-        $printer = new Printer($output);
-        $this->initializer = new Initializer($printer);
+        $filesystem = $this->getFilesystem();
+        $initializer = new Initializer($filesystem);
+
+        $filesystem->put('.git/config', implode("\n", [
+            '[remote "origin"]',
+            "\turl = git-remote-1.com",
+            '[remote "upstream"]',
+            "\turl = git-remote-2.com",
+        ]));
+
+        $remotes = $initializer->discoverGitRemotes();
+
+        $this->assertSame([
+            'origin' => 'git-remote-1.com',
+            'upstream' => 'git-remote-2.com',
+        ], $remotes->toArray());
+
+        $filesystem->deleteDir('.git');
     }
 
     /**
      * @test
      */
-    public function it_can_discover_a_git_remote()
+    public function it_will_throw_an_exception_if_not_a_git_repository()
     {
-        $this->initializer->loadGitConfig();
+        $filesystem = $this->getFilesystem();
+        $initializer = new Initializer($filesystem);
 
-        $this->assertSame('git@remote.test:/vendor/repository.git', $this->initializer->remote());
+        $this->expectException(FilesystemException::class);
+        $this->expectExceptionMessage('Not a Git repository.');
+        $initializer->discoverGitRemotes();
+    }
+
+    protected function getFilesystem(): Filesystem
+    {
+        return new Filesystem(new Local(__DIR__));
     }
 }

@@ -4,41 +4,41 @@ declare(strict_types=1);
 
 namespace TPG\Attache\Commands;
 
+use League\Flysystem\Adapter\Local;
+use League\Flysystem\Filesystem;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use TPG\Attache\ConfigurationProvider;
+use TPG\Attache\Exceptions\Handler;
 
 class Command extends SymfonyCommand
 {
-    /**
-     * @var InputInterface
-     */
+
     protected InputInterface $input;
-    /**
-     * @var OutputInterface
-     */
+
     protected OutputInterface $output;
-    /**
-     * @var ?ConfigurationProvider
-     */
+
     protected ?ConfigurationProvider $configurationProvider;
 
-    /**
-     * Command constructor.
-     * @param string|null $name
-     * @param ?ConfigurationProvider $configurationProvider
-     */
-    public function __construct(string $name = null, ?ConfigurationProvider $configurationProvider = null)
+    protected Filesystem $filesystem;
+
+    public function __construct(string $name = null, ?ConfigurationProvider $configurationProvider = null, ?Filesystem $filesystem = null)
     {
         parent::__construct($name);
 
         $this->setConfigurationProvider($configurationProvider);
+        $this->setFilesystem($filesystem);
     }
 
     protected function setConfigurationProvider(?ConfigurationProvider $configurationProvider): void
     {
-        $this->configurationProvider = $configurationProvider;
+        $this->configurationProvider = $configurationProvider ?? new ConfigurationProvider();
+    }
+
+    protected function setFilesystem(?Filesystem $filesystem): void
+    {
+        $this->filesystem = $filesystem ?? new Filesystem(new Local(getcwd()));
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

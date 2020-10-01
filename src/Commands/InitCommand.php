@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace TPG\Attache\Commands;
 
+use Illuminate\Support\Collection;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Question\ChoiceQuestion;
 use TPG\Attache\ConfigurationProvider;
 use TPG\Attache\Initializer;
 
@@ -19,14 +21,12 @@ class InitCommand extends Command
     {
         parent::__construct($name, $configurationProvider);
 
-        if ($initializer) {
-            $this->setInitializer($initializer);
-        }
+        $this->setInitializer($initializer);
     }
 
-    protected function setInitializer(Initializer $initializer): void
+    protected function setInitializer(?Initializer $initializer): void
     {
-        $this->initializer = $initializer;
+        $this->initializer = $initializer ?: new Initializer($this->filesystem);
     }
 
     protected function configure(): void
@@ -44,8 +44,34 @@ class InitCommand extends Command
     {
         $filename = $this->option('filename');
 
-        $this->initializer->create($filename);
+        $remote = $this->getGitRemote();
 
         return 0;
+    }
+
+    protected function getGitRemote(): string
+    {
+        $remotes = $this->initializer->discoverGitRemotes();
+        if ($remotes->count() === 1) {
+            return $remotes->first();
+        }
+
+        return $this->selectRemote($remotes);
+    }
+
+    protected function selectRemote(Collection $remotes): string
+    {
+        $helper = $this->getHelper('question');
+
+        $question = new ChoiceQuestion(
+            'There is more than one Git remote available. Please select the one to use by typing its name:',
+            array_map(static function ($key) {
+                return Str::after($key, 'remote ');
+            }, $remotes->toArray())
+        );
+
+        $key = $helper->ask($this->input, $this->output, $question);
+
+        return $remotes->get($key);
     }
 }
