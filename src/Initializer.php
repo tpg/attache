@@ -53,7 +53,6 @@ class Initializer
             return $sections->mapWithKeys(function ($section) use ($ini) {
                 return [Str::after($section, 'remote ') => $ini[$section]['url']];
             });
-
         } catch (FileNotFoundException $e) {
             throw new FilesystemException('Not a Git repository.');
         }
