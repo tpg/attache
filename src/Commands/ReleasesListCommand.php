@@ -17,6 +17,7 @@ class ReleasesListCommand extends Command
     protected function fire(): int
     {
         dd($this->configurationProvider->servers()->first());
+
         return 0;
     }
 }
