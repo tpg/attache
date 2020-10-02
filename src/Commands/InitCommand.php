@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace TPG\Attache\Commands;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use TPG\Attache\ConfigurationProvider;
@@ -45,6 +46,8 @@ class InitCommand extends Command
         $filename = $this->option('filename');
 
         $remote = $this->getGitRemote();
+
+        $this->initializer->create($filename, $remote);
 
         return 0;
     }

@@ -18,6 +18,8 @@ class ConfigurationProvider
      */
     protected Filesystem $filesystem;
     protected Collection $servers;
+    protected string $repository;
+    protected ?string $default;
 
     /**
      * ConfigurationProvider constructor.
@@ -66,5 +68,10 @@ class ConfigurationProvider
         $this->servers = collect($servers)->each(function ($serverConfig) use ($commonConfig) {
             return new Server(array_replace_recursive($commonConfig, $serverConfig));
         });
+    }
+
+    public function repository(): string
+    {
+        return $this->repository;
     }
 }

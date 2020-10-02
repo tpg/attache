@@ -25,13 +25,13 @@ class Command extends SymfonyCommand
     {
         parent::__construct($name);
 
-        $this->setConfigurationProvider($configurationProvider);
         $this->setFilesystem($filesystem);
+        $this->setConfigurationProvider($configurationProvider);
     }
 
     protected function setConfigurationProvider(?ConfigurationProvider $configurationProvider): void
     {
-        $this->configurationProvider = $configurationProvider ?? new ConfigurationProvider();
+        $this->configurationProvider = $configurationProvider ?? new ConfigurationProvider($this->filesystem);
     }
 
     protected function setFilesystem(?Filesystem $filesystem): void
