@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace TPG\Attache\Commands;
 
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class ServerListCommand extends Command
