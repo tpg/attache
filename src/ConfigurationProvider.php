@@ -65,13 +65,18 @@ class ConfigurationProvider
 
     protected function setServers(array $servers, array $commonConfig = []): void
     {
-        $this->servers = collect($servers)->each(function ($serverConfig) use ($commonConfig) {
-            return new Server(array_replace_recursive($commonConfig, $serverConfig));
+        $this->servers = collect($servers)->map(function ($serverConfig, $name) use ($commonConfig) {
+            return new Server($name, array_replace_recursive($commonConfig, $serverConfig));
         });
     }
 
     public function repository(): string
     {
         return $this->repository;
+    }
+
+    public function servers(): Collection
+    {
+        return $this->servers;
     }
 }

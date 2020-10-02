@@ -8,10 +8,11 @@ use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use TPG\Attache\ConfigurationProvider;
 
-class Command extends SymfonyCommand
+abstract class Command extends SymfonyCommand
 {
     protected InputInterface $input;
 
@@ -53,15 +54,33 @@ class Command extends SymfonyCommand
         return 0;
     }
 
-    protected function input(): InputInterface
+    protected function requiresConfig(): self
     {
-        return $this->input;
+        $this->addOption(
+            'config',
+            'c',
+            InputOption::VALUE_REQUIRED,
+            'Path to the config file',
+            '.attache.json'
+        );
+
+        return $this;
     }
 
-    protected function output(): OutputInterface
+    protected function loadConfig(): void
     {
-        return $this->output;
+        $this->configurationProvider->load($this->option('config'));
     }
+
+//    protected function input(): InputInterface
+//    {
+//        return $this->input;
+//    }
+//
+//    protected function output(): OutputInterface
+//    {
+//        return $this->output;
+//    }
 
     protected function option($key)
     {
