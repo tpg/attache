@@ -7,6 +7,7 @@ namespace TPG\Attache\Commands;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -18,40 +19,13 @@ abstract class Command extends SymfonyCommand
 
     protected OutputInterface $output;
 
-    protected ?ConfigurationProvider $configurationProvider;
+    protected ?ConfigurationProvider $configurationProvider = null;
 
     protected Filesystem $filesystem;
 
-    public function __construct(string $name = null, ?ConfigurationProvider $configurationProvider = null, ?Filesystem $filesystem = null)
+    public function setConfigurationProvider(ConfigurationProvider $configurationProvider): void
     {
-        parent::__construct($name);
-
-        $this->setFilesystem($filesystem);
-        $this->setConfigurationProvider($configurationProvider);
-    }
-
-    protected function setConfigurationProvider(?ConfigurationProvider $configurationProvider): void
-    {
-        $this->configurationProvider = $configurationProvider ?? new ConfigurationProvider($this->filesystem);
-    }
-
-    protected function setFilesystem(?Filesystem $filesystem): void
-    {
-        $this->filesystem = $filesystem ?? new Filesystem(new Local(getcwd()));
-    }
-
-    protected function execute(InputInterface $input, OutputInterface $output): int
-    {
-        $this->input = $input;
-
-        $this->output = $output;
-
-        return $this->fire();
-    }
-
-    protected function fire(): int
-    {
-        return 0;
+        $this->configurationProvider = $configurationProvider;
     }
 
     protected function requiresConfig(): self
@@ -67,20 +41,56 @@ abstract class Command extends SymfonyCommand
         return $this;
     }
 
+    protected function requiresServer(): self
+    {
+        $this->addArgument(
+            'server',
+            InputArgument::OPTIONAL,
+            'The name of the configured server'
+        );
+
+        return $this;
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        $this->input = $input;
+
+        $this->output = $output;
+
+        $this->setFilesystem();
+        $this->initConfiguration();
+
+        return $this->fire();
+    }
+
+    public function setFilesystem(Filesystem $filesystem = null): void
+    {
+        $this->filesystem = $filesystem ?? new Filesystem(new Local(__DIR__));
+    }
+
+    protected function initConfiguration(): void
+    {
+        if (! $this->configurationProvider && $this->input->hasOption('config')) {
+            $this->configurationProvider = new ConfigurationProvider(
+                $this->filesystem
+            );
+        }
+
+        if ($this->configurationProvider && $this->input->hasOption('config')) {
+            $this->loadConfig();
+        }
+    }
+
     protected function loadConfig(): void
     {
         $this->configurationProvider->load($this->option('config'));
     }
 
-//    protected function input(): InputInterface
-//    {
-//        return $this->input;
-//    }
-//
-//    protected function output(): OutputInterface
-//    {
-//        return $this->output;
-//    }
+    protected function fire(): int
+    {
+        return 0;
+    }
 
     protected function option($key)
     {

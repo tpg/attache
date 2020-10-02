@@ -22,10 +22,7 @@ class ConfigurationProviderTest extends TestCase
 
         $configurationProvider = new ConfigurationProvider($filesystem);
         $initializer = new Initializer($filesystem);
-        $filesystem->put(
-            '.attache.json',
-            json_encode($initializer->defaultConfig('git-remote-1.com'), JSON_THROW_ON_ERROR)
-        );
+        $initializer->create('.attache.json', 'git-remote-1.com');
 
         $configurationProvider->load('.attache.json');
 

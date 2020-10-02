@@ -16,16 +16,9 @@ class InitCommand extends Command
     /**
      * @var ?Initializer
      */
-    protected ?Initializer $initializer;
+    protected ?Initializer $initializer = null;
 
-    public function __construct(string $name = null, ?ConfigurationProvider $configurationProvider = null, ?Initializer $initializer = null)
-    {
-        parent::__construct($name, $configurationProvider);
-
-        $this->setInitializer($initializer);
-    }
-
-    protected function setInitializer(?Initializer $initializer): void
+    public function setInitializer(?Initializer $initializer = null): void
     {
         $this->initializer = $initializer ?: new Initializer($this->filesystem);
     }
@@ -43,6 +36,10 @@ class InitCommand extends Command
 
     protected function fire(): int
     {
+        if (! $this->initializer) {
+            $this->setInitializer();
+        }
+
         $filename = $this->option('filename');
 
         $remote = $this->getGitRemote();

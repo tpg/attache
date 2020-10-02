@@ -25,7 +25,10 @@ class InitCommandTest extends TestCase
 
         $this->createGitConfig($filesystem);
 
-        $command = new InitCommand(null, $configurationProvider, $initializer);
+        $command = new InitCommand(null);
+        $command->setConfigurationProvider($configurationProvider);
+        $command->setInitializer($initializer);
+
         $commandTester = new CommandTester($command);
         $commandTester->execute([]);
 
@@ -52,7 +55,9 @@ class InitCommandTest extends TestCase
         ]);
 
         $application = new Application();
-        $command = new InitCommand(null, $configurationProvider, $initializer);
+        $command = new InitCommand();
+        $command->setInitializer($initializer);
+        $command->setConfigurationProvider($configurationProvider);
         $application->add($command);
 
         $commandTester = new CommandTester($command);

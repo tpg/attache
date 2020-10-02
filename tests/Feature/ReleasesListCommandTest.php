@@ -6,31 +6,25 @@ namespace TPG\Attache\Tests\Feature;
 
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
-use Symfony\Component\Console\Tester\CommandTester;
-use TPG\Attache\Commands\ServersListCommand;
+use TPG\Attache\Commands\ReleasesListCommand;
 use TPG\Attache\ConfigurationProvider;
 use TPG\Attache\Initializer;
 
-class ServerListCommandTest extends TestCase
+class ReleasesListCommandTest extends TestCase
 {
     /**
      * @test
      */
-    public function it_can_print_a_list_configured_servers(): void
+    public function it_can_display_a_list_of_releases_on_the_server()
     {
         $filesystem = $this->getFilesystem();
+        $initializer = new Initializer($filesystem);
         $configurationProvider = new ConfigurationProvider($filesystem);
 
-        $initializer = new Initializer($filesystem);
         $initializer->create('.attache.json', 'git-remote.com');
 
-        $command = new ServersListCommand();
+        $command = new ReleasesListCommand();
         $command->setConfigurationProvider($configurationProvider);
-
-        $commandTester = new CommandTester($command);
-        $commandTester->execute([]);
-
-        $this->assertStringContainsString('production    example.test', $commandTester->getDisplay());
 
         $filesystem->delete('.attache.json');
     }

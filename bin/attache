@@ -19,5 +19,7 @@ if (file_exists(__DIR__.'/../vendor/autoload.php')) {
 $app = new \Symfony\Component\Console\Application('Attaché', '0.8.0-0.1.0');
 
 $app->add(new \TPG\Attache\Commands\InitCommand());
+$app->add(new \TPG\Attache\Commands\ServersListCommand());
+$app->add(new \TPG\Attache\Commands\ReleasesListCommand());
 
 $app->run();
