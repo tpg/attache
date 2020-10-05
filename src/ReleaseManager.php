@@ -6,5 +6,4 @@ namespace TPG\Attache;
 
 class ReleaseManager
 {
-
 }
