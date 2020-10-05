@@ -8,6 +8,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Question\ChoiceQuestion;
+use TPG\Attache\ConfigurationProvider;
 use TPG\Attache\Initializer;
 
 class InitCommand extends Command
@@ -17,9 +18,18 @@ class InitCommand extends Command
      */
     protected ?Initializer $initializer = null;
 
-    public function setInitializer(?Initializer $initializer = null): void
+    public function __construct(string $name = null)
+    {
+        parent::__construct($name);
+
+        $this->setConfigurationProvider();
+        $this->setInitializer();
+    }
+
+    public function setInitializer(?Initializer $initializer = null): self
     {
         $this->initializer = $initializer ?: new Initializer($this->filesystem);
+        return $this;
     }
 
     protected function configure(): void
@@ -35,10 +45,6 @@ class InitCommand extends Command
 
     protected function fire(): int
     {
-        if (! $this->initializer) {
-            $this->setInitializer();
-        }
-
         $filename = $this->option('filename');
 
         $remote = $this->getGitRemote();

@@ -25,9 +25,9 @@ class InitCommandTest extends TestCase
 
         $this->createGitConfig($filesystem);
 
-        $command = new InitCommand(null);
-        $command->setConfigurationProvider($configurationProvider);
-        $command->setInitializer($initializer);
+        $command = (new InitCommand())
+            ->setConfigurationProvider($configurationProvider)
+            ->setInitializer($initializer);
 
         $commandTester = new CommandTester($command);
         $commandTester->execute([]);
@@ -43,7 +43,7 @@ class InitCommandTest extends TestCase
     /**
      * @test
      */
-    public function it_will_allow_you_to_select_a_remote()
+    public function it_will_allow_you_to_select_a_remote(): void
     {
         $filesystem = new Filesystem(new Local(__DIR__));
         $configurationProvider = new ConfigurationProvider($filesystem);
@@ -55,9 +55,10 @@ class InitCommandTest extends TestCase
         ]);
 
         $application = new Application();
-        $command = new InitCommand();
-        $command->setInitializer($initializer);
-        $command->setConfigurationProvider($configurationProvider);
+        $command = (new InitCommand())
+            ->setConfigurationProvider($configurationProvider)
+            ->setInitializer($initializer);
+
         $application->add($command);
 
         $commandTester = new CommandTester($command);

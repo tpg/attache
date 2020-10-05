@@ -14,7 +14,7 @@ class InitializerTest extends TestCase
     /**
      * @test
      */
-    public function it_can_discover_git_remotes()
+    public function it_can_discover_git_remotes(): void
     {
         $filesystem = $this->getFilesystem();
         $initializer = new Initializer($filesystem);
@@ -39,7 +39,7 @@ class InitializerTest extends TestCase
     /**
      * @test
      */
-    public function it_will_throw_an_exception_if_not_a_git_repository()
+    public function it_will_throw_an_exception_if_not_a_git_repository(): void
     {
         $filesystem = $this->getFilesystem();
         $initializer = new Initializer($filesystem);

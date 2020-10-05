@@ -16,7 +16,7 @@ class ConfigurationProviderTest extends TestCase
     /**
      * @test
      */
-    public function it_can_read_a_configuration_file()
+    public function it_can_read_a_configuration_file(): void
     {
         $filesystem = $this->getFilesystem();
 
@@ -34,7 +34,7 @@ class ConfigurationProviderTest extends TestCase
     /**
      * @test
      */
-    public function it_will_throw_an_exception_if_the_config_file_does_not_exist()
+    public function it_will_throw_an_exception_if_the_config_file_does_not_exist(): void
     {
         $filesystem = $this->getFilesystem();
         $configurationProvider = new ConfigurationProvider($filesystem);
@@ -46,7 +46,7 @@ class ConfigurationProviderTest extends TestCase
     /**
      * @test
      */
-    public function it_will_throw_an_exception_if_the_config_is_not_valid_json()
+    public function it_will_throw_an_exception_if_the_config_is_not_valid_json(): void
     {
         $filesystem = $this->getFilesystem();
         $configurationProvider = new ConfigurationProvider($filesystem);
@@ -60,7 +60,7 @@ class ConfigurationProviderTest extends TestCase
     /**
      * @test
      */
-    public function it_will_throw_an_exception_if_the_config_has_no_servers()
+    public function it_will_throw_an_exception_if_the_config_has_no_servers(): void
     {
         $filesystem = $this->getFilesystem();
         $configurationProvider = new ConfigurationProvider($filesystem);

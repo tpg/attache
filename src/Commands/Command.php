@@ -23,9 +23,12 @@ abstract class Command extends SymfonyCommand
 
     protected Filesystem $filesystem;
 
-    public function setConfigurationProvider(ConfigurationProvider $configurationProvider): void
+    public function __construct(string $name = null)
     {
-        $this->configurationProvider = $configurationProvider;
+        parent::__construct($name);
+
+        $this->setFilesystem();
+        $this->setConfigurationProvider();
     }
 
     protected function requiresConfig(): self
@@ -55,36 +58,30 @@ abstract class Command extends SymfonyCommand
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->input = $input;
-
         $this->output = $output;
 
-        $this->setFilesystem();
-        $this->initConfiguration();
+        $this->loadConfig();
 
         return $this->fire();
     }
 
-    public function setFilesystem(Filesystem $filesystem = null): void
+    public function setFilesystem(Filesystem $filesystem = null): self
     {
         $this->filesystem = $filesystem ?? new Filesystem(new Local(__DIR__));
+        return $this;
     }
 
-    protected function initConfiguration(): void
+    public function setConfigurationProvider(ConfigurationProvider $configurationProvider = null): self
     {
-        if (! $this->configurationProvider && $this->input->hasOption('config')) {
-            $this->configurationProvider = new ConfigurationProvider(
-                $this->filesystem
-            );
-        }
-
-        if ($this->configurationProvider && $this->input->hasOption('config')) {
-            $this->loadConfig();
-        }
+        $this->configurationProvider = $configurationProvider ?? new ConfigurationProvider($this->filesystem);
+        return $this;
     }
 
     protected function loadConfig(): void
     {
-        $this->configurationProvider->load($this->option('config'));
+        if ($this->input->hasOption('config')) {
+            $this->configurationProvider->load($this->option('config'));
+        }
     }
 
     protected function fire(): int

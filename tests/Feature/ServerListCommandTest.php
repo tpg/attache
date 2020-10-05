@@ -24,8 +24,8 @@ class ServerListCommandTest extends TestCase
         $initializer = new Initializer($filesystem);
         $initializer->create('.attache.json', 'git-remote.com');
 
-        $command = new ServersListCommand();
-        $command->setConfigurationProvider($configurationProvider);
+        $command = (new ServersListCommand())
+            ->setConfigurationProvider($configurationProvider);
 
         $commandTester = new CommandTester($command);
         $commandTester->execute([]);
