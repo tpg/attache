@@ -68,12 +68,14 @@ abstract class Command extends SymfonyCommand
     public function setFilesystem(Filesystem $filesystem = null): self
     {
         $this->filesystem = $filesystem ?? new Filesystem(new Local(__DIR__));
+
         return $this;
     }
 
     public function setConfigurationProvider(ConfigurationProvider $configurationProvider = null): self
     {
         $this->configurationProvider = $configurationProvider ?? new ConfigurationProvider($this->filesystem);
+
         return $this;
     }
 
