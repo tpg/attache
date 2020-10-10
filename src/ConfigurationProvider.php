@@ -47,11 +47,8 @@ class ConfigurationProvider
         }
     }
 
-    protected function setConfig(array $config): void
+    public function setConfig(array $config): void
     {
-        $this->repository = Arr::get($config, 'repository');
-        $this->default = Arr::get($config, 'default');
-
         $servers = Arr::get($config, 'servers');
         if (! $servers) {
             throw new ConfigurationException('No servers have been configured.');
@@ -61,13 +58,20 @@ class ConfigurationProvider
             $servers,
             Arr::get($config, 'common', [])
         );
+
+        $this->repository = Arr::get($config, 'repository');
+        $this->default = Arr::get($config, 'default');
+
+        (new ConfigurationValidator($this))->validate();
     }
 
     protected function setServers(array $servers, array $commonConfig = []): void
     {
-        $this->servers = collect($servers)->map(function ($serverConfig, $name) use ($commonConfig) {
-            return new Server($name, array_replace_recursive($commonConfig, $serverConfig));
-        });
+        $this->servers = collect($servers)
+            ->map(function ($serverConfig, $name) use ($commonConfig) {
+                return new Server($name, array_replace_recursive($commonConfig, $serverConfig));
+            })
+            ->keyBy->name();
     }
 
     public function repository(): string
@@ -78,5 +82,25 @@ class ConfigurationProvider
     public function servers(): Collection
     {
         return $this->servers;
+    }
+
+    public function default(): ?string
+    {
+        return $this->default;
+    }
+
+    public function defaultServer(): ?Server
+    {
+        $server = null;
+
+        if ($this->servers->count() === 1) {
+            $server = $this->servers->first();
+        }
+
+        if ($this->default) {
+            $server = $this->servers->get($this->default);
+        }
+
+        return $server;
     }
 }

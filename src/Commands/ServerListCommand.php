@@ -6,11 +6,11 @@ namespace TPG\Attache\Commands;
 
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class ServersListCommand extends Command
+class ServerListCommand extends Command
 {
     protected function configure(): void
     {
-        $this->setName('servers:list')
+        $this->setName('server:list')
             ->setDescription('List configured servers')
             ->requiresConfig();
     }

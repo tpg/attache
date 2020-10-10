@@ -7,7 +7,7 @@ namespace TPG\Attache\Tests\Feature;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 use Symfony\Component\Console\Tester\CommandTester;
-use TPG\Attache\Commands\ServersListCommand;
+use TPG\Attache\Commands\ServerListCommand;
 use TPG\Attache\ConfigurationProvider;
 use TPG\Attache\Initializer;
 
@@ -24,7 +24,7 @@ class ServerListCommandTest extends TestCase
         $initializer = new Initializer($filesystem);
         $initializer->create('.attache.json', 'git-remote.com');
 
-        $command = (new ServersListCommand())
+        $command = (new ServerListCommand())
             ->setConfigurationProvider($configurationProvider);
 
         $commandTester = new CommandTester($command);

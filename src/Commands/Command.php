@@ -12,6 +12,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use TPG\Attache\ConfigurationProvider;
+use TPG\Attache\Server;
 
 abstract class Command extends SymfonyCommand
 {
@@ -99,5 +100,10 @@ abstract class Command extends SymfonyCommand
     protected function argument($key)
     {
         return $this->input->getArgument($key);
+    }
+
+    protected function getServer(): ?Server
+    {
+
     }
 }

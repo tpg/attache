@@ -83,6 +83,63 @@ class ConfigurationProviderTest extends TestCase
         $filesystem->delete('.attache.json');
     }
 
+    /**
+     * @test
+     */
+    public function it_will_treat_the_first_server_as_a_default_server_when_only_one_server_is_set()
+    {
+        $filesystem = $this->getFilesystem();
+        $configurationProvider = new ConfigurationProvider($filesystem);
+        $initializer = new Initializer($filesystem);
+
+        $config = $initializer->defaultConfig('remote.com');
+
+        $configurationProvider->setConfig($config);
+
+        $this->assertSame($configurationProvider->servers()->first(), $configurationProvider->defaultServer());
+    }
+
+    /**
+     * @test
+     */
+    public function it_will_return_the_default_server_if_one_is_configured()
+    {
+        $filesystem = $this->getFilesystem();
+        $configurationProvider = new ConfigurationProvider($filesystem);
+        $initializer = new Initializer($filesystem);
+
+        $config = $initializer->defaultConfig('remote.com');
+        $config['default'] = 'staging';
+        $config['servers']['staging'] = [
+            'host' => 'staging.test',
+            'port' => 22,
+            'user' => 'user',
+            'root' => '/application/root',
+            'branch' => 'develop',
+        ];
+
+        $configurationProvider->setConfig($config);
+
+        $this->assertSame('staging.test', $configurationProvider->defaultServer()->host());
+    }
+
+    /**
+     * @test
+     */
+    public function it_will_throw_an_exception_if_the_default_server_doesnt_exist()
+    {
+        $filesystem = $this->getFilesystem();
+        $configurationProvider = new ConfigurationProvider($filesystem);
+        $initializer = new Initializer($filesystem);
+
+        $config = $initializer->defaultConfig('remote.com');
+
+        $config['default'] = 'other';
+
+        $this->expectException(ConfigurationException::class);
+        $configurationProvider->setConfig($config);
+    }
+
     protected function getFilesystem(): Filesystem
     {
         return new Filesystem(new Local(__DIR__));
