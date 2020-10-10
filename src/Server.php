@@ -12,11 +12,20 @@ class Server
     protected string $name;
     protected array $config;
 
-    public function __construct(string $name, array $config = [])
+    public function __construct(string $name = null, array $config = [])
+    {
+        if ($name) {
+            $this->setName($name);
+        }
+
+        if ($config) {
+            $this->setConfig($config);
+        }
+    }
+
+    public function setName(string $name): void
     {
         $this->name = $name;
-
-        $this->setConfig($config);
     }
 
     public function setConfig(array $config): void
