@@ -37,7 +37,7 @@ class Task
             'set -e',
             $this->script(),
             ')',
-            $this->getBashDelimiter()
+            $this->getBashDelimiter(),
         ];
 
         return implode(PHP_EOL, $parts);

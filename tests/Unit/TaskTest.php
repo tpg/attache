@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace TPG\Attache\Tests\Unit;
 
-use Mockery\Mock;
+use TPG\Attache\Result;
 use TPG\Attache\Server;
 use TPG\Attache\Targets\Local;
 use TPG\Attache\Targets\Ssh;
 use TPG\Attache\Task;
-use TPG\Attache\Result;
 use TPG\Attache\TaskRunner;
 
 class TaskTest extends TestCase
