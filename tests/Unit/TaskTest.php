@@ -105,7 +105,7 @@ class TaskTest extends TestCase
         });
 
         $this->assertSame([
-            20, 40, 60, 80, 100
+            20, 40, 60, 80, 100,
         ], $percentage);
     }
 }

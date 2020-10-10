@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace TPG\Attache\Targets;
 
 use Symfony\Component\Process\Process;
-use TPG\Attache\Result;
 use TPG\Attache\Server;
 use TPG\Attache\Task;
 
@@ -29,7 +28,7 @@ class Ssh extends Target
     {
         $process = $this->getProcess($task);
 
-        $process->run(function ($type, $data) use ($task, $callback) {
+        $process->run(function ($type, $data) use ($callback) {
             $callback($type, $data);
         });
 

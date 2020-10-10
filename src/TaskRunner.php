@@ -42,9 +42,7 @@ class TaskRunner
             $progress = $this->percentage(count($tasks), $count);
 
             $exitCodes[] = $this->target->run($task, function ($type, $output) use ($callback, $task, $progress) {
-
                 $callback(new Result($task, $type, $output), $progress);
-
             });
         });
 
