@@ -84,7 +84,7 @@ abstract class Command extends SymfonyCommand
 
     protected function loadConfig(): void
     {
-        if ($this->input->hasOption('config') && !$this->configurationProvider->configured()) {
+        if ($this->input->hasOption('config') && ! $this->configurationProvider->configured()) {
             $this->configurationProvider->load($this->option('config'));
         }
     }

@@ -10,9 +10,6 @@ use TPG\Attache\Commands\ReleaseListCommand;
 use TPG\Attache\ConfigurationProvider;
 use TPG\Attache\Initializer;
 use TPG\Attache\ReleaseManager;
-use TPG\Attache\Result;
-use TPG\Attache\Targets\Ssh;
-use TPG\Attache\Task;
 
 class ReleaseListCommandTest extends TestCase
 {

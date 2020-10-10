@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace TPG\Attache;
 
 use Illuminate\Support\Collection;
-use TPG\Attache\Targets\Ssh;
 use TPG\Attache\Targets\Target;
 
 class ReleaseManager

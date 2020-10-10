@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace TPG\Attache\Tests\Feature;
 
-use League\Flysystem\Adapter\Local;
-use League\Flysystem\Filesystem;
 use Symfony\Component\Console\Tester\CommandTester;
 use TPG\Attache\Commands\ServerListCommand;
 use TPG\Attache\ConfigurationProvider;
