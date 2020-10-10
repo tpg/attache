@@ -104,6 +104,5 @@ abstract class Command extends SymfonyCommand
 
     protected function getServer(): ?Server
     {
-
     }
 }

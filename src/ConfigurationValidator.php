@@ -29,7 +29,7 @@ class ConfigurationValidator
 
     protected function defaultExists(): void
     {
-        if ($this->provider->default() && !$this->provider->servers()->has($this->provider->default())) {
+        if ($this->provider->default() && ! $this->provider->servers()->has($this->provider->default())) {
             throw new ConfigurationException('The default server specified does not exist');
         }
     }
