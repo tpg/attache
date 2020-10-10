@@ -27,11 +27,32 @@ class TaskRunner
     /**
      * @param Task[] $tasks
      * @param callable|null $callback
+     *
+     * @return int[]
      */
-    public function run(array $tasks, callable $callback = null)
+    public function run(array $tasks, callable $callback = null): array
     {
-        collect($tasks)->each(function (Task $task) use ($callback) {
-            $this->target->run($task, $callback);
+        $exitCodes = [];
+
+        $count = 0;
+
+        collect($tasks)->each(function (Task $task) use ($callback, $tasks, &$count) {
+            $count++;
+
+            $progress = $this->percentage(count($tasks), $count);
+
+            $exitCodes[] = $this->target->run($task, function ($type, $output) use ($callback, $task, $progress) {
+
+                $callback(new Result($task, $type, $output), $progress);
+
+            });
         });
+
+        return $exitCodes;
+    }
+
+    protected function percentage(int $total, int $enum): int
+    {
+        return $enum * 100 / $total;
     }
 }

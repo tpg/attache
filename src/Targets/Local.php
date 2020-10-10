@@ -26,9 +26,9 @@ class Local extends Target
         $process = Process::fromShellCommandline($task->bashScript())
             ->setTimeout($this->timeout);
 
-        $process->run(function ($type, $output) use ($task, $callback) {
+        $process->run(function ($type, $output) use ($callback) {
             if ($callback) {
-                $callback(new Result($task, $type, $output));
+                $callback($type, $output);
             }
         });
 

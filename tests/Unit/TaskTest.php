@@ -66,7 +66,7 @@ class TaskTest extends TestCase
             ->makePartial();
 
         $server->setConfig([
-            'host' => 'thepublicgood.dev',
+            'host' => 'example.com',
             'user' => 'user',
             'root' => '/test/root',
         ]);
@@ -82,5 +82,30 @@ class TaskTest extends TestCase
         $runner->run([$task], function (Result $result) {
             $this->assertSame("Hello, World!\n", $result->output());
         });
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_track_percentage_progress_when_running_multiple_tasks()
+    {
+        $tasks = [
+            new Task('ls -la'),
+            new Task('ls -la'),
+            new Task('ls -la'),
+            new Task('ls -la'),
+            new Task('ls -la'),
+        ];
+
+        $runner = new TaskRunner(new Local(__DIR__));
+
+        $percentage = [];
+        $runner->run($tasks, function (Result $result, int $progress) use (&$percentage) {
+            $percentage[] = $progress;
+        });
+
+        $this->assertSame([
+            20, 40, 60, 80, 100
+        ], $percentage);
     }
 }

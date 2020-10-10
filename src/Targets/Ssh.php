@@ -30,7 +30,7 @@ class Ssh extends Target
         $process = $this->getProcess($task);
 
         $process->run(function ($type, $data) use ($task, $callback) {
-            $callback(new Result($task, $type, $data));
+            $callback($type, $data);
         });
 
         return $process->getExitCode();

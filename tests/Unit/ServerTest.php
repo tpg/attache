@@ -97,4 +97,18 @@ class ServerTest extends TestCase
 
         $this->assertSame('user@example.test -p22', $server->connectionString());
     }
+
+    /**
+     * @test
+     */
+    public function it_has_a_default_set_of_assets()
+    {
+        $server = new Server('production', ['host' => 'example.test']);
+
+        $this->assertSame([
+            'public/js' => 'public/js',
+            'public/css' => 'public/css',
+            'public/mix-manifest.json' => 'public/mix-manifest.json',
+        ], $server->assets());
+    }
 }
