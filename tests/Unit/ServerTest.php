@@ -54,7 +54,7 @@ class ServerTest extends TestCase
     /**
      * @test
      */
-    public function it_can_have_a_set_php_bin_config()
+    public function it_can_have_a_set_php_bin_config(): void
     {
         $filesystem = new Filesystem(new Local(__DIR__));
         $initializer = new Initializer($filesystem);
@@ -69,7 +69,7 @@ class ServerTest extends TestCase
     /**
      * @test
      */
-    public function it_can_have_a_local_composer_path()
+    public function it_can_have_a_local_composer_path(): void
     {
         $filesystem = new Filesystem(new Local(__DIR__));
         $initializer = new Initializer($filesystem);
@@ -87,7 +87,7 @@ class ServerTest extends TestCase
     /**
      * @test
      */
-    public function it_can_return_the_ssh_connection_string()
+    public function it_can_return_the_ssh_connection_string(): void
     {
         $filesystem = new Filesystem(new Local(__DIR__));
         $initializer = new Initializer($filesystem);
@@ -101,7 +101,7 @@ class ServerTest extends TestCase
     /**
      * @test
      */
-    public function it_has_a_default_set_of_assets()
+    public function it_has_a_default_set_of_assets(): void
     {
         $server = new Server('production', ['host' => 'example.test']);
 

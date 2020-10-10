@@ -23,7 +23,7 @@ class TaskTest extends TestCase
     /**
      * @test
      */
-    public function it_can_return_a_bash_script()
+    public function it_can_return_a_bash_script(): void
     {
         $task = new Task('echo "Hello, World!"');
 
@@ -42,7 +42,7 @@ class TaskTest extends TestCase
     /**
      * @test
      */
-    public function it_can_run_a_task_locally()
+    public function it_can_run_a_task_locally(): void
     {
         $task = new Task('echo "Hello, World!"');
 
@@ -58,7 +58,7 @@ class TaskTest extends TestCase
     /**
      * @test
      */
-    public function it_can_connect_via_ssh_to_run_a_task()
+    public function it_can_connect_via_ssh_to_run_a_task(): void
     {
         $task = new Task('echo "Hello, World!"');
 
@@ -87,14 +87,14 @@ class TaskTest extends TestCase
     /**
      * @test
      */
-    public function it_can_track_percentage_progress_when_running_multiple_tasks()
+    public function it_can_track_percentage_progress_when_running_multiple_tasks(): void
     {
         $tasks = [
-            new Task('ls -la'),
-            new Task('ls -la'),
-            new Task('ls -la'),
-            new Task('ls -la'),
-            new Task('ls -la'),
+            new Task('ls'),
+            new Task('ls'),
+            new Task('ls'),
+            new Task('ls'),
+            new Task('ls'),
         ];
 
         $runner = new TaskRunner(new Local(__DIR__));
