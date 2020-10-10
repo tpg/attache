@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace TPG\Attache\Targets;
 
 use Symfony\Component\Process\Process;
-use TPG\Attache\Targets\Target;
-use TPG\Attache\Task;
 use TPG\Attache\Result;
+use TPG\Attache\Task;
 
 class Local extends Target
 {

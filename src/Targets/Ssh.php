@@ -6,7 +6,6 @@ namespace TPG\Attache\Targets;
 
 use Symfony\Component\Process\Process;
 use TPG\Attache\Result;
-use TPG\Attache\Targets\Target;
 use TPG\Attache\Server;
 use TPG\Attache\Task;
 
