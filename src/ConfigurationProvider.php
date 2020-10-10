@@ -17,7 +17,7 @@ class ConfigurationProvider
      * @var Filesystem
      */
     protected Filesystem $filesystem;
-    protected Collection $servers;
+    protected ?Collection $servers = null;
     protected string $repository;
     protected ?string $default;
 
@@ -74,6 +74,11 @@ class ConfigurationProvider
             ->keyBy->name();
     }
 
+    public function configured(): bool
+    {
+        return $this->servers && $this->servers->count() >= 1;
+    }
+
     public function repository(): string
     {
         return $this->repository;
@@ -82,6 +87,11 @@ class ConfigurationProvider
     public function servers(): Collection
     {
         return $this->servers;
+    }
+
+    public function server(string $name): Server
+    {
+        return $this->servers->get($name);
     }
 
     public function default(): ?string

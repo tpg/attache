@@ -34,9 +34,4 @@ class ServerListCommandTest extends TestCase
 
         $filesystem->delete('.attache.json');
     }
-
-    protected function getFilesystem(): Filesystem
-    {
-        return new Filesystem(new Local(__DIR__));
-    }
 }

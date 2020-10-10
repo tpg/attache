@@ -24,6 +24,8 @@ abstract class Command extends SymfonyCommand
 
     protected Filesystem $filesystem;
 
+    protected ?Server $server;
+
     public function __construct(string $name = null)
     {
         parent::__construct($name);
@@ -82,7 +84,7 @@ abstract class Command extends SymfonyCommand
 
     protected function loadConfig(): void
     {
-        if ($this->input->hasOption('config')) {
+        if ($this->input->hasOption('config') && !$this->configurationProvider->configured()) {
             $this->configurationProvider->load($this->option('config'));
         }
     }
@@ -102,7 +104,14 @@ abstract class Command extends SymfonyCommand
         return $this->input->getArgument($key);
     }
 
-    protected function getServer(): ?Server
+    protected function server(): Server
     {
+        $name = $this->argument('server');
+
+        if ($name && $this->input->hasArgument('server')) {
+            return $this->configurationProvider->server($name);
+        }
+
+        return $this->configurationProvider->defaultServer();
     }
 }

@@ -4,8 +4,17 @@ declare(strict_types=1);
 
 namespace TPG\Attache\Commands;
 
+use Illuminate\Support\Collection;
+use Symfony\Component\Console\Style\SymfonyStyle;
+use TPG\Attache\ReleaseManager;
+
 class ReleaseListCommand extends Command
 {
+    /**
+     * @var ReleaseManager
+     */
+    protected ReleaseManager $releaseManager;
+
     protected function configure(): void
     {
         $this->setName('release:list')
@@ -14,8 +23,38 @@ class ReleaseListCommand extends Command
             ->requiresServer();
     }
 
+    public function setReleaseManager(ReleaseManager $releaseManager): void
+    {
+        $this->releaseManager = $releaseManager;
+    }
+
     protected function fire(): int
     {
+        $releaseManager = $this->releaseManager ?? new ReleaseManager($this->server());
+        $releases = $releaseManager->list();
+        $active = $releaseManager->active();
+
+        $this->print($releases, $active);
+
         return 0;
+    }
+
+    protected function print(Collection $releases, string $active): void
+    {
+        $rows = $releases->map(function ($release) use ($active) {
+            return [
+                $this->info($release),
+                \DateTime::createFromFormat('YmdHis', $release)->format('d F Y H:i'),
+                $active === $release ? $this->info('<-- Active') : '',
+            ];
+        })->toArray();
+
+        $io = new SymfonyStyle($this->input, $this->output);
+        $io->table(['ID', 'Release Date', ''], $rows);
+    }
+
+    protected function info(string $message): string
+    {
+        return '<info>'.$message.'</info>';
     }
 }

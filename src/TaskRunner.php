@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace TPG\Attache;
 
+use Illuminate\Support\Collection;
 use TPG\Attache\Targets\Target;
 
 class TaskRunner
@@ -14,6 +15,11 @@ class TaskRunner
      * @var Target
      */
     protected Target $target;
+
+    /**
+     * @var Collection
+     */
+    protected Collection $results;
 
     /**
      * TaskRunner constructor.
@@ -36,17 +42,30 @@ class TaskRunner
 
         $count = 0;
 
+        $this->results = collect();
+
         collect($tasks)->each(function (Task $task) use ($callback, $tasks, &$count) {
             $count++;
 
             $progress = $this->percentage(count($tasks), $count);
 
             $exitCodes[] = $this->target->run($task, function ($type, $output) use ($callback, $task, $progress) {
-                $callback(new Result($task, $type, $output), $progress);
+                $result = new Result($task, $type, $output);
+
+                $this->results->push($result);
+
+                if ($callback) {
+                    $callback($result, $progress);
+                }
             });
         });
 
         return $exitCodes;
+    }
+
+    public function getResults(): Collection
+    {
+        return $this->results;
     }
 
     protected function percentage(int $total, int $enum): int

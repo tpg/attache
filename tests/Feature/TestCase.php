@@ -20,4 +20,9 @@ class TestCase extends PhpUnitTestCase
             $filesystem->deleteDir('.git');
         }
     }
+
+    protected function getFilesystem(): Filesystem
+    {
+        return new Filesystem(new Local(__DIR__));
+    }
 }
