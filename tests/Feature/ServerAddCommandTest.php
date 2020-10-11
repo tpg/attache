@@ -39,7 +39,7 @@ class ServerAddCommandTest extends TestCase
             56,
             'user',
             '/root',
-            'branch'
+            'branch',
         ]);
 
         $commandTester->execute(['name' => 'testing']);
