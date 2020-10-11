@@ -72,6 +72,7 @@ class ReleaseManager
         $regex = '/->\s.*\/(?<release>.+)$/';
 
         preg_match($regex, $this->runner->getResults()->first()->output(), $matches);
+
         return $matches['release'];
     }
 }
