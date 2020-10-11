@@ -68,7 +68,7 @@ class ReleaseManagerTest extends TestCase
                     new Result(
                         new Task('ls'),
                         Process::OUT,
-                        "live -> /path/releases/20200101010102"
+                        'live -> /path/releases/20200101010102'
                     ),
                 ])
             );
