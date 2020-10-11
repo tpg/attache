@@ -24,8 +24,6 @@ abstract class Command extends SymfonyCommand
 
     protected Filesystem $filesystem;
 
-    protected ?Server $server;
-
     public function __construct(string $name = null)
     {
         parent::__construct($name);

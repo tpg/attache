@@ -68,7 +68,7 @@ class Initializer
         ];
     }
 
-    protected function defaultServerConfig(): array
+    public function defaultServerConfig(): array
     {
         return [
             'host' => 'example.test',

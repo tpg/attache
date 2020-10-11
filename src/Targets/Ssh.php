@@ -24,6 +24,11 @@ class Ssh extends Target
         $this->server = $server;
     }
 
+    public function server(): Server
+    {
+        return $this->server;
+    }
+
     public function run(Task $task, callable $callback = null): int
     {
         $process = $this->getProcess($task);

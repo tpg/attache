@@ -24,7 +24,7 @@ class ReleaseListCommandTest extends TestCase
         $command = new ReleaseListCommand();
         $command->setConfigurationProvider($configurationProvider);
 
-        $releaseManager = \Mockery::mock(ReleaseManager::class, [$configurationProvider->defaultServer()]);
+        $releaseManager = \Mockery::mock(ReleaseManager::class);
         $releaseManager->shouldReceive('list')->once()
             ->andReturn(collect(['20200101010101', '20200101010102']));
         $releaseManager->shouldReceive('active')->once()

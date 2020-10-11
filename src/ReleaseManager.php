@@ -5,18 +5,23 @@ declare(strict_types=1);
 namespace TPG\Attache;
 
 use Illuminate\Support\Collection;
+use TPG\Attache\Targets\Ssh;
 use TPG\Attache\Targets\Target;
 
 class ReleaseManager
 {
     /**
+     * @var Target
+     */
+    protected Target $target;
+    /**
      * @var Server
      */
     protected Server $server;
     /**
-     * @var Target
+     * @var TaskRunner
      */
-    protected Target $target;
+    protected TaskRunner $runner;
 
     /**
      * ReleaseManager constructor.
@@ -25,22 +30,27 @@ class ReleaseManager
     public function __construct(Server $server)
     {
         $this->server = $server;
+        $this->target = new Ssh($server);
+        $this->runner = new TaskRunner($this->target);
     }
 
-    public function setServer(Server $server): void
+    public function setTarget(Target $target): void
     {
-        $this->server = $server;
+        $this->target = $target;
+    }
+
+    public function setTaskRunner(TaskRunner $runner): void
+    {
+        $this->runner = $runner;
     }
 
     public function list(): Collection
     {
         $task = new Task('ls '.$this->server->path('releases'));
 
-        $runner = new TaskRunner($this->target);
+        $this->runner->run([$task]);
 
-        $runner->run([$task]);
-
-        return collect(explode(PHP_EOL, $runner->getResults()->first()->output()))
+        return collect(explode(PHP_EOL, $this->runner->getResults()->first()->output()))
             ->filter(fn ($release) => $release !== '');
     }
 
@@ -48,19 +58,12 @@ class ReleaseManager
     {
         $task = new Task('ls '.$this->server->path('serve').' -la');
 
-        $runner = new TaskRunner($this->target);
-
-        $runner->run([$task]);
+        $this->runner->run([$task]);
 
         $regex = '/->\s.*\/(?<release>.+)$/';
 
-        preg_match($regex, $runner->getResults()->first()->output(), $matches);
+        preg_match($regex, $this->runner->getResults()->first()->output(), $matches);
 
         return $matches['release'];
-    }
-
-    public function setTarget(Target $target): void
-    {
-        $this->target = $target;
     }
 }
