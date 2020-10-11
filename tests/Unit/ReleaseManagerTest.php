@@ -28,6 +28,8 @@ class ReleaseManagerTest extends TestCase
         $runner->shouldReceive('run')
             ->once()
             ->andReturn([0]);
+        $runner->shouldReceive('hasError')
+            ->andReturn(false);
         $runner->shouldReceive('getResults')
             ->once()
             ->andReturn(
@@ -61,6 +63,8 @@ class ReleaseManagerTest extends TestCase
         $runner->shouldReceive('run')
             ->once()
             ->andReturn([0]);
+        $runner->shouldReceive('hasError')
+            ->andReturn(false);
         $runner->shouldReceive('getResults')
             ->once()
             ->andReturn(
