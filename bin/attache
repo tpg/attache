@@ -20,6 +20,7 @@ $app = new \Symfony\Component\Console\Application('Attaché', '0.8.0-0.1.0');
 
 $app->add(new \TPG\Attache\Commands\InitCommand());
 $app->add(new \TPG\Attache\Commands\ServerListCommand());
+$app->add(new \TPG\Attache\Commands\ServerAddCommand());
 $app->add(new \TPG\Attache\Commands\ReleaseListCommand());
 
 $app->run();

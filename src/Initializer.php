@@ -31,6 +31,11 @@ class Initializer
     {
         $config = $this->defaultConfig($gitRemote);
 
+        $this->save($filename, $config);
+    }
+
+    public function save(string $filename, array $config): void
+    {
         $this->filesystem->put($filename, json_encode(
             $config,
             JSON_PRETTY_PRINT
