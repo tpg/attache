@@ -63,6 +63,16 @@ class TaskRunner
         return $exitCodes;
     }
 
+    public function errors(): Collection
+    {
+        return $this->results->filter(fn (Result $result) => $result->isError());
+    }
+
+    public function hasError(): bool
+    {
+        return $this->errors()->count() > 0;
+    }
+
     public function getResults(): Collection
     {
         return $this->results;

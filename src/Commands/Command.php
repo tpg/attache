@@ -68,7 +68,7 @@ abstract class Command extends SymfonyCommand
 
     public function setFilesystem(Filesystem $filesystem = null): self
     {
-        $this->filesystem = $filesystem ?? new Filesystem(new Local(__DIR__));
+        $this->filesystem = $filesystem ?? new Filesystem(new Local(getcwd()));
 
         return $this;
     }
