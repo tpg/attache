@@ -2,7 +2,7 @@ language: php
 
 php:
   - '7.4'
-  - '8.0'
+#  - '8.0' for when PHP 8 is supported on Travis CI.
 
 before_script:
   - travis_retry composer update
