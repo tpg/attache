@@ -8,10 +8,11 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use League\Flysystem\FileNotFoundException;
 use League\Flysystem\Filesystem;
+use TPG\Attache\Contracts\ConfigurationProviderContract;
 use TPG\Attache\Exceptions\ConfigurationException;
 use TPG\Attache\Exceptions\FilesystemException;
 
-class ConfigurationProvider
+class ConfigurationProvider implements ConfigurationProviderContract
 {
     /**
      * @var Filesystem

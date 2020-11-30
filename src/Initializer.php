@@ -8,9 +8,10 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use League\Flysystem\FileNotFoundException;
 use League\Flysystem\Filesystem;
+use TPG\Attache\Contracts\InitializerContract;
 use TPG\Attache\Exceptions\FilesystemException;
 
-class Initializer
+class Initializer implements InitializerContract
 {
     protected array $gitRemotes;
     /**
@@ -92,6 +93,8 @@ class Initializer
             'composer' => [
                 'bin' => 'composer',
                 'local' => false,
+            ],
+            'scripts' => [
             ],
             'branch' => 'master',
             'migrate' => false,
