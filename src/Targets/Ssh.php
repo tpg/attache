@@ -5,31 +5,26 @@ declare(strict_types=1);
 namespace TPG\Attache\Targets;
 
 use Symfony\Component\Process\Process;
+use TPG\Attache\Contracts\ServerContract;
+use TPG\Attache\Contracts\TaskContract;
 use TPG\Attache\Server;
 use TPG\Attache\Task;
 
 class Ssh extends Target
 {
-    /**
-     * @var Server
-     */
-    protected Server $server;
+    protected ServerContract $server;
 
-    /**
-     * Ssh constructor.
-     * @param Server $server
-     */
-    public function __construct(Server $server)
+    public function __construct(ServerContract $server)
     {
         $this->server = $server;
     }
 
-    public function server(): Server
+    public function server(): ServerContract
     {
         return $this->server;
     }
 
-    public function run(Task $task, callable $callback = null): int
+    public function run(TaskContract $task, callable $callback = null): int
     {
         $process = $this->getProcess($task);
 
@@ -40,7 +35,7 @@ class Ssh extends Target
         return $process->getExitCode();
     }
 
-    protected function getProcess(Task $task): Process
+    protected function getProcess(TaskContract $task): Process
     {
         return Process::fromShellCommandline(
             $this->sshConnectionString()

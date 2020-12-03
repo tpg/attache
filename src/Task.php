@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace TPG\Attache;
 
-class Task
+use TPG\Attache\Contracts\TaskContract;
+
+class Task implements TaskContract
 {
     protected const DELIMITER = 'ATTACHE-SCRIPT';
 

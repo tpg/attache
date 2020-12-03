@@ -8,22 +8,17 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use League\Flysystem\FileNotFoundException;
 use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemInterface;
 use TPG\Attache\Contracts\InitializerContract;
 use TPG\Attache\Exceptions\FilesystemException;
 
 class Initializer implements InitializerContract
 {
     protected array $gitRemotes;
-    /**
-     * @var Filesystem
-     */
-    protected Filesystem $filesystem;
 
-    /**
-     * Initializer constructor.
-     * @param Filesystem $filesystem
-     */
-    public function __construct(Filesystem $filesystem)
+    protected FilesystemInterface $filesystem;
+
+    public function __construct(FilesystemInterface $filesystem)
     {
         $this->filesystem = $filesystem;
     }

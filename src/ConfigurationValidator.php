@@ -4,20 +4,14 @@ declare(strict_types=1);
 
 namespace TPG\Attache;
 
+use TPG\Attache\Contracts\ConfigurationProviderContract;
 use TPG\Attache\Exceptions\ConfigurationException;
 
 class ConfigurationValidator
 {
-    /**
-     * @var ConfigurationProvider
-     */
-    protected ConfigurationProvider $provider;
+    protected ConfigurationProviderContract $provider;
 
-    /**
-     * ConfigurationValidator constructor.
-     * @param ConfigurationProvider $provider
-     */
-    public function __construct(ConfigurationProvider $provider)
+    public function __construct(ConfigurationProviderContract $provider)
     {
         $this->provider = $provider;
     }

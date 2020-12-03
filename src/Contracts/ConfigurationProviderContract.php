@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace TPG\Attache\Contracts;
 
 use Illuminate\Support\Collection;
-use League\Flysystem\Filesystem;
-use TPG\Attache\Server;
+use League\Flysystem\FilesystemInterface;
 
 interface ConfigurationProviderContract
 {
-    public function __construct(Filesystem $filesystem);
+    public function __construct(FilesystemInterface $filesystem);
 
     public function load(string $filename): void;
 
@@ -22,9 +21,9 @@ interface ConfigurationProviderContract
 
     public function servers(): Collection;
 
-    public function server(string $name): Server;
+    public function server(string $name): ServerContract;
 
     public function default(): ?string;
 
-    public function defaultServer(): ?Server;
+    public function defaultServer(): ?ServerContract;
 }

@@ -6,14 +6,15 @@ namespace TPG\Attache\Commands;
 
 use Illuminate\Support\Collection;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use TPG\Attache\Contracts\ReleaseManagerContract;
 use TPG\Attache\ReleaseManager;
 
 class ReleaseListCommand extends Command
 {
     /**
-     * @var ReleaseManager
+     * @var ReleaseManagerContract
      */
-    protected ReleaseManager $releaseManager;
+    protected ReleaseManagerContract $releaseManager;
 
     protected function configure(): void
     {
@@ -23,7 +24,7 @@ class ReleaseListCommand extends Command
             ->requiresServer();
     }
 
-    public function setReleaseManager(ReleaseManager $releaseManager): void
+    public function setReleaseManager(ReleaseManagerContract $releaseManager): void
     {
         $this->releaseManager = $releaseManager;
     }

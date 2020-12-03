@@ -7,26 +7,21 @@ namespace TPG\Attache;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use League\Flysystem\FileNotFoundException;
-use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemInterface;
 use TPG\Attache\Contracts\ConfigurationProviderContract;
+use TPG\Attache\Contracts\ServerContract;
 use TPG\Attache\Exceptions\ConfigurationException;
 use TPG\Attache\Exceptions\FilesystemException;
 
 class ConfigurationProvider implements ConfigurationProviderContract
 {
-    /**
-     * @var Filesystem
-     */
-    protected Filesystem $filesystem;
+    protected FilesystemInterface $filesystem;
     protected ?Collection $servers = null;
     protected string $repository;
     protected ?string $default;
 
-    /**
-     * ConfigurationProvider constructor.
-     * @param Filesystem $filesystem
-     */
-    public function __construct(Filesystem $filesystem)
+
+    public function __construct(FilesystemInterface $filesystem)
     {
         $this->filesystem = $filesystem;
     }
@@ -90,7 +85,7 @@ class ConfigurationProvider implements ConfigurationProviderContract
         return $this->servers;
     }
 
-    public function server(string $name): Server
+    public function server(string $name): ServerContract
     {
         return $this->servers->get($name);
     }
@@ -100,7 +95,7 @@ class ConfigurationProvider implements ConfigurationProviderContract
         return $this->default;
     }
 
-    public function defaultServer(): ?Server
+    public function defaultServer(): ?ServerContract
     {
         $server = null;
 

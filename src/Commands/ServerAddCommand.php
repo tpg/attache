@@ -7,15 +7,13 @@ namespace TPG\Attache\Commands;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Question\Question;
+use TPG\Attache\Contracts\InitializerContract;
 use TPG\Attache\Exceptions\ConfigurationException;
 use TPG\Attache\Initializer;
 
 class ServerAddCommand extends Command
 {
-    /**
-     * @var Initializer|null
-     */
-    protected ?Initializer $initializer;
+    protected ?InitializerContract $initializer;
 
     public function __construct(string $name = null)
     {
@@ -24,7 +22,7 @@ class ServerAddCommand extends Command
         $this->setInitializer();
     }
 
-    public function setInitializer(?Initializer $initializer = null): self
+    public function setInitializer(?InitializerContract $initializer = null): self
     {
         $this->initializer = $initializer ?: new Initializer($this->filesystem);
 

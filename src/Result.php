@@ -5,26 +5,16 @@ declare(strict_types=1);
 namespace TPG\Attache;
 
 use Symfony\Component\Process\Process;
+use TPG\Attache\Contracts\ResultContract;
+use TPG\Attache\Contracts\TaskContract;
 
-class Result
+class Result implements ResultContract
 {
-    /**
-     * @var Task
-     */
-    protected Task $task;
+    protected TaskContract $task;
     protected $type;
-    /**
-     * @var null
-     */
     protected $value;
 
-    /**
-     * TaskResult constructor.
-     * @param Task $task
-     * @param mixed $type
-     * @param mixed $value
-     */
-    public function __construct(Task $task, $type, $value = null)
+    public function __construct(TaskContract $task, $type, $value = null)
     {
         $this->task = $task;
         $this->type = $type;
@@ -46,7 +36,7 @@ class Result
         return $this->value;
     }
 
-    public function task(): Task
+    public function task(): TaskContract
     {
         return $this->task;
     }

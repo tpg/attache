@@ -6,10 +6,11 @@ namespace TPG\Attache\Contracts;
 
 use Illuminate\Support\Collection;
 use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemInterface;
 
 interface InitializerContract
 {
-    public function __construct(Filesystem $filesystem);
+    public function __construct(FilesystemInterface $filesystem);
 
     public function create(string $filename, string $gitRemote): void;
 

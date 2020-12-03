@@ -8,14 +8,15 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Question\ChoiceQuestion;
+use TPG\Attache\Contracts\InitializerContract;
 use TPG\Attache\Initializer;
 
 class InitCommand extends Command
 {
     /**
-     * @var ?Initializer
+     * @var ?InitializerContract
      */
-    protected ?Initializer $initializer = null;
+    protected ?InitializerContract $initializer = null;
 
     public function __construct(string $name = null)
     {
@@ -25,7 +26,7 @@ class InitCommand extends Command
         $this->setInitializer();
     }
 
-    public function setInitializer(?Initializer $initializer = null): self
+    public function setInitializer(?InitializerContract $initializer = null): self
     {
         $this->initializer = $initializer ?: new Initializer($this->filesystem);
 

@@ -12,7 +12,7 @@ interface ReleaseManagerContract
 {
     public function setTarget(Target $target): void;
 
-    public function setTaskRunner(TaskRunner $runner): void;
+    public function setTaskRunner(TaskRunnerContract $runner): void;
 
     public function list(): Collection;
 

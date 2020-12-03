@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace TPG\Attache\Targets;
 
 use Symfony\Component\Process\Process;
+use TPG\Attache\Contracts\TaskContract;
 use TPG\Attache\Task;
 
 class Local extends Target
@@ -20,7 +21,7 @@ class Local extends Target
         $this->path = $path;
     }
 
-    public function run(Task $task, callable $callback = null): int
+    public function run(TaskContract $task, callable $callback = null): int
     {
         $process = Process::fromShellCommandline($task->bashScript())
             ->setTimeout($this->timeout);

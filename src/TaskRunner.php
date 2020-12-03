@@ -5,33 +5,27 @@ declare(strict_types=1);
 namespace TPG\Attache;
 
 use Illuminate\Support\Collection;
+use TPG\Attache\Contracts\ResultContract;
+use TPG\Attache\Contracts\TargetContract;
+use TPG\Attache\Contracts\TaskContract;
+use TPG\Attache\Contracts\TaskRunnerContract;
 use TPG\Attache\Targets\Target;
 
-class TaskRunner
+class TaskRunner implements TaskRunnerContract
 {
     protected const PROCESS_TIMEOUT = 3600;
 
-    /**
-     * @var Target
-     */
-    protected Target $target;
+    protected TargetContract $target;
 
-    /**
-     * @var Collection
-     */
     protected Collection $results;
 
-    /**
-     * TaskRunner constructor.
-     * @param Target $target
-     */
-    public function __construct(Target $target)
+    public function __construct(TargetContract $target)
     {
         $this->target = $target;
     }
 
     /**
-     * @param Task[] $tasks
+     * @param TaskContract[] $tasks
      * @param callable|null $callback
      *
      * @return int[]
@@ -65,7 +59,7 @@ class TaskRunner
 
     public function errors(): Collection
     {
-        return $this->results->filter(fn (Result $result) => $result->isError());
+        return $this->results->filter(fn (ResultContract $result) => $result->isError());
     }
 
     public function hasError(): bool

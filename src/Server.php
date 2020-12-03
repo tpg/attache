@@ -6,8 +6,9 @@ namespace TPG\Attache;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use TPG\Attache\Contracts\ServerContract;
 
-class Server
+class Server implements ServerContract
 {
     protected string $name;
     protected array $config;

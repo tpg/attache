@@ -6,42 +6,34 @@ namespace TPG\Attache;
 
 use Illuminate\Support\Collection;
 use TPG\Attache\Contracts\ReleaseManagerContract;
+use TPG\Attache\Contracts\ServerContract;
+use TPG\Attache\Contracts\TargetContract;
+use TPG\Attache\Contracts\TaskRunnerContract;
 use TPG\Attache\Exceptions\ProcessException;
 use TPG\Attache\Targets\Ssh;
 use TPG\Attache\Targets\Target;
 
 class ReleaseManager implements ReleaseManagerContract
 {
-    /**
-     * @var Target
-     */
-    protected Target $target;
-    /**
-     * @var Server
-     */
-    protected Server $server;
-    /**
-     * @var TaskRunner
-     */
-    protected TaskRunner $runner;
+    protected TargetContract $target;
 
-    /**
-     * ReleaseManager constructor.
-     * @param Server $server
-     */
-    public function __construct(Server $server)
+    protected ServerContract $server;
+
+    protected TaskRunnerContract $runner;
+
+    public function __construct(ServerContract $server)
     {
         $this->server = $server;
         $this->target = new Ssh($server);
         $this->runner = new TaskRunner($this->target);
     }
 
-    public function setTarget(Target $target): void
+    public function setTarget(TargetContract $target): void
     {
         $this->target = $target;
     }
 
-    public function setTaskRunner(TaskRunner $runner): void
+    public function setTaskRunner(TaskRunnerContract $runner): void
     {
         $this->runner = $runner;
     }
@@ -79,7 +71,9 @@ class ReleaseManager implements ReleaseManagerContract
 
     public function activate(string $release): bool
     {
-        //todo: Implement release activation
+        $releases = $this->list();
+
+        dd($releases);
 
         return false;
     }

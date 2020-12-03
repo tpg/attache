@@ -6,12 +6,16 @@ namespace TPG\Attache\Commands;
 
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemInterface;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use TPG\Attache\ConfigurationProvider;
+use TPG\Attache\Contracts\ConfigurationProviderContract;
+use TPG\Attache\Contracts\PrinterContract;
+use TPG\Attache\Printer;
 use TPG\Attache\Server;
 
 abstract class Command extends SymfonyCommand
@@ -20,9 +24,11 @@ abstract class Command extends SymfonyCommand
 
     protected OutputInterface $output;
 
-    protected ?ConfigurationProvider $configurationProvider = null;
+    protected ?ConfigurationProviderContract $configurationProvider = null;
 
-    protected Filesystem $filesystem;
+    protected FilesystemInterface $filesystem;
+
+    protected PrinterContract $printer;
 
     public function __construct(string $name = null)
     {
@@ -66,14 +72,14 @@ abstract class Command extends SymfonyCommand
         return $this->fire();
     }
 
-    public function setFilesystem(Filesystem $filesystem = null): self
+    public function setFilesystem(FilesystemInterface $filesystem = null): self
     {
         $this->filesystem = $filesystem ?? new Filesystem(new Local(getcwd()));
 
         return $this;
     }
 
-    public function setConfigurationProvider(ConfigurationProvider $configurationProvider = null): self
+    public function setConfigurationProvider(ConfigurationProviderContract $configurationProvider = null): self
     {
         $this->configurationProvider = $configurationProvider ?? new ConfigurationProvider($this->filesystem);
 
