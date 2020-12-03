@@ -7,7 +7,6 @@ namespace TPG\Attache;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use League\Flysystem\FileNotFoundException;
-use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemInterface;
 use TPG\Attache\Contracts\InitializerContract;
 use TPG\Attache\Exceptions\FilesystemException;

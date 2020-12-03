@@ -6,7 +6,6 @@ namespace TPG\Attache\Contracts;
 
 use Illuminate\Support\Collection;
 use TPG\Attache\Targets\Target;
-use TPG\Attache\TaskRunner;
 
 interface ReleaseManagerContract
 {

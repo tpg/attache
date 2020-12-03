@@ -6,7 +6,6 @@ namespace TPG\Attache\Targets;
 
 use TPG\Attache\Contracts\TargetContract;
 use TPG\Attache\Contracts\TaskContract;
-use TPG\Attache\Task;
 
 abstract class Target implements TargetContract
 {

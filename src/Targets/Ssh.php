@@ -8,7 +8,6 @@ use Symfony\Component\Process\Process;
 use TPG\Attache\Contracts\ServerContract;
 use TPG\Attache\Contracts\TaskContract;
 use TPG\Attache\Server;
-use TPG\Attache\Task;
 
 class Ssh extends Target
 {

@@ -15,7 +15,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use TPG\Attache\ConfigurationProvider;
 use TPG\Attache\Contracts\ConfigurationProviderContract;
 use TPG\Attache\Contracts\PrinterContract;
-use TPG\Attache\Printer;
 use TPG\Attache\Server;
 
 abstract class Command extends SymfonyCommand

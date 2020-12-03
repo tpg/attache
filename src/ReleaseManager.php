@@ -11,7 +11,6 @@ use TPG\Attache\Contracts\TargetContract;
 use TPG\Attache\Contracts\TaskRunnerContract;
 use TPG\Attache\Exceptions\ProcessException;
 use TPG\Attache\Targets\Ssh;
-use TPG\Attache\Targets\Target;
 
 class ReleaseManager implements ReleaseManagerContract
 {

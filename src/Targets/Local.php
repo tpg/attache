@@ -6,7 +6,6 @@ namespace TPG\Attache\Targets;
 
 use Symfony\Component\Process\Process;
 use TPG\Attache\Contracts\TaskContract;
-use TPG\Attache\Task;
 
 class Local extends Target
 {
