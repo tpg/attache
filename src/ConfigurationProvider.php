@@ -20,7 +20,6 @@ class ConfigurationProvider implements ConfigurationProviderContract
     protected string $repository;
     protected ?string $default;
 
-
     public function __construct(FilesystemInterface $filesystem)
     {
         $this->filesystem = $filesystem;

@@ -9,7 +9,6 @@ use TPG\Attache\Contracts\ResultContract;
 use TPG\Attache\Contracts\TargetContract;
 use TPG\Attache\Contracts\TaskContract;
 use TPG\Attache\Contracts\TaskRunnerContract;
-use TPG\Attache\Targets\Target;
 
 class TaskRunner implements TaskRunnerContract
 {

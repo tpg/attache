@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace TPG\Attache\Contracts;
 
 use Illuminate\Support\Collection;
-use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemInterface;
 
 interface InitializerContract
