@@ -79,6 +79,9 @@ class ScriptCompiler
                 case 'release':
                     $value = $this->releaseId;
                     break;
+                case 'artisan':
+                    $value = $this->server->phpBin().' '.$this->server->path('serve').'/artisan';
+                    break;
                 default:
                     throw new ConfigurationException('No such tag @'.$tag['tag']);
             }
