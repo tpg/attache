@@ -15,7 +15,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 use TPG\Attache\ConfigurationProvider;
 use TPG\Attache\Contracts\ConfigurationProviderContract;
 use TPG\Attache\Contracts\PrinterContract;
-use TPG\Attache\Server;
+use TPG\Attache\Contracts\ServerContract;
+use TPG\Attache\Printer;
 
 abstract class Command extends SymfonyCommand
 {
@@ -66,6 +67,8 @@ abstract class Command extends SymfonyCommand
         $this->input = $input;
         $this->output = $output;
 
+        $this->setPrinter();
+
         $this->loadConfig();
 
         return $this->fire();
@@ -81,6 +84,13 @@ abstract class Command extends SymfonyCommand
     public function setConfigurationProvider(ConfigurationProviderContract $configurationProvider = null): self
     {
         $this->configurationProvider = $configurationProvider ?? new ConfigurationProvider($this->filesystem);
+
+        return $this;
+    }
+
+    public function setPrinter(PrinterContract $printer = null): self
+    {
+        $this->printer = $printer ?? new Printer($this->output);
 
         return $this;
     }
@@ -107,7 +117,7 @@ abstract class Command extends SymfonyCommand
         return $this->input->getArgument($key);
     }
 
-    protected function server(): Server
+    protected function server(): ServerContract
     {
         $name = $this->argument('server');
 

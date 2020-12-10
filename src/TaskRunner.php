@@ -42,8 +42,8 @@ class TaskRunner implements TaskRunnerContract
 
             $progress = $this->percentage(count($tasks), $count);
 
-            $exitCodes[] = $this->target->run($task, function ($type, $output) use ($callback, $task, $progress) {
-                $result = new Result($task, $type, $output);
+            $exitCodes[] = $this->target->run($task, function ($success, $output) use ($callback, $task, $progress) {
+                $result = new Result($task, $success, $output);
 
                 $this->results->push($result);
 
@@ -58,7 +58,7 @@ class TaskRunner implements TaskRunnerContract
 
     public function errors(): Collection
     {
-        return $this->results->filter(fn (ResultContract $result) => $result->isError());
+        return $this->results->filter(fn (ResultContract $result) => !$result->isSuccess());
     }
 
     public function hasError(): bool

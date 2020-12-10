@@ -31,7 +31,7 @@ class ReleaseListCommand extends Command
 
     protected function fire(): int
     {
-        $releaseManager = $this->releaseManager ?? new ReleaseManager($this->server());
+        $releaseManager = $this->releaseManager ?? new ReleaseManager($this->server(), $this->printer);
         $releases = $releaseManager->list();
         $active = $releaseManager->active();
 

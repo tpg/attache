@@ -27,11 +27,18 @@ class Ssh extends Target
     {
         $process = $this->getProcess($task);
 
-        $process->run(function ($type, $data) use ($callback) {
-            $callback($type, $data);
-        });
+        // Running the process like this ensures a single response instead of passing in an
+        // async function which is sometimes called twice.
+        $exit = $process->run();
 
-        return $process->getExitCode();
+        $callback(
+            $process->isSuccessful(),
+            $process->isSuccessful()
+                ? $process->getOutput()
+                : $process->getErrorOutput()
+        );
+
+        return $exit;
     }
 
     protected function getProcess(TaskContract $task): Process

@@ -10,6 +10,8 @@
  * @author  Warrick Bayman <me@warrickbayman.co.za>
  */
 
+const ATTACHE_ROOT = __DIR__.'/../';
+
 if (file_exists(__DIR__.'/../vendor/autoload.php')) {
     require __DIR__.'/../vendor/autoload.php';
 } else {
@@ -19,6 +21,8 @@ if (file_exists(__DIR__.'/../vendor/autoload.php')) {
 $app = new \Symfony\Component\Console\Application('Attaché', '0.8.0-ALPHA [DO NOT USE IN PRODUCTION]');
 
 $app->add(new \TPG\Attache\Commands\InitCommand());
+
+$app->add(new \TPG\Attache\Commands\InstallCommand());
 
 $app->add(new \TPG\Attache\Commands\ServerListCommand());
 $app->add(new \TPG\Attache\Commands\ServerAddCommand());

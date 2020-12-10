@@ -11,24 +11,19 @@ use TPG\Attache\Contracts\TaskContract;
 class Result implements ResultContract
 {
     protected TaskContract $task;
-    protected $type;
+    protected bool $success;
     protected $value;
 
-    public function __construct(TaskContract $task, $type, $value = null)
+    public function __construct(TaskContract $task, bool $success, $value = null)
     {
         $this->task = $task;
-        $this->type = $type;
+        $this->success = $success;
         $this->value = $value;
     }
 
-    public function isError(): bool
+    public function isSuccess(): bool
     {
-        return $this->type === Process::ERR;
-    }
-
-    public function isOutput(): bool
-    {
-        return $this->type === Process::OUT;
+        return $this->success;
     }
 
     public function output()
