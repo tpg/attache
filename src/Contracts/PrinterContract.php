@@ -11,7 +11,10 @@ interface PrinterContract
     public function __construct(OutputInterface $output);
 
     public function output(): OutputInterface;
+
     public function fromResult(ResultContract $result): void;
+
     public function error(string $message): void;
+
     public function friendlyErrorMessage(string $message): string;
 }

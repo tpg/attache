@@ -58,7 +58,7 @@ class TaskRunner implements TaskRunnerContract
 
     public function errors(): Collection
     {
-        return $this->results->filter(fn (ResultContract $result) => !$result->isSuccess());
+        return $this->results->filter(fn (ResultContract $result) => ! $result->isSuccess());
     }
 
     public function hasError(): bool

@@ -30,7 +30,7 @@ class Printer implements PrinterContract
 
     public function fromResult(ResultContract $result): void
     {
-        if (!$result->isSuccess()) {
+        if (! $result->isSuccess()) {
             $this->error($this->friendlyErrorMessage($result->output()));
         }
     }
@@ -44,9 +44,9 @@ class Printer implements PrinterContract
 
     public function friendlyErrorMessage(string $message): string
     {
-        $errors = require(ATTACHE_ROOT.'resources/lang/errors.php');
+        $errors = require ATTACHE_ROOT.'resources/lang/errors.php';
 
-        $e = collect(array_keys($errors))->filter(fn($em) => strpos($message, $em) !== false)->first();
+        $e = collect(array_keys($errors))->filter(fn ($em) => strpos($message, $em) !== false)->first();
 
         if ($e) {
             return Arr::get($errors, $e);
