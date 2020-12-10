@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace TPG\Attache;
 
-use Symfony\Component\Process\Process;
 use TPG\Attache\Contracts\ResultContract;
 use TPG\Attache\Contracts\TaskContract;
 

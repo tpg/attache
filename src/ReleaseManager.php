@@ -62,7 +62,7 @@ class ReleaseManager implements ReleaseManagerContract
 
         if ($this->runner->hasError()) {
             $this->printer->fromResult($this->runner->errors()->first());
-            die(12);
+            exit(12);
         }
 
         return collect(explode(PHP_EOL, $this->runner->getResults()->first()->output()))
@@ -83,7 +83,7 @@ class ReleaseManager implements ReleaseManagerContract
 
         preg_match($regex, $this->runner->getResults()->first()->output(), $matches);
 
-        if (!$matches) {
+        if (! $matches) {
             $this->printer->error($this->printer->friendlyErrorMessage('installation'));
             exit(13);
         }
