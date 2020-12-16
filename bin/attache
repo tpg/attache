@@ -16,7 +16,7 @@ if (file_exists(__DIR__.'/../vendor/autoload.php')) {
     require __DIR__.'/../../../autoload.php';
 }
 
-$app = new \Symfony\Component\Console\Application('Attaché', '0.7.4');
+$app = new \Symfony\Component\Console\Application('Attaché', '0.7.5');
 
 $app->add(new \TPG\Attache\Console\InitCommand());
 $app->add(new \TPG\Attache\Console\ServersListCommand());
