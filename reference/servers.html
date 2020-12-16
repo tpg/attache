@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Server Configuration | Attaché</title>
+    <meta name="generator" content="VuePress 1.7.1">
+    
+    <meta name="description" content="Highly opinionated deployment tool for Laravel applications">
+    
+    <link rel="preload" href="/attache/assets/css/0.styles.ad7ae9fa.css" as="style"><link rel="preload" href="/attache/assets/js/app.b266b629.js" as="script"><link rel="preload" href="/attache/assets/js/2.761cf12e.js" as="script"><link rel="preload" href="/attache/assets/js/11.d8efa6e3.js" as="script"><link rel="prefetch" href="/attache/assets/js/10.724ee61b.js"><link rel="prefetch" href="/attache/assets/js/12.31f7a2d8.js"><link rel="prefetch" href="/attache/assets/js/13.933ced61.js"><link rel="prefetch" href="/attache/assets/js/3.c453ee41.js"><link rel="prefetch" href="/attache/assets/js/4.0f0106db.js"><link rel="prefetch" href="/attache/assets/js/5.ef77c706.js"><link rel="prefetch" href="/attache/assets/js/6.9f4ccd17.js"><link rel="prefetch" href="/attache/assets/js/7.c5233f30.js"><link rel="prefetch" href="/attache/assets/js/8.2db2f904.js"><link rel="prefetch" href="/attache/assets/js/9.8ed7240f.js">
+    <link rel="stylesheet" href="/attache/assets/css/0.styles.ad7ae9fa.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/attache/" class="home-link router-link-active"><!----> <span class="site-name">Attaché</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/attache/" class="nav-link">
+  Home
+</a></div><div class="nav-item"><a href="/attache/how/" class="nav-link">
+  How it works
+</a></div><div class="nav-item"><a href="/attache/started/" class="nav-link">
+  Getting Started
+</a></div><div class="nav-item"><a href="/attache/reference/" class="nav-link router-link-active">
+  Config Reference
+</a></div><div class="nav-item"><a href="/attache/releases/" class="nav-link">
+  Release Management
+</a></div> <a href="https://github.com/tpg/attache" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/attache/" class="nav-link">
+  Home
+</a></div><div class="nav-item"><a href="/attache/how/" class="nav-link">
+  How it works
+</a></div><div class="nav-item"><a href="/attache/started/" class="nav-link">
+  Getting Started
+</a></div><div class="nav-item"><a href="/attache/reference/" class="nav-link router-link-active">
+  Config Reference
+</a></div><div class="nav-item"><a href="/attache/releases/" class="nav-link">
+  Release Management
+</a></div> <a href="https://github.com/tpg/attache" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav>  <ul class="sidebar-links"><li><a href="/attache/reference/" aria-current="page" class="sidebar-link">Base Configuration</a></li><li><a href="/attache/reference/servers.html" aria-current="page" class="active sidebar-link">Server Configuration</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/attache/reference/servers.html#multiple-servers" class="sidebar-link">Multiple servers</a></li><li class="sidebar-sub-header"><a href="/attache/reference/servers.html#common-server-configuration" class="sidebar-link">Common server configuration</a></li><li class="sidebar-sub-header"><a href="/attache/reference/servers.html#default-server" class="sidebar-link">Default server</a></li><li class="sidebar-sub-header"><a href="/attache/reference/servers.html#custom-paths" class="sidebar-link">Custom paths</a></li><li class="sidebar-sub-header"><a href="/attache/reference/servers.html#asset-configuration" class="sidebar-link">Asset configuration</a></li><li class="sidebar-sub-header"><a href="/attache/reference/servers.html#php-configuration" class="sidebar-link">PHP configuration</a></li><li class="sidebar-sub-header"><a href="/attache/reference/servers.html#composer-configuration" class="sidebar-link">Composer configuration</a></li><li class="sidebar-sub-header"><a href="/attache/reference/servers.html#migrating-a-database" class="sidebar-link">Migrating a database</a></li></ul></li><li><a href="/attache/reference/scripts.html" class="sidebar-link">Script Hooks</a></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="server-configuration"><a href="#server-configuration" class="header-anchor">#</a> Server Configuration</h1> <p><img src="https://img.shields.io/github/v/release/tpg/attache?style=flat-square" alt=""></p> <h2 id="multiple-servers"><a href="#multiple-servers" class="header-anchor">#</a> Multiple servers</h2> <p>You can set up as many servers are you like in the Attaché configuration file. The <code>servers</code> configuration is a JSON object of server objects, each one representing another server. Each server object describes the connection details for a single deployment target. This includes the hostname, SSH port, the username, the path where the project is hosted, and the Git branch to clone.</p> <p>Adding multiple servers can be handy if you want to have your testing, staging and production environments all set up in the same configuration. Or if your application is actually a number of different microservices that get deployed at the same time.</p> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;servers&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;production&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token comment">//...</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;staging&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token comment">//...</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;testing&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token comment">//...</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>When deploying, you can simply specify the server you want to deploy to as the only argument of the <code>deploy</code> command.</p> <div class="language-bash extra-class"><pre class="language-bash"><code>attache deploy staging
+</code></pre></div><p>If you only have a single server configured, you can omit the server name on the command line.</p> <h2 id="common-server-configuration"><a href="#common-server-configuration" class="header-anchor">#</a> Common server configuration</h2> <p>If your configuration includes multiple servers that all share some common configuration, then instead of configuring each server with exactly the same details each time, you can set a <code>common</code> server configuration object. Any attributes you set in the <code>common</code> object will be shared across all your server configurations. You can override the common config by adding the custom attributes to the servers that need them.</p> <div class="language-json extra-class"><div class="highlight-lines"><br><div class="highlighted"> </div><div class="highlighted"> </div><div class="highlighted"> </div><div class="highlighted"> </div><div class="highlighted"> </div><div class="highlighted"> </div><br><br><br><br><br><br><br><br><br><br><br><br><br><br></div><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;common&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;host&quot;</span><span class="token operator">:</span> <span class="token string">&quot;myhost.test&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;port&quot;</span><span class="token operator">:</span> <span class="token number">22</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;root&quot;</span><span class="token operator">:</span> <span class="token string">&quot;/root/to/application&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;user&quot;</span><span class="token operator">:</span> <span class="token string">&quot;user&quot;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;servers&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;staging&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token property">&quot;branch&quot;</span><span class="token operator">:</span> <span class="token string">&quot;master&quot;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;testing&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token property">&quot;branch&quot;</span><span class="token operator">:</span> <span class="token string">&quot;testing&quot;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;production&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token property">&quot;branch&quot;</span><span class="token operator">:</span> <span class="token string">&quot;master&quot;</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;host&quot;</span><span class="token operator">:</span> <span class="token string">&quot;myproductionhost.test&quot;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>The <code>deploy</code> script still works in the same way, however, the config from the <code>common</code> object will now be applied first and overridden by the attributes in each server block.</p> <div class="language-bash extra-class"><pre class="language-bash"><code>attache deploy staging
+<span class="token comment"># or</span>
+attache deploy testing
+<span class="token comment"># or</span>
+attache deploy production
+</code></pre></div><p>Each of these deploy commands will share the config from the <code>common</code> configuration, but override the name, branch and host settings per server.</p> <p>Technically, as long as a <code>common</code> configuration is provided, a server object is not required to contain any specific settings. The following is completely valid:</p> <div class="language-json extra-class"><div class="highlight-lines"><br><br><br><br><br><br><br><br><br><div class="highlighted"> </div><br><br><br></div><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;common&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;host&quot;</span><span class="token operator">:</span> <span class="token string">&quot;myhost.test&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;port&quot;</span><span class="token operator">:</span> <span class="token number">22</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;root&quot;</span><span class="token operator">:</span> <span class="token string">&quot;/root/to/application&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;user&quot;</span><span class="token operator">:</span> <span class="token string">&quot;user&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;branch&quot;</span><span class="token operator">:</span> <span class="token string">&quot;master&quot;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;servers&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;staging&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h2 id="default-server"><a href="#default-server" class="header-anchor">#</a> Default server</h2> <p>When you have multiple servers set up, it can be useful to have one of them as the server you deploy to most often. For example, you might deploy to a testing environment more often than to your production environment. Attaché provides a useful feature to set one of your servers as the default by setting the <code>default</code> attribute to the name of a server.</p> <div class="language-json extra-class"><div class="highlight-lines"><br><br><div class="highlighted"> </div><br><br><br><br><br><br><br><br><br><br></div><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;repository&quot;</span><span class="token operator">:</span> <span class="token string">&quot;git@repository.git&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;default&quot;</span><span class="token operator">:</span> <span class="token string">&quot;staging&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;servers&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;staging&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token comment">//...</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;production&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token comment">//...</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>Now when running any command that requires a server name, Attaché will assume you mean the default one if you don't specify a server name on the command line. So in the example above, <code>attache deploy</code> will automatically deploy to the staging server. You can still deploy to your other servers by making sure you specify the name on the command line.</p> <div class="language-bash extra-class"><pre class="language-bash"><code>attache deploy <span class="token comment">#staging</span>
+
+attache deploy production <span class="token comment">#production</span>
+</code></pre></div><p>If you only have a single server configuration, then that server will automatically be set as the default. You don't need to specify the <code>default</code> in your config file, and you don't need to specify the server name on the command line.</p> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;repository&quot;</span><span class="token operator">:</span> <span class="token string">&quot;git@repository.git&quot;</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;servers&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;production&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token comment">//...</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>To deploy to this single server, simply run <code>attache deploy</code>:</p> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token comment"># With the example above, these two are identical:</span>
+
+attache deploy
+
+attache deploy production
+</code></pre></div><h2 id="custom-paths"><a href="#custom-paths" class="header-anchor">#</a> Custom paths</h2> <p>Attaché is quite opinionated about how the directory structure on the server should appear. However, there is some flexibility in how the directories and files are named. You can configure this on a per-server basis by adding a <code>paths</code> object. The <code>attache init</code> command already does this when creating a new configuration file. The <code>paths</code> object is not required and a the defaults will be used.</p> <div class="language-json extra-class"><div class="highlight-lines"><br><br><br><br><div class="highlighted"> </div><div class="highlighted"> </div><div class="highlighted"> </div><div class="highlighted"> </div><div class="highlighted"> </div><div class="highlighted"> </div><br><br><br><br></div><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;servers&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;staging&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token comment">//...</span>
+            <span class="token property">&quot;paths&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                <span class="token property">&quot;releases&quot;</span><span class="token operator">:</span> <span class="token string">&quot;releases&quot;</span><span class="token punctuation">,</span>
+                <span class="token property">&quot;serve&quot;</span><span class="token operator">:</span> <span class="token string">&quot;live&quot;</span><span class="token punctuation">,</span>
+                <span class="token property">&quot;storage&quot;</span><span class="token operator">:</span> <span class="token string">&quot;storage&quot;</span><span class="token punctuation">,</span>
+                <span class="token property">&quot;env&quot;</span><span class="token operator">:</span> <span class="token string">&quot;.env&quot;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><table><thead><tr><th>Path</th> <th>Description</th></tr></thead> <tbody><tr><td><code>releases</code></td> <td>Where your deployments are stored.</td></tr> <tr><td><code>serve</code></td> <td>The symbolic link that is created to point to the latest release.</td></tr> <tr><td><code>storage</code></td> <td>The storage directory. This will be symlinked as <code>storage</code> into the latest release.</td></tr> <tr><td><code>env</code></td> <td>The name of the <code>.env</code> file. This will be symlinked as <code>.env</code> into the latest release.</td></tr></tbody></table> <p>You don't need to provide all of the path overrides. Only the ones you wish to change. So it would be perfectly acceptable if you wanted to change just the <code>serve</code> symlink.</p> <div class="language-json extra-class"><div class="highlight-lines"><br><br><br><br><br><div class="highlighted"> </div><br><br><br><br><br></div><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;servers&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;staging&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token comment">//..</span>
+            <span class="token property">&quot;paths&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                <span class="token property">&quot;serve&quot;</span><span class="token operator">:</span> <span class="token string">&quot;www&quot;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>The above configuration will create a symbolic link named &quot;www&quot; which will point to the latest release inside the <code>releases</code> directory.</p> <h2 id="asset-configuration"><a href="#asset-configuration" class="header-anchor">#</a> Asset configuration</h2> <p>During deployment Attaché will copy any compiled assets to the server using <code>scp</code>. By default Attaché will always copy the entire contents of the <code>public/js</code>, <code>public/css</code> directories and the <code>public/mix-manifest.json</code> file. However, sometimes you may need to copy additional assets that aren't normally a part of your repository. For example, you may have an additional resource that needs to be in the public directory that is created during the build stage. You can specify these assets by added an <code>assets</code> config and specifying the local asset filename as the key and the remote asset as the value:</p> <div class="language-json extra-class"><div class="highlight-lines"><br><br><br><div class="highlighted"> </div><div class="highlighted"> </div><div class="highlighted"> </div><div class="highlighted"> </div><br><br><br><br></div><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;servers&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;staging&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token property">&quot;assets&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                <span class="token property">&quot;public/vendors~js&quot;</span><span class="token operator">:</span> <span class="token string">&quot;public/vendors~js&quot;</span><span class="token punctuation">,</span>
+                <span class="token property">&quot;public/local-asset&quot;</span><span class="token operator">:</span> <span class="token string">&quot;public/remote-asset&quot;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>Since assets are copied AFTER the symbolic links are created, you can also use this feature to copy assets in your storage directory:</p> <div class="language-json extra-class"><div class="highlight-lines"><br><br><br><br><div class="highlighted"> </div><br><br><br><br><br></div><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;servers&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;staging&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token property">&quot;assets&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                <span class="token property">&quot;storage/app/public/demo&quot;</span><span class="token operator">:</span> <span class="token string">&quot;storage/app/public/demo&quot;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h2 id="php-configuration"><a href="#php-configuration" class="header-anchor">#</a> PHP configuration</h2> <p>Attaché assumes that the command to run PHP on the server is simply: <code>php</code>. However, in some cases you may find that you need to configure this. For example, if you don't have control over how PHP is installed, and there are multiple versions available, to use PHP 7.4, you might need to use the command <code>php74</code> or perhaps <code>php-7.4</code>. Maybe you need to specify the full path to the PHP binary.</p> <p>Attaché provides a simple configuration solution for this scenario. You can add a <code>php</code> configuration and provide the path to the PHP binary, or just the command that needs to be run to the <code>bin</code> attribute.</p> <div class="language-json extra-class"><div class="highlight-lines"><br><br><br><br><div class="highlighted"> </div><div class="highlighted"> </div><div class="highlighted"> </div><div class="highlighted"> </div><div class="highlighted"> </div><br><br><br><br></div><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;servers&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;staging&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token comment">//...</span>
+            <span class="token property">&quot;php&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                <span class="token property">&quot;bin&quot;</span><span class="token operator">:</span> <span class="token string">&quot;php74&quot;</span><span class="token punctuation">,</span>
+                <span class="token comment">// or...</span>
+                <span class="token property">&quot;bin&quot;</span><span class="token operator">:</span> <span class="token string">&quot;/usr/local/bin/php7.4&quot;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h2 id="composer-configuration"><a href="#composer-configuration" class="header-anchor">#</a> Composer configuration</h2> <p>Like like the PHP binary configuration, you can customize the Composer configuration. Attaché assumes that Composer is already installed and on the path and can be run from the command line with a simple <code>composer</code>. However, in some cases, you might not have that much control over where Composer installed, how it's named of if you can install it on the path at all.</p> <p>If the name of the composer binary is something other than <code>composer</code>, you can use the same structure as the <code>php</code> object.</p> <div class="language-json extra-class"><div class="highlight-lines"><br><br><br><br><div class="highlighted"> </div><div class="highlighted"> </div><div class="highlighted"> </div><br><br><br><br></div><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;servers&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;staging&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token comment">//...</span>
+            <span class="token property">&quot;composer&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                <span class="token property">&quot;bin&quot;</span><span class="token operator">:</span> <span class="token string">&quot;composer.phar&quot;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>It's also very possible that you'll need to download composer manually in order to use it. Attaché will do this for you as well. Simply set the <code>local</code> attribute to true.</p> <div class="language-json extra-class"><div class="highlight-lines"><br><br><br><br><div class="highlighted"> </div><br><br><br></div><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token comment">//...</span>
+    <span class="token property">&quot;composer&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;bin&quot;</span><span class="token operator">:</span> <span class="token string">&quot;composer.phar&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;local&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>This will ensure that a <code>composer.phar</code> binary is downloaded and placed at the project root. Attaché will also run a <code>selfupdate</code> each time you run the <code>deploy</code> command and <code>local</code> is set to `true.</p> <p>Lastly, in some cases you may want to install dev dependencies. This is sometimes true if your demoing a project and you're seeding your database with Faker. In that case you may want to install your dev dependencies. You can do this by setting the <code>dev</code> option to `true:</p> <div class="language-json extra-class"><div class="highlight-lines"><br><br><br><br><div class="highlighted"> </div><br><br><br></div><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token property">&quot;composer&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;bin&quot;</span><span class="token operator">:</span> <span class="token string">&quot;composer.phar&quot;</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;local&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+        <span class="token property">&quot;dev&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h2 id="migrating-a-database"><a href="#migrating-a-database" class="header-anchor">#</a> Migrating a database</h2> <p>Attaché provides a simple solution to help keep your database up-to-date. If you add a <code>migrate</code> attribute to your server configuration and set it to <code>true</code>, Attaché will also run <code>php artisan migrate</code> for you inside your project. However, take note that you should be careful when doing this. Migrating a database can be destructive and since Attaché will force the migration you could potentially do damange to your database if you're not careful. For this reason, the <code>migrate</code> attribute defaults to <code>false</code> meaning you conciously need to change it to <code>true</code>.</p> <div class="language-json extra-class"><div class="highlight-lines"><br><br><div class="highlighted"> </div><br><br><br></div><pre class="language-json"><code><span class="token punctuation">{</span>
+    <span class="token comment">//...</span>
+    <span class="token property">&quot;migrate&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span>
+    <span class="token comment">//...</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>If you need to use this feature, it's strongly recommended that you also include a database backup script. A simple way to do this is to use the <code>mysqldump</code> command and create a <code>before-migrate</code> script hook. See <a href="/attache/reference/scripts.html">Script Hooks</a> for more detail on running scripts.</p></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/attache/reference/" class="prev router-link-active">
+        Base Configuration
+      </a></span> <span class="next"><a href="/attache/reference/scripts.html">
+        Script Hooks
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/attache/assets/js/app.b266b629.js" defer></script><script src="/attache/assets/js/2.761cf12e.js" defer></script><script src="/attache/assets/js/11.d8efa6e3.js" defer></script>
+  </body>
+</html>
