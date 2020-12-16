@@ -26,7 +26,6 @@ class InitializerTest extends TestCase
         unlink('gitconfig');
     }
 
-
     /**
      * @test
      */
