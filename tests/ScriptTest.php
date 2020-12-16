@@ -59,4 +59,18 @@ class ScriptTest extends TestCase
 
         $this->assertSame(['script-test '.$server->path('releases')], $result);
     }
+
+    /**
+     * @test
+     **/
+    public function it_will_return_the_current_artisan_path()
+    {
+        $config = $this->getConfig();
+        $server = $config->server('server-1');
+
+        $compiler = new ScriptCompiler($server);
+        $result = $compiler->compile(['@artisan down']);
+
+        $this->assertSame([$server->phpBin().' '.$server->path('serve').'/artisan down'], $result);
+    }
 }
