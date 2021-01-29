@@ -1,0 +1,50 @@
+{
+    "name": "thepublicgood/attache",
+    "description": "A highly opinionated deployment tool for Laravel.",
+    "keywords": ["ssh", "laravel", "deployment"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Warrick Bayman",
+            "email": "makers@thepublicgood.dev"
+        }
+    ],
+    "require": {
+        "php": "^8.0",
+        "ext-json": "*",
+        "illuminate/support": "^8.22",
+        "laravel/envoy": "^2.5",
+        "league/flysystem": "^2.0",
+        "symfony/console": "^5.2",
+        "symfony/process": "^5.2"
+    },
+    "require-dev": {
+        "roave/security-advisories": "dev-master",
+        "mockery/mockery": "^1.4",
+        "phpunit/phpunit": "^9.5",
+        "symfony/var-dumper": "^5.2"
+    },
+    "bin": [
+        "bin/attache"
+    ],
+    "autoload": {
+        "psr-4": {
+            "TPG\\Attache\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "TPG\\Attache\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.x-dev"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

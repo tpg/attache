@@ -1,0 +1,25 @@
+#!/usr/bin/env php
+<?php
+
+/**
+ * Attaché - A highly opinionated deployment tool for Laravel.
+ *
+ * https://tpg.github.io/attache/
+ *
+ * @package Attache
+ * @author  Warrick Bayman <makers@thepublicgood.dev>
+ */
+
+if (file_exists(__DIR__.'/../vendor/autoload.php')) {
+    require __DIR__.'/../vendor/autoload.php';
+} else {
+    require __DIR__.'/../../../autoload.php';
+}
+
+$app = new \Symfony\Component\Console\Application('Attaché 2', '0.0.0');
+
+$app->addCommands([
+    new \TPG\Attache\Commands\InitCommand(),
+]);
+
+$app->run();
