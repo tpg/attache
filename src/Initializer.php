@@ -26,12 +26,10 @@ class Initializer implements InitializerInterface
             );
 
         try {
-
             $this->filesystem->write(
                 $filename,
                 json_encode($config, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)
             );
-
         } catch (\JsonException) {
             // error output
         }
@@ -50,7 +48,7 @@ class Initializer implements InitializerInterface
             ->filter(fn ($key) => Str::startsWith($key, 'remote'))->values();
 
         return $remoteKeys->mapWithKeys(
-            fn($key) => [Str::after($key, 'remote ') => Arr::get($ini, $key.'.url')]
+            fn ($key) => [Str::after($key, 'remote ') => Arr::get($ini, $key.'.url')]
         )->toArray();
     }
 
@@ -60,7 +58,7 @@ class Initializer implements InitializerInterface
             'repository' => $remote,
             'servers' => [
                 'production' => $this->defaultServerConfig(),
-            ]
+            ],
         ];
     }
 
