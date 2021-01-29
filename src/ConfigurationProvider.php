@@ -8,5 +8,4 @@ use TPG\Attache\Contracts\ConfigurationProviderInterface;
 
 class ConfigurationProvider implements ConfigurationProviderInterface
 {
-
 }
