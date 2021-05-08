@@ -15,6 +15,8 @@ class ConfigurationProvider implements ConfigurationProviderInterface
 {
     protected Collection $servers;
 
+    protected ?string $default = null;
+
     /**
      * ConfigurationProvider constructor.
      */
@@ -54,6 +56,8 @@ class ConfigurationProvider implements ConfigurationProviderInterface
 
         $this->servers = collect(Arr::get($config, 'servers'))
             ->map(fn ($serverConfig, $name) => new Server($name, array_merge($serverConfig, $commonConfig)));
+
+        $this->default = Arr::get($config, 'default', null);
     }
 
     public function serverNames(): array
@@ -73,5 +77,18 @@ class ConfigurationProvider implements ConfigurationProviderInterface
         }
 
         return $this->servers->get($name);
+    }
+
+    public function defaultServer(): Server
+    {
+        if ($this->servers->count() === 1) {
+            return $this->servers->first();
+        }
+
+        if (! $this->default) {
+            throw new ConfigurationException('No default server specified. Either set a default or be explicit.');
+        }
+
+        return $this->server($this->default);
     }
 }

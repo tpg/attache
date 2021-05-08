@@ -18,4 +18,6 @@ interface ConfigurationProviderInterface
     public function servers(): Collection;
 
     public function server(string $name): Server;
+
+    public function defaultServer(): Server;
 }

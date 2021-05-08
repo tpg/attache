@@ -30,5 +30,11 @@ interface ServerInterface
 
     public function connectionString(): string;
 
+    public function username(): string;
+
+    public function host(): string;
+
+    public function port(): int;
+
     public function cloneString(): string;
 }

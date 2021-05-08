@@ -10,13 +10,14 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use TPG\Attache\ConfigurationProvider;
+use TPG\Attache\Contracts\ConfigurationProviderInterface;
 use TPG\Attache\Contracts\InitializerInterface;
 use TPG\Attache\Initializer;
 
 abstract class Command extends SymfonyCommand
 {
     private Filesystem $filesystem;
-    protected ?InitializerInterface $initializer = null;
 
     protected InputInterface $input;
     protected OutputInterface $output;
@@ -25,6 +26,9 @@ abstract class Command extends SymfonyCommand
     protected string $description;
     protected bool $requireConfig = false;
     protected bool $requireServer = false;
+
+    protected ?InitializerInterface $initializer = null;
+    protected ?ConfigurationProviderInterface $configurationProvider = null;
 
     public function __construct(Filesystem $filesystem)
     {
@@ -35,11 +39,6 @@ abstract class Command extends SymfonyCommand
     public function setFilesystem(Filesystem $filesystem): void
     {
         $this->filesystem = $filesystem;
-    }
-
-    public function setInitializer(InitializerInterface $initializer): void
-    {
-        $this->initializer = $initializer;
     }
 
     protected function configure(): void
@@ -69,6 +68,22 @@ abstract class Command extends SymfonyCommand
     protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->setInitializer(new Initializer($this->filesystem));
+
+        if ($this->requireConfig) {
+            $this->setConfigurationProvider(
+                new ConfigurationProvider($this->filesystem, $input->getOption('config'))
+            );
+        }
+    }
+
+    public function setInitializer(InitializerInterface $initializer): void
+    {
+        $this->initializer = $initializer;
+    }
+
+    public function setConfigurationProvider(ConfigurationProviderInterface $configurationProvider): void
+    {
+        $this->configurationProvider = $configurationProvider;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

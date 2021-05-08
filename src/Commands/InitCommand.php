@@ -12,13 +12,25 @@ declare(strict_types=1);
 namespace TPG\Attache\Commands;
 
 use Illuminate\Support\Arr;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 
 class InitCommand extends Command
 {
     protected string $name = 'init';
     protected string $description = 'Initialize the current directory with a new config file.';
-    protected bool $requireConfig = true;
+
+    protected function configure(): void
+    {
+        parent::configure();
+        $this->addOption(
+            '--config',
+            'c',
+            InputOption::VALUE_REQUIRED,
+            'The name of the configuration file to write',
+            '.attache.json'
+        );
+    }
 
     protected function fire(): int
     {

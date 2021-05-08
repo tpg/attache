@@ -141,17 +141,17 @@ class Server implements ServerInterface
         return $this->username().'@'.$this->host().' -p'.$this->port();
     }
 
-    protected function username(): string
+    public function username(): string
     {
         return Arr::get($this->connection, 'user');
     }
 
-    protected function host(): string
+    public function host(): string
     {
         return Arr::get($this->connection, 'host');
     }
 
-    protected function port(): int
+    public function port(): int
     {
         return Arr::get($this->connection, 'port');
     }
