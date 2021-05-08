@@ -1,6 +1,6 @@
 <?php
 /**
- * attache deploy <server>
+ * attache deploy <server>.
  *
  * Deploy the current project to the given server.
  * Servers are defined in the configuration file.

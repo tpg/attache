@@ -81,12 +81,12 @@ abstract class Command extends SymfonyCommand
         return (int) $this->fire();
     }
 
-    protected function option(string $key): string|array|bool|null
+    protected function option(string $key): string | array | bool | null
     {
         return $this->input->getOption($key);
     }
 
-    public function argument(string $key): array|string|null
+    public function argument(string $key): array | string | null
     {
         return $this->input->getArgument($key);
     }

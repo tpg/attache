@@ -1,6 +1,6 @@
 <?php
 /**
- * attache servers:list
+ * attache servers:list.
  *
  * List all the configured servers.
  */
@@ -17,8 +17,6 @@ class ServersListCommand extends Command
 
     protected function fire(): int
     {
-
-
         return 0;
     }
 }

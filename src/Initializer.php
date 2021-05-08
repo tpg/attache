@@ -36,7 +36,6 @@ class Initializer implements InitializerInterface
                 json_encode($config, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)
             );
         } catch (JsonException) {
-
         }
     }
 
@@ -62,7 +61,7 @@ class Initializer implements InitializerInterface
                     'repository' => $remote,
                     'depth' => 1,
                     'branch' => 'master',
-                ]
+                ],
             ],
             'servers' => [
                 'production' => $this->defaultServerConfig(),
@@ -90,13 +89,13 @@ class Initializer implements InitializerInterface
                 'bin' => 'php',
             ],
             'steps' => [
-                "build" => [
-                    "before" => [
-                        "echo \"before build\"",
-                    ]
+                'build' => [
+                    'before' => [
+                        'echo "before build"',
+                    ],
                 ],
-                "live" => [
-                    "@artisan cache:clear",
+                'live' => [
+                    '@artisan cache:clear',
                 ],
             ],
             'branch' => 'master',

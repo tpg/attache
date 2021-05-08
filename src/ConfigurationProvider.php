@@ -34,7 +34,7 @@ class ConfigurationProvider implements ConfigurationProviderInterface
         $this->loadConfig($this->filesystem->read($filename));
     }
 
-    public function loadConfig(array|string $config): void
+    public function loadConfig(array | string $config): void
     {
         if (is_string($config)) {
             $config = json_decode(

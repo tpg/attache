@@ -1,11 +1,10 @@
 <?php
 /**
- * attache init
+ * attache init.
  *
  * Initialize a new Attaché script in the current directory.
  * If there is a `.git` directory then the remote will automatically
  * be inserted into the configuration file.
- *
  */
 
 declare(strict_types=1);

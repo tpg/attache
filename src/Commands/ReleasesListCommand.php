@@ -1,6 +1,6 @@
 <?php
 /**
- * attache releases:list <server>
+ * attache releases:list <server>.
  *
  * List all the current releases installed on the specified server.
  */
