@@ -37,7 +37,7 @@ class InitializerTest extends TestCase
         $config = array_merge($config, [
             '[remote "upstream"]',
             "\turl = git@testremote.com:vendor/project2.git",
-            "\tfetch = +refs/heads/*:refs/remotes/origin/*"
+            "\tfetch = +refs/heads/*:refs/remotes/origin/*",
         ]);
 
         $this->filesystem->write('.git/config', implode("\n", $config));

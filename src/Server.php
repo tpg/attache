@@ -119,7 +119,7 @@ class Server implements ServerInterface
     {
         $path = Arr::get($this->paths, $key);
 
-        if (!$path) {
+        if (! $path) {
             $path = $key;
         }
 
