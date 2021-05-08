@@ -45,12 +45,12 @@ class ServersListCommand extends Command
                     [
                         'style' => new TableCellStyle([
                             'bg' => 'green',
-                        ])
+                        ]),
                     ]
                 ),
                 $server->host(),
                 $server->username(),
-                $server->port()
+                $server->port(),
             ])->toArray());
 
         $table->setStyle('box')->render();
