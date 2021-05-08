@@ -1,0 +1,39 @@
+{
+    "common": {
+        "git": {
+            "repository": "git@github.com/vendor/project.git",
+            "depth": 5,
+            "branch": "master"
+        }
+    },
+    "servers": {
+        "production": {
+            "host": "server.com",
+            "port": 22,
+            "username": "user",
+            "root": "/path/to/application",
+            "paths": {
+                "releases": "releases",
+                "server": "live",
+                "storage": "storage",
+                "env": ".env"
+            },
+            "php": {
+                "bin": "php"
+            },
+            "steps": {
+                "build": {
+                    "before": [
+                        "@artisan ziggy:generate"
+                    ]
+                },
+                "live": {
+                    "after": [
+                        "@artisan cache:clear",
+                        "@artisan horizon:terminate"
+                    ]
+                }
+            }
+        }
+    }
+}

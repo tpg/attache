@@ -1,0 +1,36 @@
+#!/usr/bin/env php
+<?php
+
+/**
+ * Attaché - A highly opinionated deployment tool for Laravel.
+ *
+ * https://tpg.github.io/attache/
+ *
+ * @package Attache
+ * @author  Warrick Bayman <makers@thepublicgood.dev>
+ */
+
+use League\Flysystem\Filesystem;
+use League\Flysystem\Local\LocalFilesystemAdapter;
+use Symfony\Component\Console\Application;
+use TPG\Attache\Commands\DeployCommand;
+use TPG\Attache\Commands\InitCommand;
+use TPG\Attache\Commands\ReleasesListCommand;
+use TPG\Attache\Commands\ServersListCommand;
+
+if (file_exists(__DIR__.'/../vendor/autoload.php')) {
+    require __DIR__.'/../vendor/autoload.php';
+} else {
+    require __DIR__.'/../../../autoload.php';
+}
+
+$app = new Application('Attaché 2', '0.0.0');
+
+$filesystem = new Filesystem(new LocalFilesystemAdapter(getcwd()));
+
+$app->add(new InitCommand($filesystem));
+$app->add(new ServersListCommand($filesystem));
+$app->add(new ReleasesListCommand($filesystem));
+$app->add(new DeployCommand($filesystem));
+
+$app->run();
