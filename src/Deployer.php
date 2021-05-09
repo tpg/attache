@@ -17,7 +17,6 @@ class Deployer implements DeployerInterface
 {
     public function __construct(protected Filesystem $filesystem, protected Server $server)
     {
-
     }
 
     public function deploy(string $releaseId, Closure $callback): bool

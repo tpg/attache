@@ -25,8 +25,7 @@ abstract class Step
         protected string $releaseId,
         protected Filesystem $filesystem,
         protected ?Server $server = null
-    )
-    {
+    ) {
     }
 
     public function run(Closure $callback): void
@@ -48,7 +47,6 @@ abstract class Step
 
     protected function after(Closure $callback): void
     {
-
     }
 
     protected function task(): Task
@@ -57,7 +55,7 @@ abstract class Step
             [
                 $this->target === self::TARGET_REMOTE && $this->server
                     ? $this->server->username().'@'.$this->server->hostString()
-                    : '127.0.0.1'
+                    : '127.0.0.1',
             ],
             '',
             implode(PHP_EOL, $this->commands())

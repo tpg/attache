@@ -12,7 +12,7 @@ class Dependencies extends Step
     {
         return [
             'cd '.$this->releasePath(),
-            $this->server->phpBin().' '.$this->server->composerBin(). ' install --no-dev',
+            $this->server->phpBin().' '.$this->server->composerBin().' install --no-dev',
         ];
     }
 
