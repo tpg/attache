@@ -11,5 +11,6 @@ use TPG\Attache\Server;
 interface DeployerInterface
 {
     public function __construct(Filesystem $filesystem, Server $server);
+
     public function deploy(string $releaseId, Closure $callback): bool;
 }

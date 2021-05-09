@@ -22,9 +22,8 @@ class Build extends Step
         $this->filesystem->deleteDirectory(self::BUILD_FOLDER);
 
         $source = $this->filesystem->listContents('', true)
-            ->filter(fn (StorageAttributes $attributes) =>
-                $attributes->isFile()
-                && !Str::startsWith($attributes->path(), ['node_modules', self::BUILD_FOLDER]));
+            ->filter(fn (StorageAttributes $attributes) => $attributes->isFile()
+                && ! Str::startsWith($attributes->path(), ['node_modules', self::BUILD_FOLDER]));
 
         foreach ($source as $path) {
             $target = self::BUILD_FOLDER.'/'.$path->path();
