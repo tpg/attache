@@ -8,6 +8,8 @@ interface ServerInterface
 {
     public function __construct(string $name, array $config);
 
+    public function settings(string $key): mixed;
+
     public function setConnection(array $connection): self;
 
     public function setGit(array $git): self;
@@ -18,6 +20,8 @@ interface ServerInterface
 
     public function setAssets(array $assets): self;
 
+    public function assets(): array;
+
     public function name(): string;
 
     public function rootPath(bool $trailingSlash = false): string;
@@ -27,6 +31,8 @@ interface ServerInterface
     public function phpBin(): string;
 
     public function composerBin(): string;
+
+    public function hostString(): string;
 
     public function connectionString(): string;
 

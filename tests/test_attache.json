@@ -4,6 +4,9 @@
             "repository": "git@github.com/vendor/project.git",
             "depth": 5,
             "branch": "master"
+        },
+        "settings": {
+            "copyUtility": "scp"
         }
     },
     "servers": {
@@ -27,6 +30,9 @@
                         "@artisan ziggy:generate"
                     ]
                 },
+                "install": {},
+                "dependencies": {},
+                "assets": {},
                 "live": {
                     "after": [
                         "@artisan cache:clear",

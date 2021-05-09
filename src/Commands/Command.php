@@ -17,8 +17,6 @@ use TPG\Attache\Initializer;
 
 abstract class Command extends SymfonyCommand
 {
-    private Filesystem $filesystem;
-
     protected InputInterface $input;
     protected OutputInterface $output;
 
@@ -27,6 +25,7 @@ abstract class Command extends SymfonyCommand
     protected bool $requireConfig = false;
     protected bool $requireServer = false;
 
+    protected Filesystem $filesystem;
     protected ?InitializerInterface $initializer = null;
     protected ?ConfigurationProviderInterface $configurationProvider = null;
 

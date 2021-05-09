@@ -26,7 +26,12 @@ if (file_exists(__DIR__.'/../vendor/autoload.php')) {
 
 $app = new Application('Attaché 2', '0.0.0');
 
-$filesystem = new Filesystem(new LocalFilesystemAdapter(getcwd()));
+$filesystem = new Filesystem(
+    new LocalFilesystemAdapter(
+        getcwd(),
+        linkHandling: LocalFilesystemAdapter::SKIP_LINKS
+    )
+);
 
 $app->add(new InitCommand($filesystem));
 $app->add(new ServersListCommand($filesystem));

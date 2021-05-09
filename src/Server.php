@@ -32,19 +32,38 @@ class Server implements ServerInterface
         'bin' => 'php',
     ];
     protected array $assets = [
-        'public/js' => 'public/js',
-        'public/css' => 'public/css',
-        'public/mix-manifest.json' => 'public/mix-manifest.json',
+        'public/js' => 'public',
+        'public/css' => 'public',
+        'public/mix-manifest.json' => 'public',
+    ];
+    protected array $settings = [
+        'copyUtility' => 'scp',
     ];
 
     public function __construct(string $name, array $config)
     {
         $this->name = $name;
+        $this->updateSettings(Arr::get($config, 'settings', []));
         $this->setConnection($config);
         $this->setGit(Arr::get($config, 'git', []));
         $this->setPaths(Arr::get($config, 'paths', []));
         $this->setPhp(Arr::get($config, 'php', []));
         $this->setAssets(Arr::get($config, 'assets', []));
+    }
+
+    protected function updateSettings(array $settings): self
+    {
+        $this->settings = array_merge(
+            $this->settings,
+            Arr::only($settings, array_keys($this->settings))
+        );
+
+        return $this;
+    }
+
+    public function settings(string $key): mixed
+    {
+        return Arr::get($this->settings, $key);
     }
 
     public function setConnection(array $connection): self
@@ -97,6 +116,11 @@ class Server implements ServerInterface
         return $this;
     }
 
+    public function assets(): array
+    {
+        return $this->assets;
+    }
+
     public function name(): string
     {
         return $this->name;
@@ -136,6 +160,11 @@ class Server implements ServerInterface
         return $this->rootPath(true).'composer.phar';
     }
 
+    public function hostString(): string
+    {
+        return $this->host().' -p'.$this->port();
+    }
+
     public function connectionString(): string
     {
         return $this->username().'@'.$this->host().' -p'.$this->port();
@@ -156,9 +185,9 @@ class Server implements ServerInterface
         return Arr::get($this->connection, 'port');
     }
 
-    public function cloneString(): string
+    public function cloneString(?string $target = null): string
     {
-        return '-b '.$this->branch().' --depth='.$this->depth().' '.$this->repository();
+        return trim('-b '.$this->branch().' --depth='.$this->depth().' "'.$this->repository().'" '.$target);
     }
 
     protected function branch(): string

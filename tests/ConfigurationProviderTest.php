@@ -41,7 +41,7 @@ class ConfigurationProviderTest extends TestCase
         $provider = new ConfigurationProvider($this->filesystem, '.attache.json');
         $server = $provider->server('production');
 
-        self::assertSame('-b master --depth=1 git@testremote.com:vendor/project.git', $server->cloneString());
+        self::assertSame('-b master --depth=1 "git@testremote.com:vendor/project.git"', $server->cloneString());
     }
 
     /**
