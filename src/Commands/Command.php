@@ -13,7 +13,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 use TPG\Attache\ConfigurationProvider;
 use TPG\Attache\Contracts\ConfigurationProviderInterface;
 use TPG\Attache\Contracts\InitializerInterface;
+use TPG\Attache\Contracts\ReleaseManagerInterface;
+use TPG\Attache\Exceptions\ConfigurationException;
 use TPG\Attache\Initializer;
+use TPG\Attache\Server;
 
 abstract class Command extends SymfonyCommand
 {
@@ -28,6 +31,8 @@ abstract class Command extends SymfonyCommand
     protected Filesystem $filesystem;
     protected ?InitializerInterface $initializer = null;
     protected ?ConfigurationProviderInterface $configurationProvider = null;
+    protected ?Server $server = null;
+    protected ?ReleaseManagerInterface $releaseManager = null;
 
     public function __construct(Filesystem $filesystem)
     {
@@ -73,6 +78,16 @@ abstract class Command extends SymfonyCommand
                 new ConfigurationProvider($this->filesystem, $input->getOption('config'))
             );
         }
+
+        if ($this->requireServer) {
+            $this->server = $input->getArgument('server')
+                ? $this->configurationProvider->server($input->getArgument('server'))
+                : $this->configurationProvider->defaultServer();
+
+            if (!$this->server) {
+                throw new ConfigurationException('A server is required, but none was specified');
+            }
+        }
     }
 
     public function setInitializer(InitializerInterface $initializer): void
@@ -85,6 +100,11 @@ abstract class Command extends SymfonyCommand
         $this->configurationProvider = $configurationProvider;
     }
 
+    public function setReleaseManager(ReleaseManagerInterface $releaseManager): void
+    {
+        $this->releaseManager = $releaseManager;
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         set_time_limit(0);
@@ -95,12 +115,12 @@ abstract class Command extends SymfonyCommand
         return (int) $this->fire();
     }
 
-    protected function option(string $key): string | array | bool | null
+    protected function option(string $key): mixed
     {
         return $this->input->getOption($key);
     }
 
-    public function argument(string $key): array | string | null
+    public function argument(string $key): mixed
     {
         return $this->input->getArgument($key);
     }

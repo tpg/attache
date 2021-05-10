@@ -32,6 +32,8 @@ class ServersListCommand extends Command
 
     protected function displayServers(Collection $servers): void
     {
+        $default = $this->configurationProvider->defaultServer();
+
         $table = new Table($this->output);
         $table->setHeaders([
             'Name',
@@ -42,11 +44,11 @@ class ServersListCommand extends Command
             $servers->map(fn (Server $server) => [
                 new TableCell(
                     $server->name(),
-                    [
+                    $default && $default->name() === $server->name() ? [
                         'style' => new TableCellStyle([
                             'bg' => 'green',
                         ]),
-                    ]
+                    ] : []
                 ),
                 $server->host(),
                 $server->username(),

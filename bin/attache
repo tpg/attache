@@ -15,7 +15,10 @@ use League\Flysystem\Local\LocalFilesystemAdapter;
 use Symfony\Component\Console\Application;
 use TPG\Attache\Commands\DeployCommand;
 use TPG\Attache\Commands\InitCommand;
+use TPG\Attache\Commands\ReleasesActivateCommand;
 use TPG\Attache\Commands\ReleasesListCommand;
+use TPG\Attache\Commands\ReleasesPruneCommand;
+use TPG\Attache\Commands\ReleasesRollbackCommand;
 use TPG\Attache\Commands\ServersListCommand;
 
 if (file_exists(__DIR__.'/../vendor/autoload.php')) {
@@ -36,6 +39,9 @@ $filesystem = new Filesystem(
 $app->add(new InitCommand($filesystem));
 $app->add(new ServersListCommand($filesystem));
 $app->add(new ReleasesListCommand($filesystem));
+$app->add(new ReleasesActivateCommand($filesystem));
+$app->add(new ReleasesRollbackCommand($filesystem));
+$app->add(new ReleasesPruneCommand($filesystem));
 $app->add(new DeployCommand($filesystem));
 
 $app->run();

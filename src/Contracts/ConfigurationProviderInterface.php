@@ -19,5 +19,5 @@ interface ConfigurationProviderInterface
 
     public function server(string $name): Server;
 
-    public function defaultServer(): Server;
+    public function defaultServer(): ?Server;
 }
