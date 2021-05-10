@@ -34,8 +34,8 @@ class ReleasesPruneCommand extends Command
 
         $index = collect($release->available())->search($release->active());
 
-        if ($index +1 > $this->option('retain')) {
-            $this->releaseManager->prune((int)$this->option('retain'), function ($release) {
+        if ($index + 1 > $this->option('retain')) {
+            $this->releaseManager->prune((int) $this->option('retain'), function ($release) {
                 $this->output->writeln('Pruned <comment>'.$release.'</comment>');
             });
         }

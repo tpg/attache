@@ -25,13 +25,15 @@ class Release
     protected function getDataParts(string $data): array
     {
         preg_match('/(?:ATTACHE\-SCRIPT)\n(.+)?\n(?:ATTACHE\-SCRIPT)/ms', $data, $matches);
+
         return explode('ATTACHE-DELIM', Arr::get($matches, 1));
     }
 
     protected function getAvailableReleases(string $data): array
     {
         $available = explode("\n", $data);
-        return array_filter($available, static fn ($release) => !empty($release));
+
+        return array_filter($available, static fn ($release) => ! empty($release));
     }
 
     protected function getActiveRelease(string $data): string
