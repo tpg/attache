@@ -29,7 +29,7 @@ class Assets extends Step
     protected function utility(): string
     {
         return match ($this->server->settings('copyUtility')) {
-            self::UTILITY_SCP => 'scp -P '.$this->server->port().' -r ',
+            self::UTILITY_SCP => 'scp -v -P '.$this->server->port().' -r ',
             self::UTILITY_RSYNC => 'rsync -r -v -p -e "ssh -p '.$this->server->port().'" ',
         };
     }
