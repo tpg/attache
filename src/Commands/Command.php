@@ -84,7 +84,7 @@ abstract class Command extends SymfonyCommand
                 ? $this->configurationProvider->server($input->getArgument('server'))
                 : $this->configurationProvider->defaultServer();
 
-            if (!$this->server) {
+            if (! $this->server) {
                 throw new ConfigurationException('A server is required, but none was specified');
             }
         }

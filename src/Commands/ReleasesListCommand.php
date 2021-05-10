@@ -48,9 +48,9 @@ class ReleasesListCommand extends Command
             'ID',
             'Release Date',
         ])->setRows(
-            collect($release->available())->map(fn($available) => [
+            collect($release->available())->map(fn ($available) => [
                 $this->releaseId($available, $release->active()),
-                Carbon::createFromFormat('YmdHis', $available)->format('d F Y H:i:s')
+                Carbon::createFromFormat('YmdHis', $available)->format('d F Y H:i:s'),
             ])->toArray()
         );
 
@@ -70,7 +70,7 @@ class ReleasesListCommand extends Command
             $releaseId === $active ? [
                 'style' => new TableCellStyle([
                     'bg' => 'green',
-                ])
+                ]),
             ] : []
         );
     }

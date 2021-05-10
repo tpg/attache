@@ -52,7 +52,7 @@ class ReleaseManager implements ReleaseManagerInterface
         }
 
         $task = $this->getTask([
-            'ln -nfs '.$this->server->path('releases').'/'.$releaseId.' '.$this->server->path('serve')
+            'ln -nfs '.$this->server->path('releases').'/'.$releaseId.' '.$this->server->path('serve'),
         ]);
 
         $this->runTask($task);
@@ -74,7 +74,7 @@ class ReleaseManager implements ReleaseManagerInterface
             $id = $release->available()[$i];
 
             $task = $this->getTask([
-                $command.$id
+                $command.$id,
             ]);
             $this->runTask($task, function ($output) use ($closure, $id) {
                 if ($closure) {
