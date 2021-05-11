@@ -78,7 +78,7 @@ class InitCommand extends Command
             $this->output->writeln('<comment>An Attaché v1 config file exists in this directory</comment>');
             $question = new Question('Would you like to upgrade it? (Y/n): ', 'Y');
 
-            if (!$helper->ask($this->input, $this->output, $question)) {
+            if (! $helper->ask($this->input, $this->output, $question)) {
                 return 0;
             }
 
