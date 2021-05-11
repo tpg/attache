@@ -12,13 +12,31 @@ declare(strict_types=1);
 namespace TPG\Attache\Commands;
 
 use Illuminate\Support\Arr;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
+use Symfony\Component\Console\Question\Question;
+use TPG\Attache\Contracts\UpgraderInterface;
+use TPG\Attache\Upgrader;
 
 class InitCommand extends Command
 {
     protected string $name = 'init';
     protected string $description = 'Initialize the current directory with a new config file.';
+    protected UpgraderInterface $upgrader;
+
+    protected function initialize(InputInterface $input, OutputInterface $output): void
+    {
+        parent::initialize($input, $output);
+
+        $this->setUpgrader(new Upgrader($this->filesystem));
+    }
+
+    protected function setUpgrader(UpgraderInterface $upgrader): void
+    {
+        $this->upgrader = $upgrader;
+    }
 
     protected function configure(): void
     {
@@ -34,10 +52,41 @@ class InitCommand extends Command
 
     protected function fire(): int
     {
+        if ($this->filesystem->fileExists($this->option('config'))) {
+            return $this->checkForOldConfig();
+        }
+
         $remote = $this->getGitRemote();
         $config = $this->initializer->config($remote);
 
         $this->initializer->create($config, $this->option('config'));
+
+        return 0;
+    }
+
+    protected function checkForOldConfig(): int
+    {
+        $config = json_decode(
+            $this->filesystem->read($this->option('config')),
+            true,
+            512,
+            JSON_THROW_ON_ERROR
+        );
+
+        if (Arr::get($config, 'repository') !== null) {
+            $helper = $this->getHelper('question');
+            $this->output->writeln('<comment>An Attaché v1 config file exists in this directory</comment>');
+            $question = new Question('Would you like to upgrade it? (Y/n): ', 'Y');
+
+            if (!$helper->ask($this->input, $this->output, $question)) {
+                return 0;
+            }
+
+            $upgrade = $this->upgrader->upgrade($config);
+
+            $this->filesystem->move($this->option('config'), $this->option('config').'-old');
+            $this->initializer->create($upgrade, $this->option('config'));
+        }
 
         return 0;
     }

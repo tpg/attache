@@ -53,4 +53,44 @@ class InitCommandTest extends TestCase
 
         $commandTester->execute([]);
     }
+
+    /**
+     * @test
+     **/
+    public function it_will_offer_to_upgrade_if_a_version_1_script_exists(): void
+    {
+        $this->filesystem->write('.attache.json', json_encode([
+            'repository' => 'git@repo.test',
+            'servers' => [
+                'production' => [
+                    'host' => 'server.test',
+                    'port' => 22,
+                    'user' => 'user',
+                    'root' => '/root/to/application',
+                    'paths' => [
+                        'serve' => 'serve',
+                    ],
+                    'php' => [
+                        'bin' => 'php80',
+                    ],
+                    'composer' => [
+                        'bin' => 'composer',
+                        'local' => true,
+                    ],
+                    'scripts' => [
+                        'before-buid' => [
+                            'php ./artisan cache:clear',
+                        ]
+                    ],
+                    'branch' => 'develop',
+                    'migrate' => false,
+                ],
+            ]
+        ], JSON_THROW_ON_ERROR));
+
+        $command = new InitCommand($this->filesystem);
+        $commandTester = new CommandTester($command);
+        
+        $commandTester->execute([]);
+    }
 }
