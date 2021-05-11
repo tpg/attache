@@ -28,14 +28,13 @@ class Upgrader implements UpgraderInterface
             'git' => [
                 'repository' => Arr::get($old, 'repository'),
                 'depth' => 1,
-            ]
+            ],
         ], Arr::get($old, 'common', []));
     }
 
     protected function upgradeServers(array $old): array
     {
         return array_map(function ($serverConfig) {
-
             $server = Arr::except($serverConfig, ['composer', 'scripts', 'branch', 'migrate']);
 
             $server['git'] = [
@@ -44,7 +43,6 @@ class Upgrader implements UpgraderInterface
             $server['steps'] = $this->upgradeSteps(Arr::get($serverConfig, 'scripts'));
 
             return $server;
-
         }, Arr::get($old, 'servers'));
     }
 

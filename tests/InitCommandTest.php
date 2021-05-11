@@ -80,17 +80,17 @@ class InitCommandTest extends TestCase
                     'scripts' => [
                         'before-buid' => [
                             'php ./artisan cache:clear',
-                        ]
+                        ],
                     ],
                     'branch' => 'develop',
                     'migrate' => false,
                 ],
-            ]
+            ],
         ], JSON_THROW_ON_ERROR));
 
         $command = new InitCommand($this->filesystem);
         $commandTester = new CommandTester($command);
-        
+
         $commandTester->execute([]);
     }
 }
