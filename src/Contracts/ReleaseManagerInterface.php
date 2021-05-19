@@ -13,7 +13,7 @@ interface ReleaseManagerInterface
 
     public function fetch(): Release;
 
-    public function activate(string $releaseId): string;
+    public function activate(?string $releaseId = null): string;
 
     public function prune(int $retain = 2, ?Closure $closure = null): void;
 }

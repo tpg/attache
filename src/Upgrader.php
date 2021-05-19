@@ -66,6 +66,7 @@ class Upgrader implements UpgraderInterface
                 // Live
                 'before-live', 'before-symlinks' => 'live.before',
                 'after-live', 'after-symlinks' => 'live.after',
+                default => null,
             };
 
             Arr::set($steps, $key, array_merge(Arr::get($steps, $key, []), $scripts));

@@ -89,8 +89,13 @@ class InitCommandTest extends TestCase
         ], JSON_THROW_ON_ERROR));
 
         $command = new InitCommand($this->filesystem);
+        $application = new Application();
+        $application->add($command);
+
         $commandTester = new CommandTester($command);
 
         $commandTester->execute([]);
+        self::assertStringContainsString('Would you like to upgrade it?', $commandTester->getDisplay());
+
     }
 }

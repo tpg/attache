@@ -66,7 +66,7 @@ class ConfigurationProviderTest extends TestCase
 
         Arr::set($config, 'servers.staging', [
             'host' => 'another.test',
-            'user' => 'someone',
+            'username' => 'someone',
             'port' => 22,
             'root' => '/path/to/test',
         ]);

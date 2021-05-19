@@ -14,7 +14,7 @@ class Server implements ServerInterface
     protected array $connection = [
         'host' => null,
         'port' => 22,
-        'user' => null,
+        'username' => null,
         'root' => null,
     ];
     protected array $git = [
@@ -172,7 +172,7 @@ class Server implements ServerInterface
 
     public function username(): string
     {
-        return Arr::get($this->connection, 'user');
+        return Arr::get($this->connection, 'username');
     }
 
     public function host(): string

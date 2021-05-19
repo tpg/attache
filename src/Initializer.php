@@ -74,7 +74,7 @@ class Initializer implements InitializerInterface
         return [
             'host' => 'example.test',
             'port' => 22,
-            'user' => 'user',
+            'username' => 'user',
             'root' => '/path/to/application',
             'git' => [
                 'branch' => 'develop',

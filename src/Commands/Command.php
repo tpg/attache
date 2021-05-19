@@ -92,17 +92,23 @@ abstract class Command extends SymfonyCommand
 
     public function setInitializer(InitializerInterface $initializer): void
     {
-        $this->initializer = $initializer;
+        if (! $this->initializer) {
+            $this->initializer = $initializer;
+        }
     }
 
     public function setConfigurationProvider(ConfigurationProviderInterface $configurationProvider): void
     {
-        $this->configurationProvider = $configurationProvider;
+        if (! $this->configurationProvider) {
+            $this->configurationProvider = $configurationProvider;
+        }
     }
 
     public function setReleaseManager(ReleaseManagerInterface $releaseManager): void
     {
-        $this->releaseManager = $releaseManager;
+        if (! $this->releaseManager) {
+            $this->releaseManager = $releaseManager;
+        }
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
