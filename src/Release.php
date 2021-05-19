@@ -25,6 +25,7 @@ class Release
     protected function getDataParts(string $data): array
     {
         preg_match('/(?:ATTACHE\-SCRIPT)\n(.+)?\n(?:ATTACHE\-SCRIPT)/ms', $data, $matches);
+
         return explode('ATTACHE-DELIM', Arr::get($matches, 1));
     }
 
