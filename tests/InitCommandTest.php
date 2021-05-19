@@ -96,6 +96,5 @@ class InitCommandTest extends TestCase
 
         $commandTester->execute([]);
         self::assertStringContainsString('Would you like to upgrade it?', $commandTester->getDisplay());
-
     }
 }
