@@ -124,7 +124,7 @@ class Initializer implements InitializerInterface
                     ],
                     'after' => [
                         '@artisan cache:clear',
-                    ]
+                    ],
                 ],
             ],
             'branch' => 'master',
