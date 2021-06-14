@@ -31,7 +31,6 @@ class Deployer implements DeployerInterface
         ];
 
         foreach ($steps as $step) {
-
             $instance = new $step($releaseId, $this->filesystem, $this->server);
             $instance->run($callback);
         }
