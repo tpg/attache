@@ -7,6 +7,7 @@ namespace TPG\Attache\Steps;
 class Live extends Step
 {
     protected string $target = self::TARGET_REMOTE;
+    protected string $key = 'live';
 
     protected function commands(): array
     {

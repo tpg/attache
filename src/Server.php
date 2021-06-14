@@ -39,6 +39,7 @@ class Server implements ServerInterface
     protected array $settings = [
         'copyUtility' => 'scp',
     ];
+    protected array $scripts = [];
 
     public function __construct(string $name, array $config)
     {
@@ -49,6 +50,7 @@ class Server implements ServerInterface
         $this->setPaths(Arr::get($config, 'paths', []));
         $this->setPhp(Arr::get($config, 'php', []));
         $this->setAssets(Arr::get($config, 'assets', []));
+        $this->setScripts(Arr::get($config, 'steps', []));
     }
 
     protected function updateSettings(array $settings): self
@@ -116,9 +118,26 @@ class Server implements ServerInterface
         return $this;
     }
 
+    public function setScripts(array $scripts): self
+    {
+        $this->scripts = array_merge_recursive($this->scripts, $scripts);
+
+        return $this;
+    }
+
     public function assets(): array
     {
         return $this->assets;
+    }
+
+    public function step(string $step): array
+    {
+        return Arr::get($this->scripts, $step, []);
+    }
+
+    public function scripts(string $step, string $subStep): array
+    {
+        return Arr::get($this->step($step), $subStep, []);
     }
 
     public function name(): string

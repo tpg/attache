@@ -7,6 +7,7 @@ namespace TPG\Attache;
 use Closure;
 use League\Flysystem\Filesystem;
 use TPG\Attache\Contracts\DeployerInterface;
+use TPG\Attache\Contracts\ServerInterface;
 use TPG\Attache\Steps\Assets;
 use TPG\Attache\Steps\Build;
 use TPG\Attache\Steps\Dependencies;
@@ -15,7 +16,7 @@ use TPG\Attache\Steps\Live;
 
 class Deployer implements DeployerInterface
 {
-    public function __construct(protected Filesystem $filesystem, protected Server $server)
+    public function __construct(protected Filesystem $filesystem, protected ServerInterface $server)
     {
     }
 
@@ -30,6 +31,7 @@ class Deployer implements DeployerInterface
         ];
 
         foreach ($steps as $step) {
+
             $instance = new $step($releaseId, $this->filesystem, $this->server);
             $instance->run($callback);
         }

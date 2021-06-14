@@ -30,4 +30,6 @@ if (file_exists(__DIR__.'/../vendor/autoload.php')) {
  */
 $app = (new Application())->boot();
 
+// Once we have a booted console application, we can run it.
+// Standard Symfony stuff here...
 $app->run();

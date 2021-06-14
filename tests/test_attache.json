@@ -26,13 +26,26 @@
             },
             "steps": {
                 "build": {
+                    "enabled": true,
                     "before": [
                         "@artisan ziggy:generate"
                     ]
                 },
-                "install": {},
-                "dependencies": {},
-                "assets": {},
+                "install": {
+                    "enabled": true,
+                    "before": [],
+                    "after": []
+                },
+                "dependencies": {
+                    "enabled": true,
+                    "before": [],
+                    "after": []
+                },
+                "assets": {
+                    "enabled": true,
+                    "before": [],
+                    "after": []
+                },
                 "live": {
                     "after": [
                         "@artisan cache:clear",

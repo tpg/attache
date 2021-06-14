@@ -20,7 +20,13 @@ interface ServerInterface
 
     public function setAssets(array $assets): self;
 
+    public function setScripts(array $scripts): self;
+
     public function assets(): array;
+
+    public function step(string $step): array;
+
+    public function scripts(string $step, string $subStep): array;
 
     public function name(): string;
 

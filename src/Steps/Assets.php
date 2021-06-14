@@ -10,6 +10,7 @@ class Assets extends Step
     protected const UTILITY_RSYNC = 'rsync';
 
     protected string $target = self::TARGET_LOCAL;
+    protected string $key = 'assets';
 
     protected function commands(): array
     {

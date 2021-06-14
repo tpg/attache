@@ -18,6 +18,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\Question;
 use TPG\Attache\Contracts\UpgraderInterface;
+use TPG\Attache\Initializer;
 use TPG\Attache\Upgrader;
 
 class InitCommand extends Command
@@ -28,6 +29,8 @@ class InitCommand extends Command
 
     protected function initialize(InputInterface $input, OutputInterface $output): void
     {
+        $this->setInitializer(new Initializer($this->filesystem));
+
         parent::initialize($input, $output);
 
         $this->setUpgrader(new Upgrader($this->filesystem));
@@ -41,8 +44,9 @@ class InitCommand extends Command
     protected function configure(): void
     {
         parent::configure();
+
         $this->addOption(
-            '--config',
+            'config',
             'c',
             InputOption::VALUE_REQUIRED,
             'The name of the configuration file to write',
@@ -85,6 +89,7 @@ class InitCommand extends Command
             $upgrade = $this->upgrader->upgrade($config);
 
             $this->filesystem->move($this->option('config'), $this->option('config').'-old');
+
             $this->initializer->create($upgrade, $this->option('config'));
         }
 

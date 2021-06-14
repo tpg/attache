@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace TPG\Attache\Steps;
 
 use Closure;
+use Illuminate\Support\Arr;
 use Laravel\Envoy\SSH;
 use Laravel\Envoy\Task;
 use League\Flysystem\Filesystem;
 use Symfony\Component\Console\Output\OutputInterface;
+use TPG\Attache\Compiler;
 use TPG\Attache\Server;
 
 abstract class Step
@@ -20,6 +22,7 @@ abstract class Step
 
     protected OutputInterface $output;
     protected string $target = self::TARGET_LOCAL;
+    protected string $key = '';
 
     public function __construct(
         protected string $releaseId,
@@ -30,27 +33,35 @@ abstract class Step
 
     public function run(Closure $callback): void
     {
-        $this->before($callback);
+        if (! $this->enabled()) {
+            return;
+        }
+
+        $this->before();
 
         $ssh = new SSH();
         $ssh->run($this->task(), function ($type, $host, $output) use ($callback) {
             $callback($type, $host, $output, $this->message());
         });
 
-        $this->after($callback);
+        $this->after();
     }
 
-    protected function before(Closure $callback): void
+    protected function enabled(): bool
     {
-        //
-    }
-
-    protected function after(Closure $callback): void
-    {
+        return Arr::get($this->server->step($this->key), 'enabled', true);
     }
 
     protected function task(): Task
     {
+        $compiler = new Compiler($this->server, $this->releaseId);
+
+        $commands = [
+            ...$compiler->getCompiledScripts($this->key, 'before'),
+            ...$this->commands(),
+            ...$compiler->getCompiledScripts($this->key, 'after'),
+        ];
+
         return new Task(
             [
                 $this->target === self::TARGET_REMOTE && $this->server
@@ -58,8 +69,18 @@ abstract class Step
                     : '127.0.0.1',
             ],
             '',
-            implode(PHP_EOL, $this->commands())
+            implode(PHP_EOL, $commands)
         );
+    }
+
+    protected function before(): void
+    {
+        //
+    }
+
+    protected function after(): void
+    {
+        //
     }
 
     protected function releasePath(): string

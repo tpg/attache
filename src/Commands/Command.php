@@ -15,7 +15,6 @@ use TPG\Attache\Contracts\ConfigurationProviderInterface;
 use TPG\Attache\Contracts\InitializerInterface;
 use TPG\Attache\Contracts\ReleaseManagerInterface;
 use TPG\Attache\Exceptions\ConfigurationException;
-use TPG\Attache\Initializer;
 use TPG\Attache\Server;
 
 abstract class Command extends SymfonyCommand
@@ -37,6 +36,7 @@ abstract class Command extends SymfonyCommand
     public function __construct(Filesystem $filesystem)
     {
         parent::__construct();
+
         $this->setFilesystem($filesystem);
     }
 
@@ -71,8 +71,6 @@ abstract class Command extends SymfonyCommand
 
     protected function initialize(InputInterface $input, OutputInterface $output): void
     {
-        $this->setInitializer(new Initializer($this->filesystem));
-
         if ($this->requireConfig) {
             $this->setConfigurationProvider(
                 new ConfigurationProvider($this->filesystem, $input->getOption('config'))

@@ -29,7 +29,13 @@ class DeployCommand extends Command
     protected function configure(): void
     {
         parent::configure();
-        $this->addOption('prune', 'p', InputOption::VALUE_OPTIONAL, 'Prune old releases once deployment is complete', 2);
+        $this->addOption(
+            'prune',
+            'p',
+            InputOption::VALUE_OPTIONAL,
+            'Prune old releases once deployment is complete',
+            2
+        );
     }
 
     protected function initialize(InputInterface $input, OutputInterface $output): void

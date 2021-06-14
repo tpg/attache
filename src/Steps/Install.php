@@ -7,6 +7,7 @@ namespace TPG\Attache\Steps;
 class Install extends Step
 {
     protected string $target = self::TARGET_REMOTE;
+    protected string $key = 'install';
 
     protected function commands(): array
     {

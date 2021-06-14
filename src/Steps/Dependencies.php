@@ -7,6 +7,7 @@ namespace TPG\Attache\Steps;
 class Dependencies extends Step
 {
     protected string $target = self::TARGET_REMOTE;
+    protected string $key = 'dependencies';
 
     protected function commands(): array
     {

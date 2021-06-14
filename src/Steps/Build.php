@@ -4,16 +4,18 @@ declare(strict_types=1);
 
 namespace TPG\Attache\Steps;
 
-use Closure;
 use Illuminate\Support\Str;
 use League\Flysystem\StorageAttributes;
 
 class Build extends Step
 {
     protected string $target = self::TARGET_LOCAL;
+    protected string $key = 'build';
 
-    protected function before(Closure $callback): void
+    protected function before(): void
     {
+        parent::before();
+
         $this->clone();
     }
 

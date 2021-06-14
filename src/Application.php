@@ -34,9 +34,6 @@ class Application
 
     private Filesystem $filesystem;
 
-    /**
-     * Application constructor.
-     */
     public function __construct()
     {
         $this->consoleApplication = new ConsoleApplication($this->name, $this->version);

@@ -90,12 +90,41 @@ class Initializer implements InitializerInterface
             ],
             'steps' => [
                 'build' => [
+                    'enabled' => true,
                     'before' => [
-                        'echo "before build"',
+                        'echo "Starting build..."',
                     ],
+                    'after' => [],
+                ],
+                'install' => [
+                    'enabled' => true,
+                    'before' => [
+                        'echo "Installing application..."',
+                    ],
+                    'after' => [],
+                ],
+                'dependencies' => [
+                    'enabled' => true,
+                    'before' => [
+                        'echo "Installing dependencies..."',
+                    ],
+                    'after' => [],
+                ],
+                'assets' => [
+                    'enabled' => true,
+                    'before' => [
+                        'echo "Copying compiled assets..."',
+                    ],
+                    'after' => [],
                 ],
                 'live' => [
-                    '@artisan cache:clear',
+                    'enabled' => true,
+                    'before' => [
+                        'echo "Going live..."',
+                    ],
+                    'after' => [
+                        '@artisan cache:clear',
+                    ]
                 ],
             ],
             'branch' => 'master',
