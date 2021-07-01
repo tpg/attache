@@ -425,9 +425,16 @@ class Deployer
      */
     protected function executeTaskOnServer(Task $task): void
     {
+        $line = null;
         $code = (new Ssh($task))->tty()->run(function ($task, $output) {
             $this->getOutput()->writeln($output);
+            $line = $output;
+
         }, self::PROCESS_TIMEOUT);
+
+        if (Str::startsWith($line, 'Warning: Permanently added ')) {
+            return;
+        }
 
         if ($code !== 0) {
             $this->failProcess();

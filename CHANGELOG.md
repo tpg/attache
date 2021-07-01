@@ -1,8 +1,12 @@
 # Changelog
 
+## [unreleased]
+### Changed
+* Attache will no longer halt when a new SSH key has been added.
+
 ## [0.7.1] 24-08-2020
 ### Changed
-The timeout for all process has been substantially increased to 3600 seconds to cater for long running deployments. 
+* The timeout for all process has been substantially increased to 3600 seconds to cater for long running deployments. 
 
 ## [0.7.0] 12-08-2020
 ### Changed
