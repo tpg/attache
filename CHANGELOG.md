@@ -1,6 +1,6 @@
 # Changelog
 
-## [unreleased]
+## [0.7.7] 01-07-2021
 ### Changed
 * Attache will no longer halt when a new SSH key has been added.
 
