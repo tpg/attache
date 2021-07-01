@@ -37,11 +37,6 @@
             "TPG\\Attache\\Tests\\": "tests/"
         }
     },
-    "extra": {
-        "branch-alias": {
-            "2.0.x-dev": "next"
-        }
-    },
     "config": {
         "sort-packages": true
     },
