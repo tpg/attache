@@ -36,6 +36,12 @@ class DeployCommand extends Command
             'Prune old releases once deployment is complete',
             2
         );
+        $this->addOption(
+            'quiet',
+            'q',
+            InputOption::VALUE_NONE,
+            'Don\'t output anything.'
+        );
     }
 
     protected function initialize(InputInterface $input, OutputInterface $output): void
@@ -56,7 +62,9 @@ class DeployCommand extends Command
     {
         $releaseId = date('YmdHis');
 
-        $progressBar = $this->initProgressBar();
+        if (! $this->option('quiet')) {
+            $progressBar = $this->initProgressBar();
+        }
 
         $this->deployer->deploy($releaseId, function ($type, $host, $output, $status) use ($progressBar) {
             if ($progressBar) {
