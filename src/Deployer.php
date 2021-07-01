@@ -432,10 +432,6 @@ class Deployer
 
         }, self::PROCESS_TIMEOUT);
 
-        if (Str::startsWith($line, 'Warning: Permanently added ')) {
-            return;
-        }
-
         if ($code !== 0) {
             $this->failProcess();
         }

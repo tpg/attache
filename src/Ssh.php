@@ -2,6 +2,7 @@
 
 namespace TPG\Attache;
 
+use Illuminate\Support\Str;
 use Symfony\Component\Process\Process;
 use TPG\Attache\Exceptions\ProcessException;
 
@@ -62,6 +63,10 @@ class Ssh
 
         $process->run(function ($type, $data) use ($callback) {
             if ($type === Process::ERR) {
+                if (Str::startsWith($data, 'Warning: Permanently added ')) {
+                    return;
+                }
+
                 throw new ProcessException($data);
             }
 
