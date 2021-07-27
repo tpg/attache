@@ -31,11 +31,9 @@ class Server implements ServerInterface
     protected array $php = [
         'bin' => 'php',
     ];
-    protected array $assets = [
-        'public/js' => 'public',
-        'public/css' => 'public',
-        'public/mix-manifest.json' => 'public',
-    ];
+
+    protected array $assets = [];
+
     protected array $settings = [
         'copyUtility' => 'scp',
     ];
@@ -49,8 +47,7 @@ class Server implements ServerInterface
         $this->setGit(Arr::get($config, 'git', []));
         $this->setPaths(Arr::get($config, 'paths', []));
         $this->setPhp(Arr::get($config, 'php', []));
-        $this->setAssets(Arr::get($config, 'assets', []));
-        $this->setScripts(Arr::get($config, 'steps', []));
+        $this->setSteps(Arr::get($config, 'steps', []));
     }
 
     protected function updateSettings(array $settings): self
@@ -118,7 +115,7 @@ class Server implements ServerInterface
         return $this;
     }
 
-    public function setScripts(array $scripts): self
+    public function setSteps(array $scripts): self
     {
         $this->scripts = array_merge_recursive($this->scripts, $scripts);
 

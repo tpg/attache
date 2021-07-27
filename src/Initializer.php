@@ -88,6 +88,10 @@ class Initializer implements InitializerInterface
             'php' => [
                 'bin' => 'php',
             ],
+            'assets' => [
+                'public/js/*' => 'public/js',
+                'public/css/*' => 'public/css',
+            ],
             'steps' => [
                 'build' => [
                     'enabled' => true,

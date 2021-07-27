@@ -40,6 +40,12 @@ class Upgrader implements UpgraderInterface
             $server['git'] = [
                 'branch' => Arr::get($serverConfig, 'branch', 'master'),
             ];
+
+            $server['assets'] = array_merge([
+                'public/css/*' => 'public/css',
+                'public/js/*' => 'public/js',
+            ], Arr::get($serverConfig, 'assets', []));
+
             $server['steps'] = $this->upgradeSteps(Arr::get($serverConfig, 'scripts'));
 
             return $server;
