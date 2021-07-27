@@ -19,7 +19,7 @@ class Application
 {
     protected string $name = 'Attaché 2';
 
-    protected string $version = '0.0.1';
+    protected string $version = '0.1.0';
 
     protected array $commands = [
         InitCommand::class,
