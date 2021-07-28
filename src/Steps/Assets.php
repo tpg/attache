@@ -19,7 +19,6 @@ class Assets extends Step
 
     protected function copy(string $localAsset, string $remoteAsset): string
     {
-        $localAsset = self::BUILD_FOLDER.'/'.$localAsset;
         $remoteAsset = $this->server->username()
             .'@'.$this->server->host()
             .':'.$this->releasePath().'/'.$remoteAsset;

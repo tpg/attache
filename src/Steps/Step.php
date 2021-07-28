@@ -18,8 +18,6 @@ abstract class Step
     protected const TARGET_REMOTE = 'remote';
     protected const TARGET_LOCAL = 'local';
 
-    protected const BUILD_FOLDER = '.attache-build';
-
     protected OutputInterface $output;
     protected string $target = self::TARGET_LOCAL;
     protected string $key = '';
