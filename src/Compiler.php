@@ -15,12 +15,12 @@ class Compiler implements CompilerInterface
         //
     }
 
-    public function getCompiledScripts(string $step, string $subStep): ?array
+    public function getCompiledScripts(string $step, string $subStep): array
     {
         $lines = $this->server->scripts($step, $subStep);
 
         if (count($lines) === 0) {
-            return null;
+            return [];
         }
 
         return $this->compile($lines);

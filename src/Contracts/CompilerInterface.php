@@ -6,5 +6,5 @@ namespace TPG\Attache\Contracts;
 
 interface CompilerInterface
 {
-    public function getCompiledScripts(string $step, string $subStep): ?array;
+    public function getCompiledScripts(string $step, string $subStep): array;
 }
