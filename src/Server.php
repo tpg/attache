@@ -224,7 +224,7 @@ class Server
             $bin = $this->root().'/'.$bin;
         }
 
-        return $this->phpBin().' '.$bin;
+        return $bin;
     }
 
     /**
