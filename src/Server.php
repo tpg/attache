@@ -221,10 +221,10 @@ class Server
     {
         $bin = Arr::get($this->config, 'composer.bin');
         if (Arr::get($this->config, 'composer.local', false)) {
-            $bin = $this->phpBin().' '.$this->root().'/'.$bin;
+            $bin = $this->root().'/'.$bin;
         }
 
-        return $bin;
+        return $this->phpBin().' '.$bin;
     }
 
     /**
