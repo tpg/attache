@@ -24,7 +24,7 @@ class ReleaseService
     protected ?string $active = null;
 
     /**
-     * @param Server $server
+     * @param  Server  $server
      */
     public function __construct(Server $server)
     {
@@ -35,6 +35,7 @@ class ReleaseService
      * Fetch release data from the server.
      *
      * @return $this
+     *
      * @throws ServerException
      */
     public function fetch(): self
@@ -108,7 +109,7 @@ class ReleaseService
     /**
      * Validate that the output matches the correct format.
      *
-     * @param string $output
+     * @param  string  $output
      * @return bool
      */
     protected function validateOutput(string $output): bool
@@ -139,7 +140,7 @@ class ReleaseService
     /**
      * Check if a release exists.
      *
-     * @param string $id
+     * @param  string  $id
      * @return bool
      */
     public function exists(string $id): bool
@@ -150,7 +151,7 @@ class ReleaseService
     /**
      * Activate the specified release ID.
      *
-     * @param string $id
+     * @param  string  $id
      */
     public function activate(string $id): void
     {
@@ -169,7 +170,7 @@ class ReleaseService
     /**
      * Delete the specified release IDs.
      *
-     * @param array $ids
+     * @param  array  $ids
      */
     public function delete(array $ids): void
     {

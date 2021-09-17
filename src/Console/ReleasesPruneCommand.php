@@ -50,7 +50,7 @@ class ReleasesPruneCommand extends Command
     /**
      * This is a destructive command, so get user validation.
      *
-     * @param array $pruneIds
+     * @param  array  $pruneIds
      */
     protected function validate(array $pruneIds): void
     {
@@ -73,8 +73,8 @@ class ReleasesPruneCommand extends Command
     /**
      * Get an array of release IDs to remove from the server.
      *
-     * @param array $releases
-     * @param int|null $count
+     * @param  array  $releases
+     * @param  int|null  $count
      * @return array
      */
     protected function getIdsToDelete(array $releases, ?int $count = null): array
@@ -89,8 +89,8 @@ class ReleasesPruneCommand extends Command
     /**
      * Confirm the deletion with the user.
      *
-     * @param Server $server
-     * @param array $ids
+     * @param  Server  $server
+     * @param  array  $ids
      * @return bool
      */
     protected function confirmDeletion(Server $server, array $ids): bool

@@ -37,6 +37,7 @@ class InstallCommand extends Command
      * Run the server installation.
      *
      * @return int
+     *
      * @throws ProcessException
      */
     protected function fire(): int
@@ -66,7 +67,7 @@ class InstallCommand extends Command
     /**
      * Get the contents of the specified .env file or the default .env.example file.
      *
-     * @param string|null $filename
+     * @param  string|null  $filename
      * @return false|string
      */
     protected function getEnv(?string $filename = null)
@@ -88,7 +89,7 @@ class InstallCommand extends Command
     }
 
     /**
-     * @param string $env
+     * @param  string  $env
      * @return string
      */
     protected function updateEnv(string $env): string

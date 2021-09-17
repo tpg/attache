@@ -19,7 +19,8 @@ class ScriptCompiler
 
     /**
      * ScriptCompiler constructor.
-     * @param Server $server
+     *
+     * @param  Server  $server
      */
     public function __construct(Server $server)
     {
