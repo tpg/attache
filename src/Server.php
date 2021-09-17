@@ -219,9 +219,9 @@ class Server
      */
     public function composerBin(): string
     {
-        $bin = Arr::get($this->config, 'composer.bin');
+        $bin = $this->phpBin().' '.Arr::get($this->config, 'composer.bin');
         if (Arr::get($this->config, 'composer.local', false)) {
-            $bin = $this->root().'/'.$bin;
+            $bin = $this->phpBin().' '.$this->root().'/'.$bin;
         }
 
         return $bin;
