@@ -25,7 +25,8 @@ class ConfigurationProvider
     protected ?string $default = null;
 
     /**
-     * @param string $filename
+     * @param  string  $filename
+     *
      * @throws FileNotFoundException
      * @throws \JsonException
      */
@@ -39,7 +40,8 @@ class ConfigurationProvider
     /**
      * Load the configuration file.
      *
-     * @param string $filename
+     * @param  string  $filename
+     *
      * @throws FileNotFoundException
      * @throws \JsonException
      */
@@ -55,7 +57,8 @@ class ConfigurationProvider
     /**
      * Set the configuration.
      *
-     * @param string|array $config
+     * @param  string|array  $config
+     *
      * @throws ConfigurationException|\JsonException
      */
     public function setConfig($config): void
@@ -82,8 +85,8 @@ class ConfigurationProvider
     /**
      * Load the servers from the current configuration.
      *
-     * @param array $servers
-     * @param array $common
+     * @param  array  $servers
+     * @param  array  $common
      */
     protected function loadServers(array $servers, array $common): void
     {
@@ -100,8 +103,10 @@ class ConfigurationProvider
     /**
      * Validate the provided server configuration.
      *
-     * @param array $config
+     * @param  array  $config
+     *
      * @throws ConfigurationException
+     *
      * @todo Better validation is required here. We'll need to validate the values as well and not just that the key exists.
      */
     protected function validateServer(array $config): void
@@ -143,8 +148,9 @@ class ConfigurationProvider
     /**
      * Get a single Server by its name.
      *
-     * @param string|null $key
+     * @param  string|null  $key
      * @return Server
+     *
      * @throws ConfigurationException
      */
     public function server(?string $key = null): Server

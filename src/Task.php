@@ -19,8 +19,8 @@ class Task
     protected ?Server $server;
 
     /**
-     * @param Server $server
-     * @param string $script
+     * @param  Server  $server
+     * @param  string  $script
      */
     public function __construct(string $script, Server $server = null)
     {

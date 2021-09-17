@@ -14,7 +14,8 @@ class Initializer
     protected array $remotes = [];
 
     /**
-     * @param string|null $gitConfigFilename
+     * @param  string|null  $gitConfigFilename
+     *
      * @throws ConfigurationException
      */
     public function __construct(string $gitConfigFilename = null)
@@ -34,7 +35,8 @@ class Initializer
     /**
      * Load the Git config from a config file.
      *
-     * @param string $filename
+     * @param  string  $filename
+     *
      * @throws ConfigurationException
      */
     public function loadGitConfig(string $filename): void
@@ -49,8 +51,8 @@ class Initializer
     /**
      * Create a new configuration file.
      *
-     * @param string $filename
-     * @param string $gitUrl
+     * @param  string  $filename
+     * @param  string  $gitUrl
      */
     public function createConfig(string $filename, string $gitUrl = null): void
     {
@@ -71,7 +73,7 @@ class Initializer
     /**
      * Discover the configured Git remote URL.
      *
-     * @param string $gitConfig
+     * @param  string  $gitConfig
      */
     public function discoverGitRemotes(string $gitConfig): void
     {
@@ -80,7 +82,7 @@ class Initializer
     }
 
     /**
-     * @param array $ini
+     * @param  array  $ini
      * @return array
      */
     protected function getGitConfigKeys(array $ini): array
@@ -120,7 +122,7 @@ class Initializer
     /**
      * Get the named Git remote URL.
      *
-     * @param string $name
+     * @param  string  $name
      * @return string|null
      */
     public function remote(string $name = 'origin'): ?string
@@ -131,7 +133,7 @@ class Initializer
     /**
      * Get the default configuration.
      *
-     * @param string $remote
+     * @param  string  $remote
      * @return array
      */
     protected function getConfig(string $remote = null): array

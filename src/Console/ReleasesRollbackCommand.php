@@ -42,7 +42,7 @@ class ReleasesRollbackCommand extends Command
     /**
      * Get the release ID of the previous release.
      *
-     * @param ReleaseService $releaseService
+     * @param  ReleaseService  $releaseService
      * @return mixed|null
      */
     protected function getRollbackId(ReleaseService $releaseService)

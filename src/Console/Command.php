@@ -35,8 +35,8 @@ abstract class Command extends SymfonyCommand
     protected ?Server $server = null;
 
     /**
-     * @param string|null $name
-     * @param ConfigurationProvider|null $configurationProvider
+     * @param  string|null  $name
+     * @param  ConfigurationProvider|null  $configurationProvider
      */
     public function __construct(string $name = null, ?ConfigurationProvider $configurationProvider = null)
     {
@@ -50,7 +50,7 @@ abstract class Command extends SymfonyCommand
     /**
      * Set the instance of the ConfigurationProvider.
      *
-     * @param ConfigurationProvider $configurationProvider
+     * @param  ConfigurationProvider  $configurationProvider
      * @return $this
      */
     public function setConfigurationProvider(ConfigurationProvider $configurationProvider): self
@@ -92,9 +92,10 @@ abstract class Command extends SymfonyCommand
     /**
      * Execute the command.
      *
-     * @param InputInterface $input
-     * @param OutputInterface $output
+     * @param  InputInterface  $input
+     * @param  OutputInterface  $output
      * @return int
+     *
      * @throws ConfigurationException
      * @throws FileNotFoundException
      * @throws \JsonException
@@ -165,8 +166,9 @@ abstract class Command extends SymfonyCommand
     /**
      * Get the server from the configuration and set the Git branch.
      *
-     * @param string $serverString
+     * @param  string  $serverString
      * @return Server
+     *
      * @throws ConfigurationException
      */
     protected function getServer(string $serverString): Server
@@ -210,7 +212,7 @@ abstract class Command extends SymfonyCommand
     /**
      * Info styling.
      *
-     * @param string $message
+     * @param  string  $message
      * @return string
      */
     public function info(string $message): string
@@ -221,7 +223,7 @@ abstract class Command extends SymfonyCommand
     /**
      * Error styling.
      *
-     * @param string $message
+     * @param  string  $message
      * @return string
      */
     public function error(string $message): string

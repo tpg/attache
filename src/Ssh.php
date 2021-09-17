@@ -24,7 +24,7 @@ class Ssh
     protected const DELIMITER = 'ATTACHE-SCRIPT';
 
     /**
-     * @param Task $task
+     * @param  Task  $task
      */
     public function __construct(Task $task = null)
     {
@@ -41,8 +41,8 @@ class Ssh
     /**
      * Run the task.
      *
-     * @param \Closure|null $callback
-     * @param int $timeout
+     * @param  \Closure|null  $callback
+     * @param  int  $timeout
      * @return int
      */
     public function run(\Closure $callback = null, int $timeout = 60): int
@@ -93,7 +93,7 @@ class Ssh
     /**
      * Get a Process instance.
      *
-     * @param int $timeout
+     * @param  int  $timeout
      * @return Process
      */
     protected function getProcess(int $timeout = 60): Process

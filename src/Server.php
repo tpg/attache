@@ -37,8 +37,8 @@ class Server
     ];
 
     /**
-     * @param string $name
-     * @param array|null $config
+     * @param  string  $name
+     * @param  array|null  $config
      */
     public function __construct(string $name, array $config = null)
     {
@@ -59,7 +59,7 @@ class Server
     /**
      * Set the server config.
      *
-     * @param array $config
+     * @param  array  $config
      * @return $this
      */
     public function setConfig(array $config): self
@@ -72,7 +72,7 @@ class Server
     /**
      * Get the server config value by key or the config array.
      *
-     * @param null $key
+     * @param  null  $key
      * @return mixed
      */
     public function config($key = null)
@@ -123,7 +123,7 @@ class Server
     /**
      * Get the application root path.
      *
-     * @param bool $trailingSlash
+     * @param  bool  $trailingSlash
      * @return string
      */
     public function root(bool $trailingSlash = false): string
@@ -162,8 +162,8 @@ class Server
     /**
      * Get an application path by its key.
      *
-     * @param string $key
-     * @param bool $absolute
+     * @param  string  $key
+     * @param  bool  $absolute
      * @return ?string
      */
     public function path(string $key, bool $absolute = true): ?string
@@ -202,7 +202,7 @@ class Server
     /**
      * Get a composer configuration value.
      *
-     * @param null $key
+     * @param  null  $key
      * @return mixed
      */
     public function composer($key = null)
@@ -230,7 +230,7 @@ class Server
     /**
      * Get an asset target.
      *
-     * @param string|null $key
+     * @param  string|null  $key
      * @return mixed
      */
     public function assets(string $key = null)
@@ -243,9 +243,9 @@ class Server
     /**
      * Get a script hook value by its key.
      *
-     * @param string $key
-     * @param string|null $releaseId
-     * @param string|null $path
+     * @param  string  $key
+     * @param  string|null  $releaseId
+     * @param  string|null  $path
      * @return array
      */
     public function script(string $key, string $releaseId = null, string $path = null): array
@@ -259,6 +259,7 @@ class Server
      * Get the most recent release ID.
      *
      * @return string
+     *
      * @deprecated 0.6.2 No longer used to fetch the current release ID.
      */
     public function latestReleaseId(): string
