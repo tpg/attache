@@ -48,10 +48,10 @@ class Deployer
     protected bool $tty = false;
 
     /**
-     * @param ConfigurationProvider $config
-     * @param Server $server
-     * @param InputInterface $input
-     * @param OutputInterface $output
+     * @param  ConfigurationProvider  $config
+     * @param  Server  $server
+     * @param  InputInterface  $input
+     * @param  OutputInterface  $output
      */
     public function __construct(
         ConfigurationProvider $config,
@@ -68,7 +68,8 @@ class Deployer
     /**
      * Deploy a release.
      *
-     * @param string $releaseId
+     * @param  string  $releaseId
+     *
      * @throws ProcessException
      */
     public function deploy(string $releaseId): void
@@ -81,7 +82,7 @@ class Deployer
     /**
      * Get the tasks to execute.
      *
-     * @param string $releaseId
+     * @param  string  $releaseId
      * @return array
      */
     public function getTasks(string $releaseId): array
@@ -118,9 +119,9 @@ class Deployer
     /**
      * The deployment task.
      *
-     * @param string $releaseId
-     * @param bool $migrate
-     * @param bool $install
+     * @param  string  $releaseId
+     * @param  bool  $migrate
+     * @param  bool  $install
      * @return Task
      */
     protected function deploymentTask(string $releaseId, $migrate = false, $install = false): Task
@@ -162,7 +163,7 @@ class Deployer
     /**
      * Git clone steps.
      *
-     * @param string $releasePath
+     * @param  string  $releasePath
      * @return array
      */
     protected function cloneSteps(string $releasePath): array
@@ -178,7 +179,7 @@ class Deployer
     /**
      * Get a copy of composer.
      *
-     * @param string $releasePath
+     * @param  string  $releasePath
      * @return array
      */
     protected function getComposer(string $releasePath): array
@@ -204,7 +205,7 @@ class Deployer
     /**
      * Steps to place a new `.env` file.
      *
-     * @param string $releasePath
+     * @param  string  $releasePath
      * @return array
      */
     protected function envSteps(string $releasePath): array
@@ -226,8 +227,8 @@ class Deployer
     /**
      * Get the installation steps if needed.
      *
-     * @param bool $install
-     * @param string $releasePath
+     * @param  bool  $install
+     * @param  string  $releasePath
      * @return array
      */
     protected function installationSteps(bool $install, string $releasePath): array
@@ -245,7 +246,7 @@ class Deployer
     /**
      * The symbolic link steps.
      *
-     * @param string $releasePath
+     * @param  string  $releasePath
      * @return array
      */
     protected function symlinkSteps(string $releasePath): array
@@ -261,7 +262,7 @@ class Deployer
     /**
      * The composer install steps.
      *
-     * @param string $releasePath
+     * @param  string  $releasePath
      * @return array
      */
     protected function composerSteps(string $releasePath): array
@@ -289,7 +290,7 @@ class Deployer
     /**
      * Get the steps for creating the storage links through Artisan.
      *
-     * @param string $releasePath
+     * @param  string  $releasePath
      * @return array|string[]
      */
     protected function storageLinkSteps(string $releasePath): array
@@ -302,8 +303,8 @@ class Deployer
     /**
      * Generate the application encryption key through Artisan.
      *
-     * @param bool $install
-     * @param string $releasePath
+     * @param  bool  $install
+     * @param  string  $releasePath
      * @return array|string[]
      */
     protected function generateKeySteps(bool $install, string $releasePath): array
@@ -318,8 +319,8 @@ class Deployer
     /**
      * The database migration steps if needed.
      *
-     * @param bool $migrate
-     * @param string $releasePath
+     * @param  bool  $migrate
+     * @param  string  $releasePath
      * @return array
      */
     protected function migrationSteps(bool $migrate, string $releasePath): array
@@ -335,7 +336,7 @@ class Deployer
     /**
      * The asset migration task.
      *
-     * @param string $releaseId
+     * @param  string  $releaseId
      * @return Task
      */
     protected function assetTask(string $releaseId): Task
@@ -358,8 +359,8 @@ class Deployer
     /**
      * Get the asset installation commands.
      *
-     * @param array $assets
-     * @param string $releasePath
+     * @param  array  $assets
+     * @param  string  $releasePath
      * @return array
      */
     protected function getAssetCommands(array $assets, string $releasePath): array
@@ -382,7 +383,7 @@ class Deployer
     /**
      * The live task.
      *
-     * @param string $releaseId
+     * @param  string  $releaseId
      * @return Task
      */
     protected function liveTask(string $releaseId): Task
@@ -403,7 +404,8 @@ class Deployer
     /**
      * Execute an array of tasks.
      *
-     * @param Task[] $tasks
+     * @param  Task[]  $tasks
+     *
      * @throws ProcessException
      */
     protected function executeTasks(array $tasks): void
@@ -420,7 +422,8 @@ class Deployer
     /**
      * Execute tasks on the server through an `Ssh` instance.
      *
-     * @param Task $task
+     * @param  Task  $task
+     *
      * @throws ProcessException
      */
     protected function executeTaskOnServer(Task $task): void
@@ -447,7 +450,8 @@ class Deployer
     /**
      * End the current execution and throw an exception.
      *
-     * @param string|null $err
+     * @param  string|null  $err
+     *
      * @throws ProcessException
      */
     protected function failProcess(string $err = null): void
@@ -458,7 +462,8 @@ class Deployer
     /**
      * Execute tasks on the local environment.
      *
-     * @param Task $task
+     * @param  Task  $task
+     *
      * @throws ProcessException
      */
     protected function executeTaskLocally(Task $task): void
@@ -486,8 +491,9 @@ class Deployer
     /**
      * Install a release.
      *
-     * @param string $releaseId
-     * @param string|null $env
+     * @param  string  $releaseId
+     * @param  string|null  $env
+     *
      * @throws ProcessException
      */
     public function install(string $releaseId, string $env = null): void
@@ -502,7 +508,7 @@ class Deployer
     /**
      * Get tasks needed for installation.
      *
-     * @param string $releaseId
+     * @param  string  $releaseId
      * @return array
      */
     public function getInstallationTasks(string $releaseId): array
@@ -532,7 +538,7 @@ class Deployer
     /**
      * Set TTY use.
      *
-     * @param bool $tty
+     * @param  bool  $tty
      */
     public function tty(bool $tty = true): void
     {

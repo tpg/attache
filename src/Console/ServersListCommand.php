@@ -34,7 +34,7 @@ class ServersListCommand extends Command
     /**
      * Display the list on the console.
      *
-     * @param Collection $servers
+     * @param  Collection  $servers
      * @return int
      */
     protected function display(Collection $servers): int

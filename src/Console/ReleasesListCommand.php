@@ -15,9 +15,9 @@ class ReleasesListCommand extends Command
     protected ?ReleaseService $releaseService;
 
     /**
-     * @param string|null $name
-     * @param ConfigurationProvider|null $configurationProvider
-     * @param ReleaseService|null $releaseService
+     * @param  string|null  $name
+     * @param  ConfigurationProvider|null  $configurationProvider
+     * @param  ReleaseService|null  $releaseService
      */
     public function __construct(string $name = null, ?ConfigurationProvider $configurationProvider = null, ?ReleaseService $releaseService = null)
     {
@@ -60,7 +60,7 @@ class ReleasesListCommand extends Command
     /**
      * Get an instance of ReleaseService.
      *
-     * @param Server $server
+     * @param  Server  $server
      * @return ReleaseService
      */
     protected function getReleaseService(Server $server): ReleaseService
@@ -75,8 +75,8 @@ class ReleasesListCommand extends Command
     /**
      * Display the output on the console.
      *
-     * @param array $releases
-     * @param string $active
+     * @param  array  $releases
+     * @param  string  $active
      */
     protected function showOutput(array $releases, ?string $active): void
     {
@@ -93,8 +93,8 @@ class ReleasesListCommand extends Command
     /**
      * Build a table of releases.
      *
-     * @param array $releases
-     * @param string $active
+     * @param  array  $releases
+     * @param  string  $active
      * @return array
      */
     protected function buildTable(array $releases, ?string $active): array
@@ -121,7 +121,7 @@ class ReleasesListCommand extends Command
     /**
      * Get a formatted version of the release date.
      *
-     * @param string $release
+     * @param  string  $release
      * @return string
      */
     protected function releaseDate(string $release): string

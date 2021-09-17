@@ -18,9 +18,10 @@ class DeployCommand extends Command
 
     /**
      * DeployCommand constructor.
-     * @param string|null $name
-     * @param ConfigurationProvider|null $configurationProvider
-     * @param Deployer|null $deployer
+     *
+     * @param  string|null  $name
+     * @param  ConfigurationProvider|null  $configurationProvider
+     * @param  Deployer|null  $deployer
      */
     public function __construct(string $name = null, ?ConfigurationProvider $configurationProvider = null, ?Deployer $deployer = null)
     {
@@ -47,6 +48,7 @@ class DeployCommand extends Command
      * Run the deployment.
      *
      * @return int
+     *
      * @throws \Exception
      */
     protected function fire(): int
@@ -80,7 +82,7 @@ class DeployCommand extends Command
     /**
      * Get the Deployer instance.
      *
-     * @param Server $server
+     * @param  Server  $server
      * @return Deployer
      */
     protected function getDeployer(Server $server): Deployer

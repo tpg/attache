@@ -23,6 +23,7 @@ class InitCommand extends Command
      * Initialize the project by creating a new config file.
      *
      * @return int
+     *
      * @throws \JsonException
      */
     protected function fire(): int
@@ -46,7 +47,7 @@ class InitCommand extends Command
     /**
      * Allow the user to select from a list of remotes.
      *
-     * @param array $remotes
+     * @param  array  $remotes
      * @return string
      */
     protected function selectRemote(array $remotes): string
