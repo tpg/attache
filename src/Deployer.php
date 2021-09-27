@@ -369,12 +369,11 @@ class Deployer
 
         foreach ($assets as $asset => $target) {
             if (! file_exists($asset)) {
-                $commands[] = 'echo '.$asset . ' not found. Skipping.';
+                $commands[] = 'echo '.$asset.' not found. Skipping.';
                 continue;
             }
 
             $target = Str::startsWith($target, '/') ? $target : '/'.$target;
-
 
             $commands[] = 'scp -P'
                 .$this->server->port() // port
