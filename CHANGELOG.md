@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.7.8] 27-09-2021
+### Changed
+* Attache will now first check that an asset exists before trying to copy to the target server.
+
 ## [0.7.7] 01-07-2021
 ### Changed
 * Attache will no longer halt when a new SSH key has been added.
