@@ -397,9 +397,9 @@ class Deployer
 
         $commands = [
             'cd '.$this->server->root(),
-            ...$this->server->script('before-live', $this->server->root()),
+            ...$this->server->script('before-live', $releaseId, $this->server->root()),
             'ln -nfs '.$releasePath.' '.$this->server->path('serve'),
-            ...$this->server->script('after-live', $this->server->root()),
+            ...$this->server->script('after-live', $releaseId, $this->server->root()),
             'printf "\033c"',
         ];
 
