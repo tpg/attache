@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.7.9] 21-10-2021
+### Fixed
+* Fixed a bug where the release ID was not passed into the script compiler correctly. Some script tags would not return the correct release path.
+
 ## [0.7.8] 27-09-2021
 ### Changed
 * Attache will now first check that an asset exists before trying to copy to the target server.

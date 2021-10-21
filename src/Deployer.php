@@ -252,10 +252,10 @@ class Deployer
     protected function symlinkSteps(string $releasePath): array
     {
         return [
-            ...$this->server->script('before-symlinks', $this->server->root()),
+            ...$this->server->script('before-symlinks', Str::afterLast($releasePath, '/'), $this->server->root()),
             'ln -nfs '.$this->server->path('storage').' '.$releasePath.'/storage',
             'ln -nfs '.$this->server->path('env').' '.$releasePath.'/.env',
-            ...$this->server->script('after-symlinks', $this->server->root()),
+            ...$this->server->script('after-symlinks', Str::afterLast($releasePath, '/'), $this->server->root()),
         ];
     }
 
@@ -280,10 +280,10 @@ class Deployer
         }
 
         return [
-            ...$this->server->script('before-composer', $this->server->root()),
+            ...$this->server->script('before-composer', Str::afterLast($releasePath, '/'), $this->server->root()),
             'cd '.$releasePath.PHP_EOL
             .$composerCommand,
-            ...$this->server->script('after-composer', $this->server->root()),
+            ...$this->server->script('after-composer', Str::afterLast($releasePath, '/'), $this->server->root()),
         ];
     }
 
@@ -326,10 +326,10 @@ class Deployer
     protected function migrationSteps(bool $migrate, string $releasePath): array
     {
         return $migrate ? [
-            ...$this->server->script('before-migrate', $this->server->root()),
+            ...$this->server->script('before-migrate', Str::afterLast($releasePath, '/'), $this->server->root()),
             'cd '.$this->server->root(),
             $this->server->phpBin().' '.$releasePath.'/artisan migrate --force',
-            ...$this->server->script('after-migrate', $this->server->root()),
+            ...$this->server->script('after-migrate', Str::afterLast($releasePath, '/'), $this->server->root()),
         ] : [];
     }
 
