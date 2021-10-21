@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.7.10] 21.-10-2021
+### Fixed
+* Fixed a similar bug during the "live" step.
+
 ## [0.7.9] 21-10-2021
 ### Fixed
 * Fixed a bug where the release ID was not passed into the script compiler correctly. Some script tags would not return the correct release path.
